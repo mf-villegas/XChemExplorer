@@ -5,6 +5,12 @@ import sys
 
 from PyQt5 import QtCore
 
+# PyQt5 compatibility: Add SIGNAL and SLOT functions that were removed
+if not hasattr(QtCore, 'SIGNAL'):
+    QtCore.SIGNAL = lambda x: x
+if not hasattr(QtCore, 'SLOT'):
+    QtCore.SLOT = lambda x: x
+
 from xce.lib import XChemDB
 from xce.lib import XChemLog
 from xce.lib import XChemMain

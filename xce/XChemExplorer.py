@@ -8,6 +8,13 @@ from datetime import datetime
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+# PyQt5 compatibility: Add SIGNAL and SLOT functions that were removed
+# These return signal name strings that our connect() method can parse
+if not hasattr(QtCore, 'SIGNAL'):
+    QtCore.SIGNAL = lambda x: x
+if not hasattr(QtCore, 'SLOT'):
+    QtCore.SLOT = lambda x: x
+
 from xce.gui_scripts import layout, layout_functions, stylesheet
 from xce.lib import (
     XChemDB,
