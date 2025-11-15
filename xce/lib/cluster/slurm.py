@@ -48,7 +48,7 @@ POPUP_TITLE = "SLURM Authentication"
 
 def fetch_password_qt(password_prompt):
     password, ok = QtWidgets.QInputDialog.getText(
-        None, POPUP_TITLE, password_prompt, mode=QtWidgets.QLineEdit.Password
+        None, POPUP_TITLE, password_prompt, echo=QtWidgets.QLineEdit.Password
     )
     return password if ok else None
 
