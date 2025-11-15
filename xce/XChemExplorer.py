@@ -86,13 +86,44 @@ class XChemExplorer(QtGui.QApplication):
     # function to update datasource
 
     def datasource_menu_reload_samples(self):
+        # Check if a valid data source file is set
+        if not self.data_source_file or self.data_source_file == "":
+            self.update_log.error(
+                "No data source file selected. Please select or create a data source first."
+            )
+            self.update_status_bar(
+                "ERROR: No data source file selected"
+            )
+            QtGui.QMessageBox.warning(
+                self.window,
+                "No Data Source",
+                "Please select or create a data source file before updating the table.\n\n"
+                "Use 'Data Source -> Open Data Source' or 'Data Source -> Create New Data Source'.",
+            )
+            return
+
+        # Check if the data source file exists
+        data_source_path = os.path.join(self.database_directory, self.data_source_file)
+        if not os.path.isfile(data_source_path):
+            self.update_log.error(
+                f"Data source file not found: {data_source_path}"
+            )
+            self.update_status_bar(
+                "ERROR: Data source file not found"
+            )
+            QtGui.QMessageBox.warning(
+                self.window,
+                "Data Source Not Found",
+                f"The data source file does not exist:\n{data_source_path}\n\n"
+                "Please select or create a valid data source file.",
+            )
+            return
+
         self.update_log.insert(
-            "reading samples from data source: "
-            + os.path.join(self.database_directory, self.data_source_file)
+            "reading samples from data source: " + data_source_path
         )
         self.update_status_bar(
-            "reading samples from data source: "
-            + os.path.join(self.database_directory, self.data_source_file)
+            "reading samples from data source: " + data_source_path
         )
         self.update_header_and_data_from_datasource()
         self.update_all_tables()
