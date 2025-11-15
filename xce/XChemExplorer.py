@@ -5066,25 +5066,35 @@ class XChemExplorer(QtWidgets.QApplication):
                         if header[0] == "Dimple\nStatus":
                             if str(db_dict[header[1]]) == "running":
                                 cell_text.setBackground(QtGui.QColor(100, 230, 150))
+                                cell_text.setForeground(QtGui.QColor(0, 0, 0))  # Black text
                             elif str(db_dict[header[1]]) == "pending":
                                 cell_text.setBackground(QtGui.QColor(20, 100, 230))
+                                cell_text.setForeground(QtGui.QColor(255, 255, 255))  # White text
                             elif str(db_dict[header[1]]) == "started":
                                 cell_text.setBackground(QtGui.QColor(230, 240, 110))
+                                cell_text.setForeground(QtGui.QColor(0, 0, 0))  # Black text
                             elif str(db_dict[header[1]]) == "finished":
-                                cell_text.setBackground(QtGui.QColor(255, 255, 255))
+                                cell_text.setBackground(QtGui.QColor(200, 200, 200))  # Light gray instead of white
+                                cell_text.setForeground(QtGui.QColor(0, 0, 0))  # Black text
                         if header[0] == "Compound\nStatus":
                             if str(db_dict[header[1]]) == "running":
                                 cell_text.setBackground(QtGui.QColor(100, 230, 150))
+                                cell_text.setForeground(QtGui.QColor(0, 0, 0))  # Black text
                             elif str(db_dict[header[1]]) == "pending":
                                 cell_text.setBackground(QtGui.QColor(20, 100, 230))
+                                cell_text.setForeground(QtGui.QColor(255, 255, 255))  # White text
                             elif str(db_dict[header[1]]) == "started":
                                 cell_text.setBackground(QtGui.QColor(230, 240, 110))
+                                cell_text.setForeground(QtGui.QColor(0, 0, 0))  # Black text
                             elif str(db_dict[header[1]]) == "restraints generated":
-                                cell_text.setBackground(QtGui.QColor(255, 255, 255))
+                                cell_text.setBackground(QtGui.QColor(200, 200, 200))  # Light gray instead of white
+                                cell_text.setForeground(QtGui.QColor(0, 0, 0))  # Black text
                             elif str(db_dict[header[1]]) == "restraints failed":
                                 cell_text.setBackground(QtGui.QColor(255, 0, 0))
+                                cell_text.setForeground(QtGui.QColor(255, 255, 255))  # White text for contrast
                             elif str(db_dict[header[1]]) == "missing smiles":
                                 cell_text.setBackground(QtGui.QColor(240, 150, 20))
+                                cell_text.setForeground(QtGui.QColor(0, 0, 0))  # Black text
                         self.maps_table.setItem(current_row, column, cell_text)
             if new_xtal:
                 self.initial_model_dimple_dict[xtal] = [
