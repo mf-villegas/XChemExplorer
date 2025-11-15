@@ -1,12 +1,17 @@
 import os
 import ssl
 import json
-import httplib
+import http.client as httplib  # Python 3: httplib renamed to http.client
 import paramiko
 import time
 import traceback
-import gtk
-from PyQt5 import QtGui
+# gtk (PyGTK) is Python 2 only - make it optional
+try:
+    import gtk
+    GTK_AVAILABLE = True
+except ImportError:
+    GTK_AVAILABLE = False
+from PyQt5 import QtGui, QtWidgets
 from datetime import datetime
 from xce.lib.XChemLog import updateLog
 from uuid import uuid4
@@ -24,13 +29,17 @@ POPUP_TITLE = "SLURM Authentication"
 
 
 def fetch_password_qt(password_prompt):
-    password, ok = QtGui.QInputDialog.getText(
-        None, POPUP_TITLE, password_prompt, mode=QtGui.QLineEdit.Password
+    password, ok = QtWidgets.QInputDialog.getText(
+        None, POPUP_TITLE, password_prompt, echo=QtWidgets.QLineEdit.Password
     )
     return password if ok else None
 
 
 def fetch_password_gtk(password_prompt):
+    if not GTK_AVAILABLE:
+        print("==> XCE: GTK not available, falling back to Qt password dialog")
+        return fetch_password_qt(password_prompt)
+
     dialog = gtk.MessageDialog(
         None,
         gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
