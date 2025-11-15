@@ -154,6 +154,21 @@ class setup:
             xce_object.datasets_summary_file = ""
             xce_object.group_deposit_directory = xce_object.current_directory
 
+            # Auto-detect soakDBDataFile.sqlite in current directory or processing/database subdirectory
+            possible_db_locations = [
+                os.path.join(xce_object.current_directory, "soakDBDataFile.sqlite"),
+                os.path.join(xce_object.current_directory, "processing", "database", "soakDBDataFile.sqlite"),
+            ]
+
+            for db_path in possible_db_locations:
+                if os.path.isfile(db_path):
+                    xce_object.data_source_file = "soakDBDataFile.sqlite"
+                    xce_object.database_directory = os.path.dirname(db_path)
+                    xce_object.data_source_set = True
+                    xce_object.db = XChemDB.data_source(db_path)
+                    xce_object.db.create_missing_columns()
+                    break
+
         # deposition
 
         xce_object.deposit_dict = {}
@@ -169,9 +184,13 @@ class setup:
         # contains toggle button if dimple should be run
         xce_object.initial_model_dimple_dict = {}
         xce_object.reference_file_list = []
-        xce_object.all_columns_in_data_source = XChemDB.data_source(
-            os.path.join(xce_object.database_directory, xce_object.data_source_file)
-        ).return_column_list()
+        # Only load columns if a valid data source file is set
+        if xce_object.data_source_file and xce_object.data_source_file != "":
+            xce_object.all_columns_in_data_source = XChemDB.data_source(
+                os.path.join(xce_object.database_directory, xce_object.data_source_file)
+            ).return_column_list()
+        else:
+            xce_object.all_columns_in_data_source = []
 
         xce_object.dataset_outcome_dict = {}  # contains the dataset outcome buttons
         xce_object.data_collection_table_dict = {}  # contains the dataset table
