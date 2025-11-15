@@ -37,6 +37,38 @@ class XChemExplorer(QtWidgets.QApplication):
 
         self.exec_()
 
+    def connect(self, sender, signal, slot):
+        """
+        PyQt5 compatibility: Provide old-style connect() method.
+        Converts PyQt4-style SIGNAL() connections to PyQt5 new-style signals.
+        """
+        # Extract signal name from QtCore.SIGNAL("signalName(args)")
+        if isinstance(signal, QtCore.pyqtSignal):
+            # Already new-style signal
+            signal.connect(slot)
+        elif hasattr(signal, '__self__'):
+            # Bound signal
+            signal.connect(slot)
+        else:
+            # Old-style SIGNAL string - parse it
+            signal_str = str(signal)
+            # Remove SIGNAL() wrapper if present
+            if signal_str.startswith('2') and '(' in signal_str:
+                # PyQt4 SIGNAL format: starts with '2' and has parentheses
+                signal_name = signal_str[1:signal_str.index('(')]
+            elif '(' in signal_str:
+                signal_name = signal_str[:signal_str.index('(')]
+            else:
+                signal_name = signal_str
+
+            # Get the actual signal object from the sender
+            if hasattr(sender, signal_name):
+                actual_signal = getattr(sender, signal_name)
+                actual_signal.connect(slot)
+            else:
+                # Fallback: try common signal names
+                print(f"==> XCE Warning: Could not find signal '{signal_name}' on {sender}")
+
     def start_GUI(self):
         # check http://doc.qt.io/qt-4.8/stylesheet-customizing.html#the-box-model
         # This needs moving somewhere more appropriate...
