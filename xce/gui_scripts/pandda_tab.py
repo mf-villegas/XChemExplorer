@@ -2,7 +2,27 @@ import multiprocessing
 import os
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWebEngineWidgets import QWebEngineView
+
+# Try to import QtWebEngine for HTML display
+# If not available, fall back to QTextEdit with compatible interface
+try:
+    from PyQt5.QtWebEngineWidgets import QWebEngineView
+    HAS_WEBENGINE = True
+except ImportError:
+    # Fallback: create a QTextEdit wrapper with load() method for compatibility
+    class QWebEngineView(QtWidgets.QTextEdit):
+        """Fallback widget when QtWebEngine is not available"""
+        def load(self, url):
+            """Display URL path instead of loading HTML"""
+            if isinstance(url, QtCore.QUrl):
+                url_str = url.toString()
+            else:
+                url_str = str(url)
+            self.setPlainText(f"HTML display not available (PyQtWebEngine not installed)\n\nFile: {url_str}")
+            self.setReadOnly(True)
+
+    HAS_WEBENGINE = False
+    print("Warning: PyQtWebEngine not available. HTML display disabled in PanDDA tabs.")
 
 from xce.gui_scripts import layout_functions
 
