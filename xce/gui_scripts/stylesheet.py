@@ -83,4 +83,9 @@ def set_stylesheet(xce_object):
     """
     )
 
-    QtGui.qApp.setStyle("Cleanlooks")
+    # Qt5: qApp moved from QtGui to QtWidgets
+    # Note: Cleanlooks style was removed in Qt5, using Fusion as fallback
+    try:
+        QtWidgets.qApp.setStyle("Cleanlooks")
+    except:
+        QtWidgets.qApp.setStyle("Fusion")  # Fusion is the closest Qt5 style to Cleanlooks
