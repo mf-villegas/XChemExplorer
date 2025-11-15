@@ -81,21 +81,19 @@ def bottom_box_setup(
 ):
     frame = QtWidgets.QFrame()
     frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+    # Removed hardcoded white background to support dark mode
     frame.setStyleSheet(
         "QFrame {  "
-        "border-radius: 1px; padding: 0px; margin: 0px;"
-        " background-color: rgb(255, 255, 255); }"
+        "border-radius: 1px; padding: 0px; margin: 0px; }"
     )
 
     vbox = QtWidgets.QVBoxLayout()
     label = QtWidgets.QLabel(label)
     label.setAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
+    # Removed hardcoded colors to support OS theme (light/dark mode)
     label.setStyleSheet(
-        str(
-            " QLabel { border: 1px solid rgb(184, 192, 210); border-radius: 1px;"
-            + str(colour)
-            + "padding: 3px; margin: 0px; font: bold 14pt}"
-        )
+        "QLabel { border: 1px solid palette(mid); border-radius: 1px; "
+        "padding: 3px; margin: 0px; font: bold 14pt }"
     )
     vbox.addWidget(label)
 
