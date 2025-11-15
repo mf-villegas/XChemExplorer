@@ -18,6 +18,9 @@ def set_stylesheet(xce_object):
     QTabBar::tab {
     padding: 3px;
     }
+    QComboBox {
+    padding: 3px;
+    }
     QComboBox::down-arrow {
     image: url("""
         + icons_directory
