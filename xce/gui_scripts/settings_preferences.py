@@ -36,7 +36,13 @@ class setup:
         xce_object.current_directory = os.getcwd()
         xce_object.xce_logfile = os.path.join(xce_object.current_directory, "xce.log")
 
-        # if in the correct place, set the various directories
+        # =========================================================================
+        # DIAMOND LIGHT SOURCE SPECIFIC SETUP
+        # =========================================================================
+        # This section handles the specific directory structure and conventions
+        # used at Diamond Light Source synchrotron facility (/dls/labxchem/*).
+        # Keep this for Diamond users who rely on this specific setup.
+        # =========================================================================
         if xce_object.current_directory.startswith("/dls/labxchem"):
             #        if 'labxchem' in xce_object.current_directory:
             if (
@@ -141,33 +147,101 @@ class setup:
                 if not os.path.isdir(directory):
                     os.mkdir(directory)
 
-        # otherwise, use the current working directory
+        # =========================================================================
+        # GENERAL SETUP (for all other users - Mac, Linux, Windows, etc.)
+        # =========================================================================
+        # This section works for ANY user on ANY operating system. It intelligently
+        # searches for the database file and sets up sensible directory defaults.
+        # =========================================================================
         else:
+            # Set base directory to current working directory
             xce_object.labxchem_directory_current = xce_object.current_directory
+
+            # Initialize directories - use current directory as base
             xce_object.beamline_directory = xce_object.current_directory
             xce_object.initial_model_directory = xce_object.current_directory
             xce_object.reference_directory = xce_object.current_directory
-            xce_object.database_directory = xce_object.current_directory
-            xce_object.data_source_file = ""
-            xce_object.ccp4_scratch_directory = os.getenv("CCP4_SCR")
             xce_object.panddas_directory = xce_object.current_directory
-            xce_object.datasets_summary_file = ""
             xce_object.group_deposit_directory = xce_object.current_directory
 
-            # Auto-detect soakDBDataFile.sqlite in current directory or processing/database subdirectory
+            # Use CCP4 scratch directory if available, otherwise use current directory
+            xce_object.ccp4_scratch_directory = os.getenv("CCP4_SCR") or os.path.join(
+                xce_object.current_directory, "tmp"
+            )
+
+            # Initialize database settings
+            xce_object.database_directory = xce_object.current_directory
+            xce_object.data_source_file = ""
+            xce_object.datasets_summary_file = ""
+            xce_object.data_source_set = False
+
+            # =====================================================================
+            # INTELLIGENT DATABASE DETECTION (OS-agnostic)
+            # =====================================================================
+            # Try to find soakDBDataFile.sqlite in multiple common locations.
+            # This works regardless of OS or directory structure.
+            # =====================================================================
             possible_db_locations = [
+                # Check current directory first
                 os.path.join(xce_object.current_directory, "soakDBDataFile.sqlite"),
+                # Check standard XChem structure: processing/database/
                 os.path.join(xce_object.current_directory, "processing", "database", "soakDBDataFile.sqlite"),
+                # Check if we're already in a database subdirectory
+                os.path.join(xce_object.current_directory, "..", "database", "soakDBDataFile.sqlite"),
+                # Check parent directory
+                os.path.join(xce_object.current_directory, "..", "soakDBDataFile.sqlite"),
             ]
 
+            # Look for the database file in all possible locations
+            database_found = False
             for db_path in possible_db_locations:
-                if os.path.isfile(db_path):
+                # Normalize the path to handle '..' and make it absolute
+                normalized_path = os.path.abspath(db_path)
+
+                if os.path.isfile(normalized_path):
                     xce_object.data_source_file = "soakDBDataFile.sqlite"
-                    xce_object.database_directory = os.path.dirname(db_path)
+                    xce_object.database_directory = os.path.dirname(normalized_path)
                     xce_object.data_source_set = True
-                    xce_object.db = XChemDB.data_source(db_path)
+                    xce_object.db = XChemDB.data_source(normalized_path)
                     xce_object.db.create_missing_columns()
+                    database_found = True
+                    print("==> XCE: Found database at: " + normalized_path)
                     break
+
+            if not database_found:
+                print("==> XCE: No database file found. You can create or open one from the Data Source menu.")
+
+            # =====================================================================
+            # CHECK FOR STANDARD XCHEM DIRECTORY STRUCTURE
+            # =====================================================================
+            # If the user is using the standard XChem directory layout, set up
+            # the subdirectories intelligently (works on any OS).
+            # =====================================================================
+            processing_dir = os.path.join(xce_object.current_directory, "processing")
+
+            if os.path.isdir(processing_dir):
+                # User has a 'processing' directory - use XChem standard structure
+                xce_object.database_directory = os.path.join(processing_dir, "database")
+                xce_object.reference_directory = os.path.join(processing_dir, "reference")
+                xce_object.panddas_directory = os.path.join(processing_dir, "analysis", "panddas")
+
+                # Check for model_building vs initial_model directory
+                model_building_dir = os.path.join(processing_dir, "analysis", "model_building")
+                initial_model_dir = os.path.join(processing_dir, "analysis", "initial_model")
+
+                if os.path.isdir(model_building_dir):
+                    xce_object.initial_model_directory = model_building_dir
+                elif os.path.isdir(initial_model_dir):
+                    xce_object.initial_model_directory = initial_model_dir
+                else:
+                    xce_object.initial_model_directory = os.path.join(processing_dir, "analysis", "initial_model")
+
+                xce_object.beamline_directory = os.path.join(processing_dir, "beamline")
+                xce_object.group_deposit_directory = os.path.join(processing_dir, "group_deposition")
+
+                print("==> XCE: Using XChem standard directory structure")
+            else:
+                print("==> XCE: Using current directory for all operations")
 
         # deposition
 
