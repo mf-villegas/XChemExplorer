@@ -1279,7 +1279,6 @@ class XChemExplorer(QtWidgets.QApplication):
         self.contact_author_PI_middle_name.setText("")
         self.contact_author_PI_middle_name.setFixedWidth(200)
         self.contact_author_PI_middle_name.setStyleSheet(
-            "background-color: rgb(192, 192, 192);"
         )
         grid.addWidget(self.contact_author_PI_middle_name, 4, 1)
 
@@ -1326,7 +1325,6 @@ class XChemExplorer(QtWidgets.QApplication):
         self.contact_author_PI_State_or_Province.setText("")
         self.contact_author_PI_State_or_Province.setFixedWidth(200)
         self.contact_author_PI_State_or_Province.setStyleSheet(
-            "background-color: rgb(192, 192, 192);"
         )
         grid.addWidget(self.contact_author_PI_State_or_Province, 11, 1)
 
@@ -1385,7 +1383,6 @@ class XChemExplorer(QtWidgets.QApplication):
         self.contact_author_middle_name.setText("")
         self.contact_author_middle_name.setFixedWidth(200)
         self.contact_author_middle_name.setStyleSheet(
-            "background-color: rgb(192, 192, 192);"
         )
         grid.addWidget(self.contact_author_middle_name, 4, 1)
 
@@ -1433,7 +1430,6 @@ class XChemExplorer(QtWidgets.QApplication):
         self.contact_author_State_or_Province.setText("")
         self.contact_author_State_or_Province.setFixedWidth(200)
         self.contact_author_State_or_Province.setStyleSheet(
-            "background-color: rgb(192, 192, 192);"
         )
         grid.addWidget(self.contact_author_State_or_Province, 11, 1)
 
@@ -1609,7 +1605,6 @@ class XChemExplorer(QtWidgets.QApplication):
         self.primary_citation_title.setText("")
         self.primary_citation_title.setFixedWidth(500)
         self.primary_citation_title.setStyleSheet(
-            "background-color: rgb(192, 192, 192);"
         )
         grid.addWidget(self.primary_citation_title, 3, 1)
 
@@ -1618,7 +1613,6 @@ class XChemExplorer(QtWidgets.QApplication):
         self.primary_citation_year.setText("")
         self.primary_citation_year.setFixedWidth(500)
         self.primary_citation_year.setStyleSheet(
-            "background-color: rgb(192, 192, 192);"
         )
         grid.addWidget(self.primary_citation_year, 4, 1)
 
@@ -1627,7 +1621,6 @@ class XChemExplorer(QtWidgets.QApplication):
         self.primary_citation_journal_volume.setText("")
         self.primary_citation_journal_volume.setFixedWidth(500)
         self.primary_citation_journal_volume.setStyleSheet(
-            "background-color: rgb(192, 192, 192);"
         )
         grid.addWidget(self.primary_citation_journal_volume, 5, 1)
 
@@ -1636,7 +1629,6 @@ class XChemExplorer(QtWidgets.QApplication):
         self.primary_citation_page_first.setText("")
         self.primary_citation_page_first.setFixedWidth(500)
         self.primary_citation_page_first.setStyleSheet(
-            "background-color: rgb(192, 192, 192);"
         )
         grid.addWidget(self.primary_citation_page_first, 6, 1)
 
@@ -1645,7 +1637,6 @@ class XChemExplorer(QtWidgets.QApplication):
         self.primary_citation_page_last.setText("")
         self.primary_citation_page_last.setFixedWidth(500)
         self.primary_citation_page_last.setStyleSheet(
-            "background-color: rgb(192, 192, 192);"
         )
         grid.addWidget(self.primary_citation_page_last, 7, 1)
 
@@ -1708,7 +1699,6 @@ class XChemExplorer(QtWidgets.QApplication):
         self.fragment_name_one = QtWidgets.QLineEdit()
         self.fragment_name_one.setText("")
         self.fragment_name_one.setFixedWidth(300)
-        self.fragment_name_one.setStyleSheet("background-color: rgb(192, 192, 192);")
         grid.addWidget(self.fragment_name_one, 3, 1)
         grid.addWidget(QtWidgets.QLabel("(e.g. ligand binding domain, hairpin)"), 3, 2)
 
@@ -1717,7 +1707,6 @@ class XChemExplorer(QtWidgets.QApplication):
         self.fragment_name_one_specific_mutation.setText("")
         self.fragment_name_one_specific_mutation.setFixedWidth(300)
         self.fragment_name_one_specific_mutation.setStyleSheet(
-            "background-color: rgb(192, 192, 192);"
         )
         grid.addWidget(self.fragment_name_one_specific_mutation, 4, 1)
         grid.addWidget(QtWidgets.QLabel("(e.g. C280S)"), 4, 2)
@@ -1727,7 +1716,6 @@ class XChemExplorer(QtWidgets.QApplication):
         self.fragment_name_one_enzyme_comission_number.setText("")
         self.fragment_name_one_enzyme_comission_number.setFixedWidth(300)
         self.fragment_name_one_enzyme_comission_number.setStyleSheet(
-            "background-color: rgb(192, 192, 192);"
         )
         grid.addWidget(self.fragment_name_one_enzyme_comission_number, 5, 1)
         grid.addWidget(QtWidgets.QLabel("(if known: e.g. 2.7.7.7)"), 5, 2)
@@ -1754,7 +1742,6 @@ class XChemExplorer(QtWidgets.QApplication):
         self.Source_organism_strain.setText("")
         self.Source_organism_strain.setFixedWidth(300)
         self.Source_organism_strain.setStyleSheet(
-            "background-color: rgb(192, 192, 192);"
         )
         grid.addWidget(self.Source_organism_strain, 9, 1)
         grid.addWidget(QtWidgets.QLabel("(e.g. BH10 ISOLATE, K-12...)"), 9, 2)
@@ -1771,7 +1758,6 @@ class XChemExplorer(QtWidgets.QApplication):
         self.Expression_system_strain.setText("")
         self.Expression_system_strain.setFixedWidth(300)
         self.Expression_system_strain.setStyleSheet(
-            "background-color: rgb(192, 192, 192);"
         )
         grid.addWidget(self.Expression_system_strain, 11, 1)
         grid.addWidget(QtWidgets.QLabel("(e.g. BL21(DE3))"), 11, 2)
@@ -1781,7 +1767,6 @@ class XChemExplorer(QtWidgets.QApplication):
         self.Expression_system_vector_type.setText("")
         self.Expression_system_vector_type.setFixedWidth(300)
         self.Expression_system_vector_type.setStyleSheet(
-            "background-color: rgb(192, 192, 192);"
         )
         grid.addWidget(self.Expression_system_vector_type, 12, 1)
         grid.addWidget(QtWidgets.QLabel("(e.g. plasmid)"), 12, 2)
@@ -1791,7 +1776,6 @@ class XChemExplorer(QtWidgets.QApplication):
         self.Expression_system_plasmid_name.setText("")
         self.Expression_system_plasmid_name.setFixedWidth(300)
         self.Expression_system_plasmid_name.setStyleSheet(
-            "background-color: rgb(192, 192, 192);"
         )
         grid.addWidget(self.Expression_system_plasmid_name, 13, 1)
         grid.addWidget(QtWidgets.QLabel("(e.g. pET26)"), 13, 2)
@@ -1801,7 +1785,6 @@ class XChemExplorer(QtWidgets.QApplication):
         self.Manipulated_source_details.setText("")
         self.Manipulated_source_details.setFixedWidth(300)
         self.Manipulated_source_details.setStyleSheet(
-            "background-color: rgb(192, 192, 192);"
         )
         grid.addWidget(self.Manipulated_source_details, 14, 1)
         grid.addWidget(QtWidgets.QLabel("(any other relevant information)"), 14, 2)
@@ -1844,7 +1827,6 @@ class XChemExplorer(QtWidgets.QApplication):
         self.fragment_name_two = QtWidgets.QLineEdit()
         self.fragment_name_two.setText("")
         self.fragment_name_two.setFixedWidth(300)
-        self.fragment_name_two.setStyleSheet("background-color: rgb(192, 192, 192);")
         grid.addWidget(self.fragment_name_two, 3, 1)
         grid.addWidget(QtWidgets.QLabel("(e.g. ligand binding domain, hairpin)"), 3, 2)
 
@@ -1853,7 +1835,6 @@ class XChemExplorer(QtWidgets.QApplication):
         self.fragment_name_two_specific_mutation.setText("")
         self.fragment_name_two_specific_mutation.setFixedWidth(300)
         self.fragment_name_two_specific_mutation.setStyleSheet(
-            "background-color: rgb(192, 192, 192);"
         )
         grid.addWidget(self.fragment_name_two_specific_mutation, 4, 1)
         grid.addWidget(QtWidgets.QLabel("(e.g. C280S)"), 4, 2)
@@ -1863,7 +1844,6 @@ class XChemExplorer(QtWidgets.QApplication):
         self.fragment_name_two_enzyme_comission_number.setText("")
         self.fragment_name_two_enzyme_comission_number.setFixedWidth(300)
         self.fragment_name_two_enzyme_comission_number.setStyleSheet(
-            "background-color: rgb(192, 192, 192);"
         )
         grid.addWidget(self.fragment_name_two_enzyme_comission_number, 5, 1)
         grid.addWidget(QtWidgets.QLabel("(if known: e.g. 2.7.7.7)"), 5, 2)
@@ -1890,7 +1870,6 @@ class XChemExplorer(QtWidgets.QApplication):
         self.Source_organism_strain_two.setText("")
         self.Source_organism_strain_two.setFixedWidth(300)
         self.Source_organism_strain_two.setStyleSheet(
-            "background-color: rgb(192, 192, 192);"
         )
         grid.addWidget(self.Source_organism_strain_two, 9, 1)
         grid.addWidget(QtWidgets.QLabel("(e.g. BH10 ISOLATE, K-12...)"), 9, 2)
@@ -1907,7 +1886,6 @@ class XChemExplorer(QtWidgets.QApplication):
         self.Expression_system_strain_two.setText("")
         self.Expression_system_strain_two.setFixedWidth(300)
         self.Expression_system_strain_two.setStyleSheet(
-            "background-color: rgb(192, 192, 192);"
         )
         grid.addWidget(self.Expression_system_strain_two, 11, 1)
         grid.addWidget(QtWidgets.QLabel("(e.g. BL21(DE3))"), 11, 2)
@@ -1917,7 +1895,6 @@ class XChemExplorer(QtWidgets.QApplication):
         self.Expression_system_vector_type_two.setText("")
         self.Expression_system_vector_type_two.setFixedWidth(300)
         self.Expression_system_vector_type_two.setStyleSheet(
-            "background-color: rgb(192, 192, 192);"
         )
         grid.addWidget(self.Expression_system_vector_type_two, 12, 1)
         grid.addWidget(QtWidgets.QLabel("(e.g. plasmid)"), 12, 2)
@@ -1927,7 +1904,6 @@ class XChemExplorer(QtWidgets.QApplication):
         self.Expression_system_plasmid_name_two.setText("")
         self.Expression_system_plasmid_name_two.setFixedWidth(300)
         self.Expression_system_plasmid_name_two.setStyleSheet(
-            "background-color: rgb(192, 192, 192);"
         )
         grid.addWidget(self.Expression_system_plasmid_name_two, 13, 1)
         grid.addWidget(QtWidgets.QLabel("(e.g. pET26)"), 13, 2)
@@ -1937,7 +1913,6 @@ class XChemExplorer(QtWidgets.QApplication):
         self.Manipulated_source_details_two.setText("")
         self.Manipulated_source_details_two.setFixedWidth(300)
         self.Manipulated_source_details_two.setStyleSheet(
-            "background-color: rgb(192, 192, 192);"
         )
         grid.addWidget(self.Manipulated_source_details_two, 14, 1)
         grid.addWidget(QtWidgets.QLabel("(any other relevant information)"), 14, 2)
@@ -1979,7 +1954,6 @@ class XChemExplorer(QtWidgets.QApplication):
         grid.addWidget(QtWidgets.QLabel("Type"), 2, 0)
         self.structure_keywords_type = QtWidgets.QComboBox()
         self.structure_keywords_type.setStyleSheet(
-            "background-color: rgb(192, 192, 192);"
         )
         for item in XChemMain.pdbx_keywords():
             self.structure_keywords_type.addItem(item)
@@ -2013,7 +1987,6 @@ class XChemExplorer(QtWidgets.QApplication):
         self.molecule_one_letter_sequence_uniprot_id_two = QtWidgets.QLineEdit()
         self.molecule_one_letter_sequence_uniprot_id_two.setText("")
         self.molecule_one_letter_sequence_uniprot_id_two.setStyleSheet(
-            "background-color: rgb(192, 192, 192);"
         )
         self.molecule_one_letter_sequence_uniprot_id_two.setFixedWidth(300)
         grid.addWidget(self.molecule_one_letter_sequence_uniprot_id_two, 13, 1)
@@ -2030,7 +2003,6 @@ class XChemExplorer(QtWidgets.QApplication):
         grid.addWidget(QtWidgets.QLabel("Project Name"), 22, 0)
         self.SG_project_name = QtWidgets.QLineEdit()
         self.SG_project_name.setText("")
-        self.SG_project_name.setStyleSheet("background-color: rgb(192, 192, 192);")
         self.SG_project_name.setFixedWidth(300)
         grid.addWidget(self.SG_project_name, 22, 1)
         grid.addWidget(
@@ -2041,7 +2013,6 @@ class XChemExplorer(QtWidgets.QApplication):
         self.full_name_of_SG_center = QtWidgets.QLineEdit()
         self.full_name_of_SG_center.setText("")
         self.full_name_of_SG_center.setStyleSheet(
-            "background-color: rgb(192, 192, 192);"
         )
         self.full_name_of_SG_center.setFixedWidth(300)
         grid.addWidget(self.full_name_of_SG_center, 23, 1)

@@ -149,7 +149,7 @@ class DepositionTab:
         xce_object.ground_state_pandda_directory_label = QtWidgets.QLabel(
             xce_object.panddas_directory
         )
-        xce_object.ground_state_pandda_directory_label.setStyleSheet("color: blue")
+        xce_object.ground_state_pandda_directory_label
 
         deposition_ground_state_preparation_step_four_text = (
             layout_functions.add_depo_text(
