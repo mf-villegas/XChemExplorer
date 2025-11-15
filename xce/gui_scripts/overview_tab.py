@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from PyQt5 import QtGui
+from PyQt5 import QtGui, QtWidgets
 
 from xce.gui_scripts import layout_functions
 

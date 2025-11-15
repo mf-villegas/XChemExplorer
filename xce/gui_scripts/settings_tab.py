@@ -1,6 +1,6 @@
 import os
 
-from PyQt5 import QtGui
+from PyQt5 import QtGui, QtWidgets
 
 from xce.gui_scripts import layout_functions
 
