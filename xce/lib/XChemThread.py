@@ -31,6 +31,7 @@ class XChemQThread(QtCore.QThread):
     datasource_menu_reload_samples = QtCore.pyqtSignal()
     read_pinIDs_from_gda_logs = QtCore.pyqtSignal()
     populate_datasets_summary_table_NEW = QtCore.pyqtSignal()
+    update_gdaLog_parsing_instructions_and_score = QtCore.pyqtSignal(list)
     finished = QtCore.pyqtSignal()
 
 
@@ -2165,10 +2166,9 @@ class read_pinIDs_from_gda_logs(XChemQThread):
                 str(self.gda_log_start_line)
             )
         )
-        self.emit(
-            QtCore.SIGNAL("update_status_bar(QString)"),
-            "checking GDA logiles for pinID details",
-        )
+        # PyQt5: Use new-style signal emission
+        self.update_status_bar.emit("checking GDA logiles for pinID details")
+
         pinDict, self.gda_log_start_line = XChemMain.get_gda_barcodes(
             self.allSamples,
             self.gzipped_logs_parsed,
@@ -2181,10 +2181,8 @@ class read_pinIDs_from_gda_logs(XChemQThread):
 
         self.gdaLogInstructions = [self.gda_log_start_line, True]
         self.Logfile.insert("====== finished checking GDA logfiles ======")
-        self.emit(
-            QtCore.SIGNAL("update_gdaLog_parsing_instructions_and_score"),
-            self.gdaLogInstructions,
-        )
+        # PyQt5: Use new-style signal emission
+        self.update_gdaLog_parsing_instructions_and_score.emit(self.gdaLogInstructions)
         self.finished.emit()
 
     def update_database(self, pinDict):
