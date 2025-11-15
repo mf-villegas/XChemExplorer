@@ -1,7 +1,7 @@
 import multiprocessing
 import os
 
-from PyQt4 import QtCore, QtGui, QtWebKit
+from PyQt5 import QtCore, QtGui, QtWidgets, QtWebKitWidgets
 
 from xce.gui_scripts import layout_functions
 
@@ -24,7 +24,7 @@ class PanddaTab:
         ]
 
         # setup tab widget, set up tab dict, and make tab dict
-        xce_object.pandda_tab_widget = QtGui.QTabWidget()
+        xce_object.pandda_tab_widget = QtWidgets.QTabWidget()
         xce_object.pandda_tab_dict = {}
         layout_functions.make_tab_dict(
             pandda_tab_list, xce_object.pandda_tab_widget, xce_object.pandda_tab_dict
@@ -32,23 +32,23 @@ class PanddaTab:
 
         # pandda analyse subtab
         # setup a grid to hold everything
-        grid_pandda = QtGui.QGridLayout()
+        grid_pandda = QtWidgets.QGridLayout()
         grid_pandda.setColumnStretch(0, 20)
         grid_pandda.setRowStretch(0, 20)
 
         # table - left
-        xce_object.pandda_analyse_data_table = QtGui.QTableWidget()
+        xce_object.pandda_analyse_data_table = QtWidgets.QTableWidget()
         layout_functions.table_setup(
             xce_object.pandda_analyse_data_table, xce_object.pandda_table_columns
         )
 
         # add table to grid
-        frame_pandda = QtGui.QFrame()
+        frame_pandda = QtWidgets.QFrame()
         grid_pandda.addWidget(xce_object.pandda_analyse_data_table, 0, 0)
 
         # status of pandda job - under table
         xce_object.pandda_status = "UNKNOWN"
-        xce_object.pandda_status_label = QtGui.QLabel()
+        xce_object.pandda_status_label = QtWidgets.QLabel()
 
         # status options [filename, test to output, colour of text]
         pandda_status_options = [
@@ -79,21 +79,21 @@ class PanddaTab:
         header_font.setBold(True)
 
         # input parameters for PANDDAs run - right
-        frame_right = QtGui.QFrame()
+        frame_right = QtWidgets.QFrame()
 
-        xce_object.pandda_analyse_input_params_vbox = QtGui.QVBoxLayout()
+        xce_object.pandda_analyse_input_params_vbox = QtWidgets.QVBoxLayout()
 
         # data directory section
-        pandda_input_dir_hbox = QtGui.QHBoxLayout()
-        label = QtGui.QLabel("Input data directory:")
+        pandda_input_dir_hbox = QtWidgets.QHBoxLayout()
+        label = QtWidgets.QLabel("Input data directory:")
         label.setFont(header_font)
         xce_object.pandda_analyse_input_params_vbox.addWidget(label)
-        xce_object.pandda_input_data_dir_entry = QtGui.QLineEdit()
+        xce_object.pandda_input_data_dir_entry = QtWidgets.QLineEdit()
         xce_object.pandda_input_data_dir_entry.setText(
             os.path.join(xce_object.initial_model_directory, "*")
         )
         pandda_input_dir_hbox.addWidget(xce_object.pandda_input_data_dir_entry)
-        xce_object.select_pandda_input_dir_button = QtGui.QPushButton(
+        xce_object.select_pandda_input_dir_button = QtWidgets.QPushButton(
             "Select Input Template"
         )
         xce_object.select_pandda_input_dir_button.clicked.connect(
@@ -103,19 +103,19 @@ class PanddaTab:
         xce_object.pandda_analyse_input_params_vbox.addLayout(pandda_input_dir_hbox)
 
         # pdb style section
-        pandda_pdb_style_hbox = QtGui.QHBoxLayout()
-        label = QtGui.QLabel("pdb style")
+        pandda_pdb_style_hbox = QtWidgets.QHBoxLayout()
+        label = QtWidgets.QLabel("pdb style")
         pandda_pdb_style_hbox.addWidget(label)
-        xce_object.pandda_pdb_style_entry = QtGui.QLineEdit()
+        xce_object.pandda_pdb_style_entry = QtWidgets.QLineEdit()
         xce_object.pandda_pdb_style_entry.setText("dimple.pdb")
         pandda_pdb_style_hbox.addWidget(xce_object.pandda_pdb_style_entry)
         xce_object.pandda_analyse_input_params_vbox.addLayout(pandda_pdb_style_hbox)
 
         # mtz style section
-        pandda_mtz_style_hbox = QtGui.QHBoxLayout()
-        label = QtGui.QLabel("mtz style")
+        pandda_mtz_style_hbox = QtWidgets.QHBoxLayout()
+        label = QtWidgets.QLabel("mtz style")
         pandda_mtz_style_hbox.addWidget(label)
-        xce_object.pandda_mtz_style_entry = QtGui.QLineEdit()
+        xce_object.pandda_mtz_style_entry = QtWidgets.QLineEdit()
         xce_object.pandda_mtz_style_entry.setText("dimple.mtz")
         pandda_mtz_style_hbox.addWidget(xce_object.pandda_mtz_style_entry)
         xce_object.pandda_analyse_input_params_vbox.addLayout(pandda_mtz_style_hbox)
@@ -155,14 +155,14 @@ class PanddaTab:
             print("==> XCE: Copied ligand restraints over")
 
         # output directory section
-        pandda_output_dir_hbox = QtGui.QHBoxLayout()
-        label = QtGui.QLabel("Output directory:")
+        pandda_output_dir_hbox = QtWidgets.QHBoxLayout()
+        label = QtWidgets.QLabel("Output directory:")
         label.setFont(header_font)
         xce_object.pandda_analyse_input_params_vbox.addWidget(label)
-        xce_object.pandda_output_data_dir_entry = QtGui.QLineEdit()
+        xce_object.pandda_output_data_dir_entry = QtWidgets.QLineEdit()
         xce_object.pandda_output_data_dir_entry.setText(xce_object.panddas_directory)
         pandda_output_dir_hbox.addWidget(xce_object.pandda_output_data_dir_entry)
-        xce_object.select_pandda_output_dir_button = QtGui.QPushButton(
+        xce_object.select_pandda_output_dir_button = QtWidgets.QPushButton(
             "Select PanDDA Directory"
         )
         xce_object.select_pandda_output_dir_button.clicked.connect(
@@ -171,24 +171,24 @@ class PanddaTab:
         pandda_output_dir_hbox.addWidget(xce_object.select_pandda_output_dir_button)
         xce_object.pandda_analyse_input_params_vbox.addLayout(pandda_output_dir_hbox)
 
-        pandda_add_ligands_button = QtGui.QPushButton(
+        pandda_add_ligands_button = QtWidgets.QPushButton(
             "Copy Ligand restraints for PanDDA"
         )
         pandda_add_ligands_button.clicked.connect(lambda: copy_ligands(xce_object))
         xce_object.pandda_analyse_input_params_vbox.addWidget(pandda_add_ligands_button)
 
         # spacer to separate out sections
-        spacer = QtGui.QLabel(" ")
+        spacer = QtWidgets.QLabel(" ")
         xce_object.pandda_analyse_input_params_vbox.addWidget(spacer)
 
-        label = QtGui.QLabel("Submission parameters")
+        label = QtWidgets.QLabel("Submission parameters")
         label.setFont(header_font)
         xce_object.pandda_analyse_input_params_vbox.addWidget(label)
 
         # qstat or local machine
-        label = QtGui.QLabel("Submit via:")
+        label = QtWidgets.QLabel("Submit via:")
         xce_object.pandda_analyse_input_params_vbox.addWidget(label)
-        xce_object.pandda_submission_mode_selection_combobox = QtGui.QComboBox()
+        xce_object.pandda_submission_mode_selection_combobox = QtWidgets.QComboBox()
         xce_object.pandda_submission_mode_selection_combobox.addItem("slurm")
         xce_object.pandda_submission_mode_selection_combobox.addItem("local machine")
         xce_object.pandda_analyse_input_params_vbox.addWidget(
@@ -196,10 +196,10 @@ class PanddaTab:
         )
 
         # number of processors section
-        label = QtGui.QLabel("Number of processors:")
+        label = QtWidgets.QLabel("Number of processors:")
         xce_object.pandda_analyse_input_params_vbox.addWidget(label)
         xce_object.pandda_nproc = multiprocessing.cpu_count() - 1
-        xce_object.pandda_nproc_entry = QtGui.QLineEdit()
+        xce_object.pandda_nproc_entry = QtWidgets.QLineEdit()
         xce_object.pandda_nproc_entry.setText(
             str(xce_object.pandda_nproc).replace(" ", "")
         )
@@ -209,8 +209,8 @@ class PanddaTab:
 
         xce_object.pandda_analyse_input_params_vbox.addWidget(spacer)
 
-        params_hbox = QtGui.QHBoxLayout()
-        label = QtGui.QLabel("PanDDA parameters")
+        params_hbox = QtWidgets.QHBoxLayout()
+        label = QtWidgets.QLabel("PanDDA parameters")
         label.setFont(header_font)
         params_hbox.addWidget(label)
 
@@ -219,7 +219,7 @@ class PanddaTab:
             "For docs: click here"
             "</a>"
         )
-        label = QtGui.QLabel()
+        label = QtWidgets.QLabel()
         label.setText(url_html)
         label.setOpenExternalLinks(True)
         label.setAlignment(QtCore.Qt.AlignRight)
@@ -228,7 +228,7 @@ class PanddaTab:
         xce_object.pandda_analyse_input_params_vbox.addLayout(params_hbox)
 
         # checkbox for wilson scaling
-        xce_object.wilson_checkbox = QtGui.QCheckBox("Wilson B-factor Scaling")
+        xce_object.wilson_checkbox = QtWidgets.QCheckBox("Wilson B-factor Scaling")
         layout_functions.add_checkbox(
             xce_object, xce_object.wilson_checkbox, "xce_object.set_run_dimple_flag"
         )
@@ -237,12 +237,12 @@ class PanddaTab:
         )
 
         # crystal form option
-        label = QtGui.QLabel("Use space group of reference file as filter:")
+        label = QtWidgets.QLabel("Use space group of reference file as filter:")
         xce_object.pandda_analyse_input_params_vbox.addWidget(label)
         # reference file combobox, label with spg display
-        hbox = QtGui.QHBoxLayout()
+        hbox = QtWidgets.QHBoxLayout()
         # xce_object.reference_file_list = xce_object.get_reference_file_list('')
-        xce_object.pandda_reference_file_selection_combobox = QtGui.QComboBox()
+        xce_object.pandda_reference_file_selection_combobox = QtWidgets.QComboBox()
         xce_object.populate_reference_combobox(
             xce_object.pandda_reference_file_selection_combobox
         )
@@ -250,14 +250,14 @@ class PanddaTab:
             xce_object.change_pandda_spg_label
         )
         hbox.addWidget(xce_object.pandda_reference_file_selection_combobox)
-        xce_object.pandda_reference_file_spg_label = QtGui.QLabel()
+        xce_object.pandda_reference_file_spg_label = QtWidgets.QLabel()
         hbox.addWidget(xce_object.pandda_reference_file_spg_label)
         xce_object.pandda_analyse_input_params_vbox.addLayout(hbox)
 
         # how to order events
-        label = QtGui.QLabel("Order events by:")
+        label = QtWidgets.QLabel("Order events by:")
         xce_object.pandda_analyse_input_params_vbox.addWidget(label)
-        xce_object.pandda_sort_event_combobox = QtGui.QComboBox()
+        xce_object.pandda_sort_event_combobox = QtWidgets.QComboBox()
         pandda_events = ["cluster_size", "z_peak"]
         layout_functions.populate_combobox(
             pandda_events, xce_object.pandda_sort_event_combobox
@@ -267,9 +267,9 @@ class PanddaTab:
         )
 
         # how calculate mean map
-        label = QtGui.QLabel("Calculate average map by:")
+        label = QtWidgets.QLabel("Calculate average map by:")
         xce_object.pandda_analyse_input_params_vbox.addWidget(label)
-        xce_object.pandda_calc_map_combobox = QtGui.QComboBox()
+        xce_object.pandda_calc_map_combobox = QtWidgets.QComboBox()
         average_map = ["mean_map", "median_map"]
         layout_functions.populate_combobox(
             average_map, xce_object.pandda_calc_map_combobox
@@ -279,39 +279,39 @@ class PanddaTab:
         )
 
         # minimum number of datasets
-        label = QtGui.QLabel("min_build_datasets")
+        label = QtWidgets.QLabel("min_build_datasets")
         xce_object.pandda_analyse_input_params_vbox.addWidget(label)
-        xce_object.pandda_min_build_dataset_entry = QtGui.QLineEdit()
+        xce_object.pandda_min_build_dataset_entry = QtWidgets.QLineEdit()
         xce_object.pandda_min_build_dataset_entry.setText("40")
         xce_object.pandda_analyse_input_params_vbox.addWidget(
             xce_object.pandda_min_build_dataset_entry
         )
 
         # maximum number of datasets
-        label = QtGui.QLabel("max_new_datasets")
+        label = QtWidgets.QLabel("max_new_datasets")
         xce_object.pandda_analyse_input_params_vbox.addWidget(label)
-        xce_object.pandda_max_new_datasets_entry = QtGui.QLineEdit()
+        xce_object.pandda_max_new_datasets_entry = QtWidgets.QLineEdit()
         xce_object.pandda_max_new_datasets_entry.setText("300")
         xce_object.pandda_analyse_input_params_vbox.addWidget(
             xce_object.pandda_max_new_datasets_entry
         )
 
         # grid spacing
-        label = QtGui.QLabel(
+        label = QtWidgets.QLabel(
             "grid_spacing (default=0.5)\n"
             "Note: higher values speed up calculations, but maps might be less pretty)"
         )
         xce_object.pandda_analyse_input_params_vbox.addWidget(label)
-        xce_object.pandda_grid_spacing_entry = QtGui.QLineEdit()
+        xce_object.pandda_grid_spacing_entry = QtWidgets.QLineEdit()
         xce_object.pandda_grid_spacing_entry.setText("0.5")
         xce_object.pandda_analyse_input_params_vbox.addWidget(
             xce_object.pandda_grid_spacing_entry
         )
 
         # keyword arguments (pandda2)
-        label = QtGui.QLabel("keyword arguments (pandda2 only)")
+        label = QtWidgets.QLabel("keyword arguments (pandda2 only)")
         xce_object.pandda_analyse_input_params_vbox.addWidget(label)
-        xce_object.pandda_keyword_arguments_entry = QtGui.QLineEdit()
+        xce_object.pandda_keyword_arguments_entry = QtWidgets.QLineEdit()
         xce_object.pandda_keyword_arguments_entry.setText("")
         xce_object.pandda_analyse_input_params_vbox.addWidget(
             xce_object.pandda_keyword_arguments_entry
@@ -323,11 +323,11 @@ class PanddaTab:
         frame_pandda.setLayout(grid_pandda)
 
         # these are still currently populated in XCE.py - change
-        xce_object.pandda_map_list = QtGui.QComboBox()
-        xce_object.pandda_maps_html = QtWebKit.QWebView()
+        xce_object.pandda_map_list = QtWidgets.QComboBox()
+        xce_object.pandda_maps_html = QtWebKitWidgets.QWebView()
 
         # statistical map summaries vbox, add to vbox and add to layout
-        xce_object.pandda_map_layout = QtGui.QVBoxLayout()
+        xce_object.pandda_map_layout = QtWidgets.QVBoxLayout()
         pandda_map_layout_widgets = [
             xce_object.pandda_map_list,
             xce_object.pandda_maps_html,
@@ -337,21 +337,21 @@ class PanddaTab:
         )
         xce_object.pandda_maps_html.show()
 
-        xce_object.pandda_analyse_hbox = QtGui.QHBoxLayout()
+        xce_object.pandda_analyse_hbox = QtWidgets.QHBoxLayout()
         xce_object.pandda_analyse_hbox.addWidget(frame_pandda)
 
         # change to do select options
 
         # create context menu... no idea where this lives again.
-        xce_object.popMenu_for_pandda_table = QtGui.QMenu()
-        ignore = QtGui.QAction("ignore selected", xce_object.window)
-        exclude_characterisation = QtGui.QAction(
+        xce_object.popMenu_for_pandda_table = QtWidgets.QMenu()
+        ignore = QtWidgets.QAction("ignore selected", xce_object.window)
+        exclude_characterisation = QtWidgets.QAction(
             "exclude selected from characterisation", xce_object.window
         )
-        exclude_zmap = QtGui.QAction(
+        exclude_zmap = QtWidgets.QAction(
             "exclude selected from z-map analysis", xce_object.window
         )
-        deselect = QtGui.QAction("deselect highlighted", xce_object.window)
+        deselect = QtWidgets.QAction("deselect highlighted", xce_object.window)
         ignore.triggered.connect(
             lambda: xce_object.select_sample_for_pandda(option="ignore")
         )
@@ -378,24 +378,24 @@ class PanddaTab:
         # next three blocks display html documents created by pandda.analyse
         layout_functions.pandda_html(xce_object)
 
-        xce_object.pandda_initial_html = QtWebKit.QWebView()
+        xce_object.pandda_initial_html = QtWebKitWidgets.QWebView()
         xce_object.pandda_initial_html.load(
             QtCore.QUrl(xce_object.pandda_initial_html_file)
         )
         xce_object.pandda_initial_html.show()
 
-        xce_object.pandda_analyse_html = QtWebKit.QWebView()
+        xce_object.pandda_analyse_html = QtWebKitWidgets.QWebView()
         xce_object.pandda_analyse_html.load(
             QtCore.QUrl(xce_object.pandda_analyse_html_file)
         )
         xce_object.pandda_analyse_html.show()
 
-        xce_object.pandda_inspect_html = QtWebKit.QWebView()
+        xce_object.pandda_inspect_html = QtWebKitWidgets.QWebView()
         xce_object.pandda_analyse_html.load(
             QtCore.QUrl(xce_object.pandda_inspect_html_file)
         )
         xce_object.pandda_analyse_html.show()
 
-        xce_object.panddas_results_vbox = QtGui.QVBoxLayout()
+        xce_object.panddas_results_vbox = QtWidgets.QVBoxLayout()
         xce_object.panddas_results_vbox.addWidget(xce_object.pandda_tab_widget)
         xce_object.show_pandda_html_summary()

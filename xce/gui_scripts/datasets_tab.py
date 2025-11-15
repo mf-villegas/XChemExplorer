@@ -1,4 +1,4 @@
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 from xce.gui_scripts import layout_functions
 
@@ -13,13 +13,13 @@ class DatasetsTab:
 
         # main body - things that are always displayed
         # add a container to hold everythting and add to main tab layout
-        xce_object.datasets_data_collection_vbox = QtGui.QVBoxLayout()
+        xce_object.datasets_data_collection_vbox = QtWidgets.QVBoxLayout()
 
         # add a horizontal box to hold option to autocheck for new data
-        xce_object.autocheck_hbox = QtGui.QHBoxLayout()
+        xce_object.autocheck_hbox = QtWidgets.QHBoxLayout()
 
         # checkbox for autocollect
-        xce_object.check_for_new_data_collection = QtGui.QCheckBox(
+        xce_object.check_for_new_data_collection = QtWidgets.QCheckBox(
             "Check for new data collection every two minutes"
         )
         layout_functions.add_checkbox(
@@ -29,9 +29,9 @@ class DatasetsTab:
         )
 
         # select target dropdown
-        select_target_label = QtGui.QLabel("<b>Select Target: </b>")
+        select_target_label = QtWidgets.QLabel("<b>Select Target: </b>")
         select_target_label.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
-        xce_object.target_selection_combobox = QtGui.QComboBox()
+        xce_object.target_selection_combobox = QtWidgets.QComboBox()
         xce_object.populate_target_selection_combobox(
             xce_object.target_selection_combobox
         )
@@ -56,12 +56,12 @@ class DatasetsTab:
 
         # summary sub-tab
         # table
-        xce_object.datasets_summary_table = QtGui.QTableWidget()
+        xce_object.datasets_summary_table = QtWidgets.QTableWidget()
 
         xce_object.datasets_summary_table.resizeRowsToContents()
         xce_object.datasets_summary_table.resizeColumnsToContents()
         xce_object.datasets_summary_table.setSelectionBehavior(
-            QtGui.QAbstractItemView.SelectRows
+            QtWidgets.QAbstractItemView.SelectRows
         )
         xce_object.datasets_summary_table.cellClicked.connect(
             xce_object.show_results_from_all_pipelines

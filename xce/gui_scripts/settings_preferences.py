@@ -1,7 +1,7 @@
 import os
 import subprocess
 import sys
-from PyQt4 import QtCore
+from PyQt5 import QtCore
 from xce.lib import XChemDB, XChemLog, XChemMain, XChemUtils
 
 

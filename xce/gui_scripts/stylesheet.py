@@ -1,6 +1,6 @@
 import os
 
-from PyQt4 import QtGui
+from PyQt5 import QtGui, QtWidgets
 
 
 def set_stylesheet(xce_object):

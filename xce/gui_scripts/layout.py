@@ -1,6 +1,6 @@
 import os
 
-from PyQt4 import QtGui
+from PyQt5 import QtGui, QtWidgets
 
 from xce.gui_scripts.datasets_tab import DatasetsTab
 from xce.gui_scripts.deposition_tab import DepositionTab
@@ -22,7 +22,7 @@ class LayoutObjects:
         ################################################################################
 
         # initiate menu widget
-        menu_bar = QtGui.QMenuBar()
+        menu_bar = QtWidgets.QMenuBar()
 
         # import menu bar dictionary
         setup().top_menu_dict(xce_object)
@@ -307,16 +307,16 @@ class LayoutObjects:
         #                                  STATUS BAR                                  #
         #                                                                              #
         ################################################################################
-        xce_object.status_bar = QtGui.QStatusBar()
-        xce_object.progress_bar = QtGui.QProgressBar()
+        xce_object.status_bar = QtWidgets.QStatusBar()
+        xce_object.progress_bar = QtWidgets.QProgressBar()
         xce_object.progress_bar.setMaximum(100)
         xce_object.status_bar.setMaximumWidth(xce_object.screen.width())
         xce_object.progress_bar.setMaximumWidth(xce_object.screen.width())
-        hbox_status = QtGui.QHBoxLayout()
+        hbox_status = QtWidgets.QHBoxLayout()
         hbox_status.addWidget(xce_object.status_bar)
         hbox_status.addWidget(xce_object.progress_bar)
 
-        vbox_main = QtGui.QVBoxLayout()
+        vbox_main = QtWidgets.QVBoxLayout()
         menu_bar.setMaximumWidth(xce_object.screen.width())
         vbox_main.addWidget(menu_bar)
         xce_object.main_tab_widget.setMaximumSize(
@@ -324,7 +324,7 @@ class LayoutObjects:
         )
         vbox_main.addWidget(xce_object.main_tab_widget)
 
-        hboxTaskFrames = QtGui.QHBoxLayout()
+        hboxTaskFrames = QtWidgets.QHBoxLayout()
 
         hboxTaskFrames.addWidget(update_from_datasource_button)
         hboxTaskFrames.addWidget(frame_dataset_task)
@@ -378,7 +378,7 @@ class LayoutObjects:
         xce_object.workflow_widget_dict = {}
 
         # tab widget
-        xce_object.main_tab_widget = QtGui.QTabWidget()
+        xce_object.main_tab_widget = QtWidgets.QTabWidget()
         xce_object.tab_dict = {}
         layout_functions.make_tab_dict(
             xce_object.workflow, xce_object.main_tab_widget, xce_object.tab_dict

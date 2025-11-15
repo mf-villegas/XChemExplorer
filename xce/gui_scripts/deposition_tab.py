@@ -1,4 +1,4 @@
-from PyQt4 import QtGui
+from PyQt5 import QtGui, QtWidgets
 
 from xce.gui_scripts import layout_functions
 
@@ -12,12 +12,12 @@ class DepositionTab:
         #                                DEPOSITION TAB                                #
         #                                                                              #
         ################################################################################
-        xce_object.deposition_vbox = QtGui.QVBoxLayout()
+        xce_object.deposition_vbox = QtWidgets.QVBoxLayout()
 
-        scroll = QtGui.QScrollArea()
+        scroll = QtWidgets.QScrollArea()
         xce_object.deposition_vbox.addWidget(scroll)
-        scrollContent = QtGui.QWidget(scroll)
-        scrollLayout = QtGui.QVBoxLayout(scrollContent)
+        scrollContent = QtWidgets.QWidget(scroll)
+        scrollLayout = QtWidgets.QVBoxLayout(scrollContent)
         scrollContent.setLayout(scrollLayout)
 
         # deposition page heading
@@ -26,10 +26,10 @@ class DepositionTab:
         )
         deposition_page_heading.setStyleSheet("font: bold 40pt Arial")
 
-        deposition_page_introduction = QtGui.QLabel(
+        deposition_page_introduction = QtWidgets.QLabel(
             XChemToolTips.deposition_introduction()
         )
-        deposition_page_introduction_link = QtGui.QLabel(
+        deposition_page_introduction_link = QtWidgets.QLabel(
             XChemToolTips.deposition_introduction_link()
         )
         deposition_page_introduction_link.setOpenExternalLinks(True)
@@ -66,12 +66,12 @@ class DepositionTab:
         )
 
         xce_object.deposition_bounnd_state_preparation_ignore_event_map = (
-            QtGui.QCheckBox(
+            QtWidgets.QCheckBox(
                 XChemToolTips.deposition_bounnd_state_preparation_ignore_event_map()
             )
         )
 
-        prepare_mmcif_button = QtGui.QPushButton("prepare mmcif")
+        prepare_mmcif_button = QtWidgets.QPushButton("prepare mmcif")
         prepare_mmcif_button.clicked.connect(
             xce_object.prepare_models_for_deposition_ligand_bound
         )
@@ -83,7 +83,7 @@ class DepositionTab:
             )
         )
 
-        copy_mmcif_button = QtGui.QPushButton("copy mmcif")
+        copy_mmcif_button = QtWidgets.QPushButton("copy mmcif")
         copy_mmcif_button.clicked.connect(
             xce_object.prepare_for_group_deposition_upload_ligand_bound
         )
@@ -93,12 +93,12 @@ class DepositionTab:
             XChemToolTips.pdb_group_deposition_instruction_one()
         )
 
-        pdb_group_deposition_link = QtGui.QLabel(
+        pdb_group_deposition_link = QtWidgets.QLabel(
             XChemToolTips.pdb_group_deposition_link()
         )
         pdb_group_deposition_link.setOpenExternalLinks(True)
 
-        pdb_group_deposition_link_two = QtGui.QLabel(
+        pdb_group_deposition_link_two = QtWidgets.QLabel(
             XChemToolTips.pdb_group_deposition_link()
         )
         pdb_group_deposition_link_two.setOpenExternalLinks(True)
@@ -146,7 +146,7 @@ class DepositionTab:
                 XChemToolTips.deposition_ground_state_preparation_step_three_text()
             )
         )
-        xce_object.ground_state_pandda_directory_label = QtGui.QLabel(
+        xce_object.ground_state_pandda_directory_label = QtWidgets.QLabel(
             xce_object.panddas_directory
         )
         xce_object.ground_state_pandda_directory_label.setStyleSheet("color: blue")
@@ -157,7 +157,7 @@ class DepositionTab:
             )
         )
 
-        add_ground_state_db_button = QtGui.QPushButton("Add to database")
+        add_ground_state_db_button = QtWidgets.QPushButton("Add to database")
         add_ground_state_db_button.clicked.connect(xce_object.add_ground_state_db)
         add_ground_state_db_button.setMaximumWidth(200)
 
@@ -173,7 +173,7 @@ class DepositionTab:
             )
         )
 
-        prepare_ground_state_mmcif_button = QtGui.QPushButton("Prepare mmcif")
+        prepare_ground_state_mmcif_button = QtWidgets.QPushButton("Prepare mmcif")
         prepare_ground_state_mmcif_button.clicked.connect(
             xce_object.prepare_ground_state_mmcif
         )
@@ -185,7 +185,7 @@ class DepositionTab:
             )
         )
 
-        copy_apo_mmcif_button = QtGui.QPushButton("copy mmcif")
+        copy_apo_mmcif_button = QtWidgets.QPushButton("copy mmcif")
         copy_apo_mmcif_button.clicked.connect(
             xce_object.prepare_for_group_deposition_upload_ground_state
         )
@@ -213,15 +213,15 @@ class DepositionTab:
 
         deposition_widget_list = [
             deposition_page_heading,
-            QtGui.QLabel(" \n "),
+            QtWidgets.QLabel(" \n "),
             deposition_page_introduction,
             deposition_page_introduction_link,
-            QtGui.QLabel(" \n "),
+            QtWidgets.QLabel(" \n "),
             deposition_bound_state_heading,
-            QtGui.QLabel(" \n "),
+            QtWidgets.QLabel(" \n "),
             deposition_bound_state_prerequisites,
             deposition_bound_state_prerequisites_text,
-            QtGui.QLabel(" \n "),
+            QtWidgets.QLabel(" \n "),
             deposition_bound_state_preparation,
             deposition_bound_state_preparation_step_one_text,
             xce_object.deposition_bounnd_state_preparation_ignore_event_map,
@@ -231,19 +231,19 @@ class DepositionTab:
             pdb_group_deposition_instruction_one,
             pdb_group_deposition_link,
             pdb_group_deposition_instruction_two_two,
-            QtGui.QLabel(" \n\n\n "),
+            QtWidgets.QLabel(" \n\n\n "),
             after_deposition_heading,
-            QtGui.QLabel(" \n "),
+            QtWidgets.QLabel(" \n "),
             after_deposition_preparation,
             after_deposition_preparation_text,
-            QtGui.QLabel(" \n\n\n "),
+            QtWidgets.QLabel(" \n\n\n "),
             deposition_ground_state_heading,
-            QtGui.QLabel(" \n "),
+            QtWidgets.QLabel(" \n "),
             deposition_ground_state_preparation_step_one_text,
-            QtGui.QLabel(" \n "),
+            QtWidgets.QLabel(" \n "),
             deposition_ground_state_prerequisites,
             deposition_ground_state_prerequisites_text,
-            QtGui.QLabel(" \n "),
+            QtWidgets.QLabel(" \n "),
             deposition_ground_state_preparation,
             deposition_ground_state_preparation_step_three_text,
             xce_object.ground_state_pandda_directory_label,
@@ -257,7 +257,7 @@ class DepositionTab:
             deposition_ground_state_preparation_step_eight_text,
             pdb_group_deposition_link_two,
             pdb_group_deposition_instruction_two,
-            QtGui.QLabel(" \n\n\n "),
+            QtWidgets.QLabel(" \n\n\n "),
         ]
 
         layout_functions.add_to_box(scrollLayout, deposition_widget_list)

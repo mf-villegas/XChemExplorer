@@ -1,4 +1,4 @@
-from PyQt4 import QtGui
+from PyQt5 import QtGui, QtWidgets
 
 from xce.gui_scripts import layout_functions
 
@@ -10,10 +10,10 @@ class RefinementTab:
         #                                REFINEMENT TAB                                #
         #                                                                              #
         ################################################################################
-        xce_object.summary_vbox_for_table = QtGui.QVBoxLayout()
+        xce_object.summary_vbox_for_table = QtWidgets.QVBoxLayout()
 
         # table
-        xce_object.refinement_table = QtGui.QTableWidget()
+        xce_object.refinement_table = QtWidgets.QTableWidget()
         layout_functions.table_setup(
             xce_object.refinement_table, xce_object.refinement_table_columns
         )

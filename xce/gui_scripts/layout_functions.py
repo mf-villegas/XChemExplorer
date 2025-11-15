@@ -1,12 +1,12 @@
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 import os
 from xce.lib import XChemToolTips  # noqa: F401
 
 
 def make_tab_dict(tab_list, tab_widget, tab_dict):
     for page in tab_list:
-        tab = QtGui.QWidget()
-        vbox = QtGui.QVBoxLayout(tab)
+        tab = QtWidgets.QWidget()
+        vbox = QtWidgets.QVBoxLayout(tab)
         tab_widget.addTab(tab, page)
         tab_dict[page] = [tab, vbox]
 
@@ -63,7 +63,7 @@ def setup_push_button(xce_object, button_dict):
     # use iterkeys to determine order of key by letter
     for name in sorted(button_dict.keys()):
         # add current item to menu bar
-        button = eval('QtGui.QPushButton("' + str(button_dict[name][0]) + '")')
+        button = eval('QtWidgets.QPushButton("' + str(button_dict[name][0]) + '")')
         # for each configuration item
         for button_config in button_dict[name][1]:
             eval(str("button.setToolTip(" + str(button_config[0]) + ")"))
@@ -79,16 +79,16 @@ def setup_push_button(xce_object, button_dict):
 def bottom_box_setup(
     xce_object, label, dropdown_options, dropdown_tooltip, buttons, colour
 ):
-    frame = QtGui.QFrame()
-    frame.setFrameShape(QtGui.QFrame.StyledPanel)
+    frame = QtWidgets.QFrame()
+    frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
     frame.setStyleSheet(
         "QFrame {  "
         "border-radius: 1px; padding: 0px; margin: 0px;"
         " background-color: rgb(255, 255, 255); }"
     )
 
-    vbox = QtGui.QVBoxLayout()
-    label = QtGui.QLabel(label)
+    vbox = QtWidgets.QVBoxLayout()
+    label = QtWidgets.QLabel(label)
     label.setAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
     label.setStyleSheet(
         str(
@@ -99,15 +99,15 @@ def bottom_box_setup(
     )
     vbox.addWidget(label)
 
-    hboxAction = QtGui.QHBoxLayout()
-    combobox = QtGui.QComboBox()
+    hboxAction = QtWidgets.QHBoxLayout()
+    combobox = QtWidgets.QComboBox()
     for task in dropdown_options:
         combobox.addItem(task)
     eval("combobox.setToolTip(" + str(dropdown_tooltip) + ")")
     combobox.setStyleSheet(" QComboBox { padding: 1px; margin: 1px }")
     hboxAction.addWidget(combobox)
 
-    vboxButton = QtGui.QVBoxLayout()
+    vboxButton = QtWidgets.QVBoxLayout()
     for button in buttons:
         vboxButton.addWidget(button)
     hboxAction.addLayout(vboxButton)
@@ -130,7 +130,7 @@ def setup_menubar(xce_object, menu_bar, menu_items_dict):
         for menu_item in menu_items_dict[config][1]:
             # add the drop down option
             action = eval(
-                str('QtGui.QAction("' + str(menu_item[0]) + '", xce_object.window)')
+                str('QtWidgets.QAction("' + str(menu_item[0]) + '", xce_object.window)')
             )
             # add a shortcut if defined
             if len(menu_item[1]) > 1:
@@ -157,33 +157,33 @@ def populate_combobox(combobox_list, combobox):
 
 
 def add_depo_heading(heading_text):
-    heading = QtGui.QLabel(str(heading_text))
+    heading = QtWidgets.QLabel(str(heading_text))
     heading.setStyleSheet("font: bold 20pt Arial")
 
     return heading
 
 
 def add_depo_text(text):
-    out_text = QtGui.QLabel(text)
+    out_text = QtWidgets.QLabel(text)
     out_text.setStyleSheet("font: 17pt Arial")
 
     return out_text
 
 
 def settings_section_setup(vbox, label_text, directory, button_text, button_function):
-    vbox.addWidget(QtGui.QLabel(label_text))
+    vbox.addWidget(QtWidgets.QLabel(label_text))
 
-    hbox = QtGui.QHBoxLayout()
-    directory_label = QtGui.QLabel(directory)
+    hbox = QtWidgets.QHBoxLayout()
+    directory_label = QtWidgets.QLabel(directory)
     hbox.addWidget(directory_label)
-    button = QtGui.QPushButton(button_text)
+    button = QtWidgets.QPushButton(button_text)
     button.setMaximumWidth(500)
     button.clicked.connect(button_function)
     hbox.addWidget(button)
 
     vbox.addLayout(hbox)
-    vbox.addWidget(QtGui.QLabel(" "))
-    vbox.addWidget(QtGui.QLabel(" "))
+    vbox.addWidget(QtWidgets.QLabel(" "))
+    vbox.addWidget(QtWidgets.QLabel(" "))
 
     return directory_label
 

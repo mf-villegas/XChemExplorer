@@ -6,7 +6,7 @@ import pickle
 import sys
 from datetime import datetime
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 from xce.gui_scripts import layout, layout_functions, stylesheet
 from xce.lib import (
@@ -24,10 +24,10 @@ from xce.lib.cluster.slurm import get_token, fetch_password_qt
 from xce.web import XChemWeb
 
 
-class XChemExplorer(QtGui.QApplication):
+class XChemExplorer(QtWidgets.QApplication):
     def __init__(self, args):
         # init a QApplication object to hold XCE
-        QtGui.QApplication.__init__(self, args)
+        QtWidgets.QApplication.__init__(self, args)
 
         # start GUI
         self.start_GUI()
@@ -47,9 +47,9 @@ class XChemExplorer(QtGui.QApplication):
         layout.setup().tables(self)
 
         # GUI setup
-        self.window = QtGui.QWidget()
+        self.window = QtWidgets.QWidget()
         self.window.setWindowTitle("XChemExplorer")
-        self.screen = QtGui.QDesktopWidget().screenGeometry()
+        self.screen = QtWidgets.QDesktopWidget().screenGeometry()
 
         layout.LayoutObjects().workflow(self)
         layout.LayoutObjects().main_layout(self)
@@ -67,9 +67,9 @@ class XChemExplorer(QtGui.QApplication):
         )
 
     def checkLabXChemDir(self):
-        dirCheck = QtGui.QMessageBox()
+        dirCheck = QtWidgets.QMessageBox()
         dirCheckLayout = dirCheck.layout()
-        vbox = QtGui.QVBoxLayout()
+        vbox = QtWidgets.QVBoxLayout()
         try:
             warning = (
                 "Are you sure you want to launch XCE here:\n\n"
@@ -79,7 +79,7 @@ class XChemExplorer(QtGui.QApplication):
             )
         except AttributeError:
             return
-        vbox.addWidget(QtGui.QLabel(warning))
+        vbox.addWidget(QtWidgets.QLabel(warning))
         dirCheckLayout.addLayout(vbox, 0, 0)
         dirCheck.exec_()
 
@@ -101,7 +101,7 @@ class XChemExplorer(QtGui.QApplication):
     # function to create new datasource
     def create_new_data_source(self):
         file_name = str(
-            QtGui.QFileDialog.getSaveFileName(
+            QtWidgets.QFileDialog.getSaveFileName(
                 self.window, "Save file", self.database_directory
             )
         )
@@ -149,14 +149,14 @@ class XChemExplorer(QtGui.QApplication):
         start_thread = False
         if rescore_only:
             # first pop up a warning message as this will overwrite all user selections
-            msgBox = QtGui.QMessageBox()
+            msgBox = QtWidgets.QMessageBox()
             msgBox.setText(
                 "*** WARNING ***\n"
                 "This will overwrite all your manual selections!\n"
                 "Do you want to continue?"
             )
-            msgBox.addButton(QtGui.QPushButton("Yes"), QtGui.QMessageBox.YesRole)
-            msgBox.addButton(QtGui.QPushButton("No"), QtGui.QMessageBox.RejectRole)
+            msgBox.addButton(QtWidgets.QPushButton("Yes"), QtWidgets.QMessageBox.YesRole)
+            msgBox.addButton(QtWidgets.QPushButton("No"), QtWidgets.QMessageBox.RejectRole)
             reply = msgBox.exec_()
             if reply == 0:
                 start_thread = True
@@ -167,7 +167,7 @@ class XChemExplorer(QtGui.QApplication):
 
         if start_thread:
             if self.target == "=== SELECT TARGET ===":
-                msgBox = QtGui.QMessageBox()
+                msgBox = QtWidgets.QMessageBox()
                 warning = (
                     "*** WARNING ***\n"
                     "Please select a target or\n"
@@ -311,14 +311,14 @@ class XChemExplorer(QtGui.QApplication):
     def select_best_autoprocessing_result(self):
         if self.rescore:
             # first pop up a warning message as this will overwrite all user selections
-            msgBox = QtGui.QMessageBox()
+            msgBox = QtWidgets.QMessageBox()
             msgBox.setText(
                 "*** WARNING ***\n"
                 "This will overwrite all your manual selections!\n"
                 "Do you want to continue?"
             )
-            msgBox.addButton(QtGui.QPushButton("Yes"), QtGui.QMessageBox.YesRole)
-            msgBox.addButton(QtGui.QPushButton("No"), QtGui.QMessageBox.RejectRole)
+            msgBox.addButton(QtWidgets.QPushButton("Yes"), QtWidgets.QMessageBox.YesRole)
+            msgBox.addButton(QtWidgets.QPushButton("No"), QtWidgets.QMessageBox.RejectRole)
             reply = msgBox.exec_()
             if reply != 0:
                 start_thread = False
@@ -459,7 +459,7 @@ class XChemExplorer(QtGui.QApplication):
     ####################################################################################
     def select_pandda_input_template(self):
         mtzin = ""
-        filepath_temp = QtGui.QFileDialog.getOpenFileNameAndFilter(
+        filepath_temp = QtWidgets.QFileDialog.getOpenFileNameAndFilter(
             self.window,
             "Select Example PDB or MTZ File",
             self.initial_model_directory,
@@ -629,14 +629,14 @@ class XChemExplorer(QtGui.QApplication):
     def settings_button_clicked(self):
         if self.sender().text() == "Select Project Directory":
             self.initial_model_directory = str(
-                QtGui.QFileDialog.getExistingDirectory(self.window, "Select Directory")
+                QtWidgets.QFileDialog.getExistingDirectory(self.window, "Select Directory")
             )
             self.initial_model_directory_label.setText(self.initial_model_directory)
             self.pandda_input_data_dir_entry.setText(self.initial_model_directory)
             self.settings["initial_model_directory"] = self.initial_model_directory
         if self.sender().text() == "Select Reference Structure Directory":
             reference_directory_temp = str(
-                QtGui.QFileDialog.getExistingDirectory(self.window, "Select Directory")
+                QtWidgets.QFileDialog.getExistingDirectory(self.window, "Select Directory")
             )
             if reference_directory_temp != self.reference_directory:
                 self.reference_directory = reference_directory_temp
@@ -644,7 +644,7 @@ class XChemExplorer(QtGui.QApplication):
             self.reference_directory_label.setText(self.reference_directory)
             self.settings["reference_directory"] = self.reference_directory
         if self.sender().text() == "Select Data Source File":
-            filepath_temp = QtGui.QFileDialog.getOpenFileNameAndFilter(
+            filepath_temp = QtWidgets.QFileDialog.getOpenFileNameAndFilter(
                 self.window, "Select File", self.database_directory, "*.sqlite"
             )
             filepath = str(tuple(filepath_temp)[0])
@@ -669,7 +669,7 @@ class XChemExplorer(QtGui.QApplication):
                 self.datasource_menu_reload_samples()
         if self.sender().text() == "Select Data Collection Directory":
             dir_name = str(
-                QtGui.QFileDialog.getExistingDirectory(self.window, "Select Directory")
+                QtWidgets.QFileDialog.getExistingDirectory(self.window, "Select Directory")
             )
             if dir_name != self.beamline_directory:
                 self.beamline_directory = dir_name
@@ -682,14 +682,14 @@ class XChemExplorer(QtGui.QApplication):
 
         if self.sender().text() == "Select Existing\nCollection Summary File":
             if self.datasets_summary_file != "":
-                filepath_temp = QtGui.QFileDialog.getOpenFileNameAndFilter(
+                filepath_temp = QtWidgets.QFileDialog.getOpenFileNameAndFilter(
                     self.window,
                     "Select File",
                     self.datasets_summary_file[: self.datasets_summary_file.rfind("/")],
                     "*.pkl",
                 )
             else:
-                filepath_temp = QtGui.QFileDialog.getOpenFileNameAndFilter(
+                filepath_temp = QtWidgets.QFileDialog.getOpenFileNameAndFilter(
                     self.window, "Select File", os.getcwd(), "*.pkl"
                 )
             filepath = str(tuple(filepath_temp)[0])
@@ -700,7 +700,7 @@ class XChemExplorer(QtGui.QApplication):
         if self.sender().text() == "Assign New\nCollection Summary File":
             if self.datasets_summary_file != "":
                 file_name = str(
-                    QtGui.QFileDialog.getSaveFileName(
+                    QtWidgets.QFileDialog.getSaveFileName(
                         self.window,
                         "New file",
                         self.datasets_summary_file[
@@ -710,7 +710,7 @@ class XChemExplorer(QtGui.QApplication):
                 )
             else:
                 file_name = str(
-                    QtGui.QFileDialog.getSaveFileName(
+                    QtWidgets.QFileDialog.getSaveFileName(
                         self.window, "New file", self.current_directory
                     )
                 )
@@ -725,13 +725,13 @@ class XChemExplorer(QtGui.QApplication):
 
         if self.sender().text() == "Select CCP4_SCR Directory":
             self.ccp4_scratch_directory = str(
-                QtGui.QFileDialog.getExistingDirectory(self.window, "Select Directory")
+                QtWidgets.QFileDialog.getExistingDirectory(self.window, "Select Directory")
             )
             self.ccp4_scratch_directory_label.setText(self.ccp4_scratch_directory)
             self.settings["ccp4_scratch"] = self.ccp4_scratch_directory
         if self.sender().text() == "Select PanDDA Directory":
             self.panddas_directory = str(
-                QtGui.QFileDialog.getExistingDirectory(self.window, "Select Directory")
+                QtWidgets.QFileDialog.getExistingDirectory(self.window, "Select Directory")
             )
             self.panddas_directory_label.setText(self.panddas_directory)
             self.pandda_output_data_dir_entry.setText(self.panddas_directory)
@@ -743,14 +743,14 @@ class XChemExplorer(QtGui.QApplication):
 
         if self.sender().text() == "Select HTML Export Directory":
             self.html_export_directory = str(
-                QtGui.QFileDialog.getExistingDirectory(self.window, "Select Directory")
+                QtWidgets.QFileDialog.getExistingDirectory(self.window, "Select Directory")
             )
             self.html_export_directory_label.setText(self.html_export_directory)
             self.settings["html_export_directory"] = self.html_export_directory
 
         if self.sender().text() == "Select Group deposition Directory":
             self.group_deposit_directory = str(
-                QtGui.QFileDialog.getExistingDirectory(self.window, "Select Directory")
+                QtWidgets.QFileDialog.getExistingDirectory(self.window, "Select Directory")
             )
             self.group_deposition_directory_label.setText(self.group_deposit_directory)
             self.settings["group_deposit_directory"] = self.group_deposit_directory
@@ -773,28 +773,28 @@ class XChemExplorer(QtGui.QApplication):
             self.overview_canvas.draw()
 
     def show_preferences(self):
-        preferences = QtGui.QMessageBox()
+        preferences = QtWidgets.QMessageBox()
         preferencesLayout = preferences.layout()
 
-        vbox = QtGui.QVBoxLayout()
-        settings_hbox_filename_root = QtGui.QHBoxLayout()
-        filename_root_label = QtGui.QLabel("filename root:")
+        vbox = QtWidgets.QVBoxLayout()
+        settings_hbox_filename_root = QtWidgets.QHBoxLayout()
+        filename_root_label = QtWidgets.QLabel("filename root:")
         settings_hbox_filename_root.addWidget(filename_root_label)
-        filename_root_input = QtGui.QLineEdit()
+        filename_root_input = QtWidgets.QLineEdit()
         filename_root_input.setFixedWidth(400)
         filename_root_input.setText(str(self.filename_root))
         filename_root_input.textChanged[str].connect(self.change_filename_root)
         settings_hbox_filename_root.addWidget(filename_root_input)
         vbox.addLayout(settings_hbox_filename_root)
 
-        settings_hbox_adjust_allowed_unit_cell_difference = QtGui.QHBoxLayout()
-        adjust_allowed_unit_cell_difference_label = QtGui.QLabel(
+        settings_hbox_adjust_allowed_unit_cell_difference = QtWidgets.QHBoxLayout()
+        adjust_allowed_unit_cell_difference_label = QtWidgets.QLabel(
             "Max. Allowed Unit Cell Difference between Reference and Target (%):"
         )
         settings_hbox_adjust_allowed_unit_cell_difference.addWidget(
             adjust_allowed_unit_cell_difference_label
         )
-        adjust_allowed_unit_cell_difference = QtGui.QLineEdit()
+        adjust_allowed_unit_cell_difference = QtWidgets.QLineEdit()
         adjust_allowed_unit_cell_difference.setFixedWidth(200)
         adjust_allowed_unit_cell_difference.setText(
             str(self.allowed_unitcell_difference_percent)
@@ -807,14 +807,14 @@ class XChemExplorer(QtGui.QApplication):
         )
         vbox.addLayout(settings_hbox_adjust_allowed_unit_cell_difference)
 
-        settings_hbox_acceptable_low_resolution_limit = QtGui.QHBoxLayout()
-        adjust_acceptable_low_resolution_limit_label = QtGui.QLabel(
+        settings_hbox_acceptable_low_resolution_limit = QtWidgets.QHBoxLayout()
+        adjust_acceptable_low_resolution_limit_label = QtWidgets.QLabel(
             "Acceptable low resolution limit for datasets (in Angstrom):"
         )
         settings_hbox_acceptable_low_resolution_limit.addWidget(
             adjust_acceptable_low_resolution_limit_label
         )
-        adjust_acceptable_low_resolution_limit = QtGui.QLineEdit()
+        adjust_acceptable_low_resolution_limit = QtWidgets.QLineEdit()
         adjust_acceptable_low_resolution_limit.setFixedWidth(200)
         adjust_acceptable_low_resolution_limit.setText(
             str(self.acceptable_low_resolution_limit_for_data)
@@ -827,14 +827,14 @@ class XChemExplorer(QtGui.QApplication):
         )
         vbox.addLayout(settings_hbox_acceptable_low_resolution_limit)
 
-        vbox_data = QtGui.QVBoxLayout()
+        vbox_data = QtWidgets.QVBoxLayout()
         vbox_data.addWidget(
-            QtGui.QLabel(
+            QtWidgets.QLabel(
                 "Select amount of processed data you wish to copy to initial_model"
                 " directory:"
             )
         )
-        self.preferences_data_to_copy_combobox = QtGui.QComboBox()
+        self.preferences_data_to_copy_combobox = QtWidgets.QComboBox()
         for item in self.preferences_data_to_copy:
             self.preferences_data_to_copy_combobox.addItem(item[0])
         self.preferences_data_to_copy_combobox.currentIndexChanged.connect(
@@ -843,9 +843,9 @@ class XChemExplorer(QtGui.QApplication):
         vbox_data.addWidget(self.preferences_data_to_copy_combobox)
         vbox.addLayout(vbox_data)
 
-        vbox_select = QtGui.QVBoxLayout()
-        vbox_select.addWidget(QtGui.QLabel("Dataset Selection Mechanism:"))
-        self.preferences_selection_mechanism_combobox = QtGui.QComboBox()
+        vbox_select = QtWidgets.QVBoxLayout()
+        vbox_select.addWidget(QtWidgets.QLabel("Dataset Selection Mechanism:"))
+        self.preferences_selection_mechanism_combobox = QtWidgets.QComboBox()
         for item in self.preferences_selection_mechanism:
             self.preferences_selection_mechanism_combobox.addItem(item)
         self.preferences_selection_mechanism_combobox.currentIndexChanged.connect(
@@ -858,9 +858,9 @@ class XChemExplorer(QtGui.QApplication):
         vbox_select.addWidget(self.preferences_selection_mechanism_combobox)
         vbox.addLayout(vbox_select)
 
-        vbox_restraints = QtGui.QVBoxLayout()
-        vbox_restraints.addWidget(QtGui.QLabel("Restraints generation program:"))
-        self.preferences_restraints_generation_combobox = QtGui.QComboBox()
+        vbox_restraints = QtWidgets.QVBoxLayout()
+        vbox_restraints.addWidget(QtWidgets.QLabel("Restraints generation program:"))
+        self.preferences_restraints_generation_combobox = QtWidgets.QComboBox()
         program_list = []
 
         if self.external_software["acedrg"]:
@@ -883,29 +883,29 @@ class XChemExplorer(QtGui.QApplication):
         vbox_restraints.addWidget(self.preferences_restraints_generation_combobox)
         vbox.addLayout(vbox_restraints)
 
-        hbox = QtGui.QHBoxLayout()
-        hbox.addWidget(QtGui.QLabel("XCE logfile:"))
-        self.xce_logfile_label = QtGui.QLabel(self.xce_logfile)
+        hbox = QtWidgets.QHBoxLayout()
+        hbox.addWidget(QtWidgets.QLabel("XCE logfile:"))
+        self.xce_logfile_label = QtWidgets.QLabel(self.xce_logfile)
         hbox.addWidget(self.xce_logfile_label)
-        button = QtGui.QPushButton("Change")
+        button = QtWidgets.QPushButton("Change")
         button.clicked.connect(self.set_xce_logfile)
         hbox.addWidget(button)
         vbox.addLayout(hbox)
 
-        settings_hbox_max_queue_jobs = QtGui.QHBoxLayout()
-        adjust_max_queue_jobs_label = QtGui.QLabel(
+        settings_hbox_max_queue_jobs = QtWidgets.QHBoxLayout()
+        adjust_max_queue_jobs_label = QtWidgets.QLabel(
             "Max. number of jobs running at once on DLS cluster:"
         )
         settings_hbox_max_queue_jobs.addWidget(adjust_max_queue_jobs_label)
-        adjust_max_queue_jobs = QtGui.QLineEdit()
+        adjust_max_queue_jobs = QtWidgets.QLineEdit()
         adjust_max_queue_jobs.setFixedWidth(200)
         adjust_max_queue_jobs.setText(str(self.max_queue_jobs))
         adjust_max_queue_jobs.textChanged[str].connect(self.change_max_queue_jobs)
         settings_hbox_max_queue_jobs.addWidget(adjust_max_queue_jobs)
         vbox.addLayout(settings_hbox_max_queue_jobs)
 
-        settings_hbox_dimple_twin_mode = QtGui.QHBoxLayout()
-        self.dimple_twin_mode_label_checkbox = QtGui.QCheckBox(
+        settings_hbox_dimple_twin_mode = QtWidgets.QHBoxLayout()
+        self.dimple_twin_mode_label_checkbox = QtWidgets.QCheckBox(
             "run DIMPLE in TWIN mode"
         )
         if self.preferences["dimple_twin_mode"]:
@@ -916,11 +916,11 @@ class XChemExplorer(QtGui.QApplication):
         settings_hbox_dimple_twin_mode.addWidget(self.dimple_twin_mode_label_checkbox)
         vbox.addLayout(settings_hbox_dimple_twin_mode)
 
-        hbox = QtGui.QHBoxLayout()
-        hbox.addWidget(QtGui.QLabel("Additional CIF file for non-standard ligand:"))
-        self.second_cif_file_label = QtGui.QLabel(self.second_cif_file)
+        hbox = QtWidgets.QHBoxLayout()
+        hbox.addWidget(QtWidgets.QLabel("Additional CIF file for non-standard ligand:"))
+        self.second_cif_file_label = QtWidgets.QLabel(self.second_cif_file)
         hbox.addWidget(self.second_cif_file_label)
-        button = QtGui.QPushButton("Select")
+        button = QtWidgets.QPushButton("Select")
         button.clicked.connect(self.set_second_cif_file)
         hbox.addWidget(button)
         vbox.addLayout(hbox)
@@ -940,18 +940,18 @@ class XChemExplorer(QtGui.QApplication):
             self.preferences["dimple_twin_mode"] = True
 
     def enter_pdb_codes(self):
-        pdbID_entry = QtGui.QMessageBox()
+        pdbID_entry = QtWidgets.QMessageBox()
         pdbID_entryLayout = pdbID_entry.layout()
 
-        vbox = QtGui.QVBoxLayout()
+        vbox = QtWidgets.QVBoxLayout()
 
-        frame = QtGui.QFrame()
-        frame.setFrameShape(QtGui.QFrame.StyledPanel)
+        frame = QtWidgets.QFrame()
+        frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
 
-        grid = QtGui.QGridLayout()
+        grid = QtWidgets.QGridLayout()
 
-        grid.addWidget(QtGui.QLabel("Text from PDB email"), 0, 0)
-        self.pdb_code_entry = QtGui.QTextEdit()
+        grid.addWidget(QtWidgets.QLabel("Text from PDB email"), 0, 0)
+        self.pdb_code_entry = QtWidgets.QTextEdit()
         self.pdb_code_entry.setText("")
         self.pdb_code_entry.setFixedWidth(500)
         grid.addWidget(self.pdb_code_entry, 1, 0, 20, 1)
@@ -959,8 +959,8 @@ class XChemExplorer(QtGui.QApplication):
         frame.setLayout(grid)
         vbox.addWidget(frame)
 
-        hbox = QtGui.QHBoxLayout()
-        button = QtGui.QPushButton("Update Database")
+        hbox = QtWidgets.QHBoxLayout()
+        button = QtWidgets.QPushButton("Update Database")
         button.clicked.connect(self.update_database_with_pdb_codes)
         hbox.addWidget(button)
 
@@ -969,7 +969,7 @@ class XChemExplorer(QtGui.QApplication):
         pdbID_entry.exec_()
 
     def add_label_information(self):
-        label_entry = QtGui.QMessageBox()
+        label_entry = QtWidgets.QMessageBox()
         label_entryLayout = label_entry.layout()
 
         try:
@@ -978,19 +978,19 @@ class XChemExplorer(QtGui.QApplication):
             self.update_log.warning("please specify DB file first")
             return None
 
-        vbox = QtGui.QVBoxLayout()
+        vbox = QtWidgets.QVBoxLayout()
 
-        frame = QtGui.QFrame()
-        frame.setFrameShape(QtGui.QFrame.StyledPanel)
+        frame = QtWidgets.QFrame()
+        frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
 
-        grid = QtGui.QGridLayout()
-        grid.addWidget(QtGui.QLabel("label"), 0, 0)
-        grid.addWidget(QtGui.QLabel("description"), 0, 1)
+        grid = QtWidgets.QGridLayout()
+        grid.addWidget(QtWidgets.QLabel("label"), 0, 0)
+        grid.addWidget(QtWidgets.QLabel("description"), 0, 1)
 
         self.labelList = []
         for i in range(5):
-            labelEdit = QtGui.QLineEdit()
-            descriptionEdit = QtGui.QLineEdit()
+            labelEdit = QtWidgets.QLineEdit()
+            descriptionEdit = QtWidgets.QLineEdit()
             grid.addWidget(labelEdit, i + 1, 0)
             grid.addWidget(descriptionEdit, i + 1, 1)
             try:
@@ -1005,8 +1005,8 @@ class XChemExplorer(QtGui.QApplication):
         frame.setLayout(grid)
         vbox.addWidget(frame)
 
-        hbox = QtGui.QHBoxLayout()
-        button = QtGui.QPushButton("Update Database")
+        hbox = QtWidgets.QHBoxLayout()
+        button = QtWidgets.QPushButton("Update Database")
         button.clicked.connect(self.update_database_with_labelInfo)
         hbox.addWidget(button)
 
@@ -1151,12 +1151,12 @@ class XChemExplorer(QtGui.QApplication):
         self.work_thread.start()
 
     def deposition_data(self):
-        depositData = QtGui.QMessageBox()
+        depositData = QtWidgets.QMessageBox()
         depositDataLayout = depositData.layout()
 
-        vbox = QtGui.QVBoxLayout()
+        vbox = QtWidgets.QVBoxLayout()
 
-        deposit_tab_widget = QtGui.QTabWidget()
+        deposit_tab_widget = QtWidgets.QTabWidget()
         deposit_tab_list = [
             "Contact",
             "General",
@@ -1171,41 +1171,41 @@ class XChemExplorer(QtGui.QApplication):
 
         deposit_tab_dict = {}
         for page in deposit_tab_list:
-            tab = QtGui.QWidget()
-            vb = QtGui.QVBoxLayout(tab)
+            tab = QtWidgets.QWidget()
+            vb = QtWidgets.QVBoxLayout(tab)
             deposit_tab_widget.addTab(tab, page)
             deposit_tab_dict[page] = [tab, vb]
 
         # PI and scientist info
-        vb = QtGui.QVBoxLayout()
-        hbox = QtGui.QHBoxLayout()
+        vb = QtWidgets.QVBoxLayout()
+        hbox = QtWidgets.QHBoxLayout()
 
-        frame = QtGui.QFrame()
-        frame.setFrameShape(QtGui.QFrame.StyledPanel)
+        frame = QtWidgets.QFrame()
+        frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
 
-        grid = QtGui.QGridLayout()
-        grid.addWidget(QtGui.QLabel("Principal Investigator"), 0, 0)
+        grid = QtWidgets.QGridLayout()
+        grid.addWidget(QtWidgets.QLabel("Principal Investigator"), 0, 0)
 
-        grid.addWidget(QtGui.QLabel("Salutation"), 1, 0)
-        self.contact_author_PI_salutation = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Salutation"), 1, 0)
+        self.contact_author_PI_salutation = QtWidgets.QLineEdit()
         self.contact_author_PI_salutation.setText("Dr.")
         self.contact_author_PI_salutation.setFixedWidth(200)
         grid.addWidget(self.contact_author_PI_salutation, 1, 1)
 
-        grid.addWidget(QtGui.QLabel("First name"), 2, 0)
-        self.contact_author_PI_first_name = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("First name"), 2, 0)
+        self.contact_author_PI_first_name = QtWidgets.QLineEdit()
         self.contact_author_PI_first_name.setText("")
         self.contact_author_PI_first_name.setFixedWidth(200)
         grid.addWidget(self.contact_author_PI_first_name, 2, 1)
 
-        grid.addWidget(QtGui.QLabel("Last name"), 3, 0)
-        self.contact_author_PI_last_name = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Last name"), 3, 0)
+        self.contact_author_PI_last_name = QtWidgets.QLineEdit()
         self.contact_author_PI_last_name.setText("")
         self.contact_author_PI_last_name.setFixedWidth(200)
         grid.addWidget(self.contact_author_PI_last_name, 3, 1)
 
-        grid.addWidget(QtGui.QLabel("Middle name"), 4, 0)
-        self.contact_author_PI_middle_name = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Middle name"), 4, 0)
+        self.contact_author_PI_middle_name = QtWidgets.QLineEdit()
         self.contact_author_PI_middle_name.setText("")
         self.contact_author_PI_middle_name.setFixedWidth(200)
         self.contact_author_PI_middle_name.setStyleSheet(
@@ -1213,46 +1213,46 @@ class XChemExplorer(QtGui.QApplication):
         )
         grid.addWidget(self.contact_author_PI_middle_name, 4, 1)
 
-        grid.addWidget(QtGui.QLabel("PI role"), 5, 0)
-        self.contact_author_PI_role = QtGui.QComboBox()
+        grid.addWidget(QtWidgets.QLabel("PI role"), 5, 0)
+        self.contact_author_PI_role = QtWidgets.QComboBox()
         PIroles = ["principal investigator/group leader"]
         for item in PIroles:
             self.contact_author_PI_role.addItem(item)
         grid.addWidget(self.contact_author_PI_role, 5, 1)
 
-        grid.addWidget(QtGui.QLabel("Organization type"), 6, 0)
-        self.contact_author_PI_organization_type = QtGui.QComboBox()
+        grid.addWidget(QtWidgets.QLabel("Organization type"), 6, 0)
+        self.contact_author_PI_organization_type = QtWidgets.QComboBox()
         Organizations = ["academic", "commercial", "government"]
         for item in Organizations:
             self.contact_author_PI_organization_type.addItem(item)
         grid.addWidget(self.contact_author_PI_organization_type, 6, 1)
 
-        grid.addWidget(QtGui.QLabel("Organization Name"), 7, 0)
-        self.contact_author_PI_organization_name = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Organization Name"), 7, 0)
+        self.contact_author_PI_organization_name = QtWidgets.QLineEdit()
         self.contact_author_PI_organization_name.setText("")
         self.contact_author_PI_organization_name.setFixedWidth(200)
         grid.addWidget(self.contact_author_PI_organization_name, 7, 1)
 
-        grid.addWidget(QtGui.QLabel("Email"), 8, 0)
-        self.contact_author_PI_email = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Email"), 8, 0)
+        self.contact_author_PI_email = QtWidgets.QLineEdit()
         self.contact_author_PI_email.setText("")
         self.contact_author_PI_email.setFixedWidth(200)
         grid.addWidget(self.contact_author_PI_email, 8, 1)
 
-        grid.addWidget(QtGui.QLabel("Street"), 9, 0)
-        self.contact_author_PI_address = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Street"), 9, 0)
+        self.contact_author_PI_address = QtWidgets.QLineEdit()
         self.contact_author_PI_address.setText("")
         self.contact_author_PI_address.setFixedWidth(200)
         grid.addWidget(self.contact_author_PI_address, 9, 1)
 
-        grid.addWidget(QtGui.QLabel("City"), 10, 0)
-        self.contact_author_PI_city = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("City"), 10, 0)
+        self.contact_author_PI_city = QtWidgets.QLineEdit()
         self.contact_author_PI_city.setText("")
         self.contact_author_PI_city.setFixedWidth(200)
         grid.addWidget(self.contact_author_PI_city, 10, 1)
 
-        grid.addWidget(QtGui.QLabel("State"), 11, 0)
-        self.contact_author_PI_State_or_Province = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("State"), 11, 0)
+        self.contact_author_PI_State_or_Province = QtWidgets.QLineEdit()
         self.contact_author_PI_State_or_Province.setText("")
         self.contact_author_PI_State_or_Province.setFixedWidth(200)
         self.contact_author_PI_State_or_Province.setStyleSheet(
@@ -1260,26 +1260,26 @@ class XChemExplorer(QtGui.QApplication):
         )
         grid.addWidget(self.contact_author_PI_State_or_Province, 11, 1)
 
-        grid.addWidget(QtGui.QLabel("ZIP code"), 12, 0)
-        self.contact_author_PI_Zip_Code = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("ZIP code"), 12, 0)
+        self.contact_author_PI_Zip_Code = QtWidgets.QLineEdit()
         self.contact_author_PI_Zip_Code.setText("")
         self.contact_author_PI_Zip_Code.setFixedWidth(200)
         grid.addWidget(self.contact_author_PI_Zip_Code, 12, 1)
 
-        grid.addWidget(QtGui.QLabel("Country"), 13, 0)
-        self.contact_author_PI_Country = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Country"), 13, 0)
+        self.contact_author_PI_Country = QtWidgets.QLineEdit()
         self.contact_author_PI_Country.setText("")
         self.contact_author_PI_Country.setFixedWidth(200)
         grid.addWidget(self.contact_author_PI_Country, 13, 1)
 
-        grid.addWidget(QtGui.QLabel("Phone"), 14, 0)
-        self.contact_author_PI_phone_number = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Phone"), 14, 0)
+        self.contact_author_PI_phone_number = QtWidgets.QLineEdit()
         self.contact_author_PI_phone_number.setText("")
         self.contact_author_PI_phone_number.setFixedWidth(200)
         grid.addWidget(self.contact_author_PI_phone_number, 14, 1)
 
-        grid.addWidget(QtGui.QLabel("ORCID"), 15, 0)
-        self.contact_author_PI_ORCID = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("ORCID"), 15, 0)
+        self.contact_author_PI_ORCID = QtWidgets.QLineEdit()
         self.contact_author_PI_ORCID.setText("")
         self.contact_author_PI_ORCID.setFixedWidth(200)
         grid.addWidget(self.contact_author_PI_ORCID, 15, 1)
@@ -1287,31 +1287,31 @@ class XChemExplorer(QtGui.QApplication):
         frame.setLayout(grid)
         hbox.addWidget(frame)
 
-        frame = QtGui.QFrame()
-        frame.setFrameShape(QtGui.QFrame.StyledPanel)
-        grid = QtGui.QGridLayout()
-        grid.addWidget(QtGui.QLabel("Responsible Scientist"), 0, 0)
+        frame = QtWidgets.QFrame()
+        frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        grid = QtWidgets.QGridLayout()
+        grid.addWidget(QtWidgets.QLabel("Responsible Scientist"), 0, 0)
 
-        grid.addWidget(QtGui.QLabel("Salutation"), 1, 0)
-        self.contact_author_salutation = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Salutation"), 1, 0)
+        self.contact_author_salutation = QtWidgets.QLineEdit()
         self.contact_author_salutation.setText("Dr.")
         self.contact_author_salutation.setFixedWidth(200)
         grid.addWidget(self.contact_author_salutation, 1, 1)
 
-        grid.addWidget(QtGui.QLabel("First name"), 2, 0)
-        self.contact_author_first_name = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("First name"), 2, 0)
+        self.contact_author_first_name = QtWidgets.QLineEdit()
         self.contact_author_first_name.setText("")
         self.contact_author_first_name.setFixedWidth(200)
         grid.addWidget(self.contact_author_first_name, 2, 1)
 
-        grid.addWidget(QtGui.QLabel("Last name"), 3, 0)
-        self.contact_author_last_name = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Last name"), 3, 0)
+        self.contact_author_last_name = QtWidgets.QLineEdit()
         self.contact_author_last_name.setText("")
         self.contact_author_last_name.setFixedWidth(200)
         grid.addWidget(self.contact_author_last_name, 3, 1)
 
-        grid.addWidget(QtGui.QLabel("Middle name"), 4, 0)
-        self.contact_author_middle_name = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Middle name"), 4, 0)
+        self.contact_author_middle_name = QtWidgets.QLineEdit()
         self.contact_author_middle_name.setText("")
         self.contact_author_middle_name.setFixedWidth(200)
         self.contact_author_middle_name.setStyleSheet(
@@ -1319,47 +1319,47 @@ class XChemExplorer(QtGui.QApplication):
         )
         grid.addWidget(self.contact_author_middle_name, 4, 1)
 
-        grid.addWidget(QtGui.QLabel("Role"), 5, 0)
+        grid.addWidget(QtWidgets.QLabel("Role"), 5, 0)
 
-        self.contact_author_role = QtGui.QComboBox()
+        self.contact_author_role = QtWidgets.QComboBox()
         ScientistRoles = ["responsible scientist", "investigator"]
         for item in ScientistRoles:
             self.contact_author_role.addItem(item)
         grid.addWidget(self.contact_author_role, 5, 1)
 
-        grid.addWidget(QtGui.QLabel("Organization type"), 6, 0)
+        grid.addWidget(QtWidgets.QLabel("Organization type"), 6, 0)
 
-        self.contact_author_organization_type = QtGui.QComboBox()
+        self.contact_author_organization_type = QtWidgets.QComboBox()
         for item in Organizations:
             self.contact_author_organization_type.addItem(item)
         grid.addWidget(self.contact_author_organization_type, 6, 1)
 
-        grid.addWidget(QtGui.QLabel("Organization Name"), 7, 0)
-        self.contact_author_organization_name = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Organization Name"), 7, 0)
+        self.contact_author_organization_name = QtWidgets.QLineEdit()
         self.contact_author_organization_name.setText("")
         self.contact_author_organization_name.setFixedWidth(200)
         grid.addWidget(self.contact_author_organization_name, 7, 1)
 
-        grid.addWidget(QtGui.QLabel("Email"), 8, 0)
-        self.contact_author_email = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Email"), 8, 0)
+        self.contact_author_email = QtWidgets.QLineEdit()
         self.contact_author_email.setText("")
         self.contact_author_email.setFixedWidth(200)
         grid.addWidget(self.contact_author_email, 8, 1)
 
-        grid.addWidget(QtGui.QLabel("Street"), 9, 0)
-        self.contact_author_address = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Street"), 9, 0)
+        self.contact_author_address = QtWidgets.QLineEdit()
         self.contact_author_address.setText("")
         self.contact_author_address.setFixedWidth(200)
         grid.addWidget(self.contact_author_address, 9, 1)
 
-        grid.addWidget(QtGui.QLabel("City"), 10, 0)
-        self.contact_author_city = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("City"), 10, 0)
+        self.contact_author_city = QtWidgets.QLineEdit()
         self.contact_author_city.setText("")
         self.contact_author_city.setFixedWidth(200)
         grid.addWidget(self.contact_author_city, 10, 1)
 
-        grid.addWidget(QtGui.QLabel("State"), 11, 0)
-        self.contact_author_State_or_Province = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("State"), 11, 0)
+        self.contact_author_State_or_Province = QtWidgets.QLineEdit()
         self.contact_author_State_or_Province.setText("")
         self.contact_author_State_or_Province.setFixedWidth(200)
         self.contact_author_State_or_Province.setStyleSheet(
@@ -1367,26 +1367,26 @@ class XChemExplorer(QtGui.QApplication):
         )
         grid.addWidget(self.contact_author_State_or_Province, 11, 1)
 
-        grid.addWidget(QtGui.QLabel("ZIP code"), 12, 0)
-        self.contact_author_Zip_Code = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("ZIP code"), 12, 0)
+        self.contact_author_Zip_Code = QtWidgets.QLineEdit()
         self.contact_author_Zip_Code.setText("")
         self.contact_author_Zip_Code.setFixedWidth(200)
         grid.addWidget(self.contact_author_Zip_Code, 12, 1)
 
-        grid.addWidget(QtGui.QLabel("Country"), 13, 0)
-        self.contact_author_Country = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Country"), 13, 0)
+        self.contact_author_Country = QtWidgets.QLineEdit()
         self.contact_author_Country.setText("")
         self.contact_author_Country.setFixedWidth(200)
         grid.addWidget(self.contact_author_Country, 13, 1)
 
-        grid.addWidget(QtGui.QLabel("Phone"), 14, 0)
-        self.contact_author_phone_number = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Phone"), 14, 0)
+        self.contact_author_phone_number = QtWidgets.QLineEdit()
         self.contact_author_phone_number.setText("")
         self.contact_author_phone_number.setFixedWidth(200)
         grid.addWidget(self.contact_author_phone_number, 14, 1)
 
-        grid.addWidget(QtGui.QLabel("ORCID"), 15, 0)
-        self.contact_author_ORCID = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("ORCID"), 15, 0)
+        self.contact_author_ORCID = QtWidgets.QLineEdit()
         self.contact_author_ORCID.setText("")
         self.contact_author_ORCID.setFixedWidth(200)
         grid.addWidget(self.contact_author_ORCID, 15, 1)
@@ -1395,30 +1395,30 @@ class XChemExplorer(QtGui.QApplication):
         hbox.addWidget(frame)
 
         vb.addLayout(hbox)
-        vb.addWidget(QtGui.QLabel(XChemToolTips.deposition_interface_note()))
+        vb.addWidget(QtWidgets.QLabel(XChemToolTips.deposition_interface_note()))
         vb.addStretch(1)
 
         deposit_tab_dict["Contact"][1].addLayout(vb)
 
         # release status
-        vb = QtGui.QVBoxLayout()
+        vb = QtWidgets.QVBoxLayout()
 
-        frame = QtGui.QFrame()
-        frame.setFrameShape(QtGui.QFrame.StyledPanel)
+        frame = QtWidgets.QFrame()
+        frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
 
-        grid = QtGui.QGridLayout()
-        grid.addWidget(QtGui.QLabel("Release status"), 0, 0)
+        grid = QtWidgets.QGridLayout()
+        grid.addWidget(QtWidgets.QLabel("Release status"), 0, 0)
 
-        grid.addWidget(QtGui.QLabel("Release Status for sequence"), 4, 0)
+        grid.addWidget(QtWidgets.QLabel("Release Status for sequence"), 4, 0)
 
-        self.Release_status_for_sequence = QtGui.QComboBox()
+        self.Release_status_for_sequence = QtWidgets.QComboBox()
         codeStatus = ["RELEASE NOW", "HOLD FOR RELEASE"]
         for item in codeStatus:
             self.Release_status_for_sequence.addItem(item)
         grid.addWidget(self.Release_status_for_sequence, 4, 1)
 
-        grid.addWidget(QtGui.QLabel("Release Status for coordinates/ SF"), 8, 0)
-        self.Release_status_for_coordinates = QtGui.QComboBox()
+        grid.addWidget(QtWidgets.QLabel("Release Status for coordinates/ SF"), 8, 0)
+        self.Release_status_for_coordinates = QtWidgets.QComboBox()
         coordStatus = [
             "RELEASE NOW",
             "HOLD FOR PUBLICATION",
@@ -1433,26 +1433,26 @@ class XChemExplorer(QtGui.QApplication):
         frame.setLayout(grid)
         vb.addWidget(frame)
 
-        frame = QtGui.QFrame()
-        frame.setFrameShape(QtGui.QFrame.StyledPanel)
+        frame = QtWidgets.QFrame()
+        frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
 
-        grid = QtGui.QGridLayout()
-        grid.addWidget(QtGui.QLabel("Title & Details"), 0, 0)
+        grid = QtWidgets.QGridLayout()
+        grid.addWidget(QtWidgets.QLabel("Title & Details"), 0, 0)
         note = (
             "Note: supported wildcards: $ProteinName,$CompoundName;"
             ' e.g. "Crystal Structure of human JMJD2D in complex with N2317a"'
         )
-        grid.addWidget(QtGui.QLabel(note), 1, 0)
+        grid.addWidget(QtWidgets.QLabel(note), 1, 0)
 
-        grid.addWidget(QtGui.QLabel("Group deposition title"), 2, 0)
-        self.group_deposition_title = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Group deposition title"), 2, 0)
+        self.group_deposition_title = QtWidgets.QLineEdit()
         self.group_deposition_title.setText("PanDDA analysis group deposition")
         self.group_deposition_title.setFixedWidth(600)
 
         grid.addWidget(self.group_deposition_title, 2, 1)
 
-        grid.addWidget(QtGui.QLabel("Description"), 3, 0)
-        self.group_description = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Description"), 3, 0)
+        self.group_description = QtWidgets.QLineEdit()
         self.group_description.setText(
             "XDomainX of XOrganismX $ProteinName screened against the"
             " XXX Fragment Library by X-ray Crystallography at the XChem facility of"
@@ -1461,8 +1461,8 @@ class XChemExplorer(QtGui.QApplication):
         self.group_description.setFixedWidth(600)
         grid.addWidget(self.group_description, 3, 1)
 
-        grid.addWidget(QtGui.QLabel("Structure Title (ligand bound)"), 4, 0)
-        self.structure_title = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Structure Title (ligand bound)"), 4, 0)
+        self.structure_title = QtWidgets.QLineEdit()
         self.structure_title.setText(
             "Crystal Structure of $ProteinName in complex with $CompoundName"
         )
@@ -1470,10 +1470,10 @@ class XChemExplorer(QtGui.QApplication):
         grid.addWidget(self.structure_title, 4, 1)
 
         note = "\n\nApo Structure:\nonly use if you want to deposit PanDDA models!"
-        grid.addWidget(QtGui.QLabel(note), 6, 0)
+        grid.addWidget(QtWidgets.QLabel(note), 6, 0)
 
-        grid.addWidget(QtGui.QLabel("Structure Title (apo)"), 7, 0)
-        self.structure_title_apo = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Structure Title (apo)"), 7, 0)
+        self.structure_title_apo = QtWidgets.QLineEdit()
         self.structure_title_apo.setText(
             "PanDDA analysis group deposition of ground-state model of $ProteinName"
         )
@@ -1488,19 +1488,19 @@ class XChemExplorer(QtGui.QApplication):
         deposit_tab_dict["General"][1].addLayout(vb)
 
         # authors
-        vb = QtGui.QVBoxLayout()
+        vb = QtWidgets.QVBoxLayout()
 
-        frame = QtGui.QFrame()
-        frame.setFrameShape(QtGui.QFrame.StyledPanel)
+        frame = QtWidgets.QFrame()
+        frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
 
-        grid = QtGui.QGridLayout()
-        grid.addWidget(QtGui.QLabel("Deposition authors (e.g. Surname, F.M.)"), 0, 0)
+        grid = QtWidgets.QGridLayout()
+        grid.addWidget(QtWidgets.QLabel("Deposition authors (e.g. Surname, F.M.)"), 0, 0)
 
         self.structure_author_name_List = []
 
         for column in range(0, 2):
             for row in range(1, 15):
-                structure_author_name = QtGui.QLineEdit()
+                structure_author_name = QtWidgets.QLineEdit()
                 structure_author_name.setText("")
                 structure_author_name.setFixedWidth(300)
                 grid.addWidget(structure_author_name, row, column)
@@ -1514,28 +1514,28 @@ class XChemExplorer(QtGui.QApplication):
         deposit_tab_dict["Authors"][1].addLayout(vb)
 
         # primary citation
-        vb = QtGui.QVBoxLayout()
+        vb = QtWidgets.QVBoxLayout()
 
-        frame = QtGui.QFrame()
-        frame.setFrameShape(QtGui.QFrame.StyledPanel)
+        frame = QtWidgets.QFrame()
+        frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
 
-        grid = QtGui.QGridLayout()
-        grid.addWidget(QtGui.QLabel("Primary Citation"), 0, 0)
+        grid = QtWidgets.QGridLayout()
+        grid.addWidget(QtWidgets.QLabel("Primary Citation"), 0, 0)
 
-        grid.addWidget(QtGui.QLabel("ID"), 1, 0)
-        self.primary_citation_id = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("ID"), 1, 0)
+        self.primary_citation_id = QtWidgets.QLineEdit()
         self.primary_citation_id.setText("primary")
         self.primary_citation_id.setFixedWidth(500)
         grid.addWidget(self.primary_citation_id, 1, 1)
 
-        grid.addWidget(QtGui.QLabel("Journal"), 2, 0)
-        self.primary_citation_journal_abbrev = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Journal"), 2, 0)
+        self.primary_citation_journal_abbrev = QtWidgets.QLineEdit()
         self.primary_citation_journal_abbrev.setText("To be published")
         self.primary_citation_journal_abbrev.setFixedWidth(500)
         grid.addWidget(self.primary_citation_journal_abbrev, 2, 1)
 
-        grid.addWidget(QtGui.QLabel("Title"), 3, 0)
-        self.primary_citation_title = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Title"), 3, 0)
+        self.primary_citation_title = QtWidgets.QLineEdit()
         self.primary_citation_title.setText("")
         self.primary_citation_title.setFixedWidth(500)
         self.primary_citation_title.setStyleSheet(
@@ -1543,8 +1543,8 @@ class XChemExplorer(QtGui.QApplication):
         )
         grid.addWidget(self.primary_citation_title, 3, 1)
 
-        grid.addWidget(QtGui.QLabel("Year"), 4, 0)
-        self.primary_citation_year = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Year"), 4, 0)
+        self.primary_citation_year = QtWidgets.QLineEdit()
         self.primary_citation_year.setText("")
         self.primary_citation_year.setFixedWidth(500)
         self.primary_citation_year.setStyleSheet(
@@ -1552,8 +1552,8 @@ class XChemExplorer(QtGui.QApplication):
         )
         grid.addWidget(self.primary_citation_year, 4, 1)
 
-        grid.addWidget(QtGui.QLabel("Volume"), 5, 0)
-        self.primary_citation_journal_volume = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Volume"), 5, 0)
+        self.primary_citation_journal_volume = QtWidgets.QLineEdit()
         self.primary_citation_journal_volume.setText("")
         self.primary_citation_journal_volume.setFixedWidth(500)
         self.primary_citation_journal_volume.setStyleSheet(
@@ -1561,8 +1561,8 @@ class XChemExplorer(QtGui.QApplication):
         )
         grid.addWidget(self.primary_citation_journal_volume, 5, 1)
 
-        grid.addWidget(QtGui.QLabel("Page, first"), 6, 0)
-        self.primary_citation_page_first = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Page, first"), 6, 0)
+        self.primary_citation_page_first = QtWidgets.QLineEdit()
         self.primary_citation_page_first.setText("")
         self.primary_citation_page_first.setFixedWidth(500)
         self.primary_citation_page_first.setStyleSheet(
@@ -1570,8 +1570,8 @@ class XChemExplorer(QtGui.QApplication):
         )
         grid.addWidget(self.primary_citation_page_first, 6, 1)
 
-        grid.addWidget(QtGui.QLabel("Page, last"), 7, 0)
-        self.primary_citation_page_last = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Page, last"), 7, 0)
+        self.primary_citation_page_last = QtWidgets.QLineEdit()
         self.primary_citation_page_last.setText("")
         self.primary_citation_page_last.setFixedWidth(500)
         self.primary_citation_page_last.setStyleSheet(
@@ -1583,11 +1583,11 @@ class XChemExplorer(QtGui.QApplication):
         vb.addWidget(frame)
 
         # citation authors
-        frame = QtGui.QFrame()
-        frame.setFrameShape(QtGui.QFrame.StyledPanel)
+        frame = QtWidgets.QFrame()
+        frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
 
-        grid = QtGui.QGridLayout()
-        self.set_primary_citation_authors = QtGui.QCheckBox(
+        grid = QtWidgets.QGridLayout()
+        self.set_primary_citation_authors = QtWidgets.QCheckBox(
             "same as deposition authors"
         )
         layout_functions.add_checkbox(
@@ -1601,7 +1601,7 @@ class XChemExplorer(QtGui.QApplication):
 
         for column in range(0, 2):
             for row in range(1, 15):
-                primary_citation_author_name = QtGui.QLineEdit()
+                primary_citation_author_name = QtWidgets.QLineEdit()
                 primary_citation_author_name.setText("")
                 primary_citation_author_name.setFixedWidth(300)
                 grid.addWidget(primary_citation_author_name, row, column)
@@ -1617,144 +1617,144 @@ class XChemExplorer(QtGui.QApplication):
         deposit_tab_dict["Citation"][1].addLayout(vb)
 
         # molecule info
-        vb = QtGui.QVBoxLayout()
+        vb = QtWidgets.QVBoxLayout()
 
-        frame = QtGui.QFrame()
-        frame.setFrameShape(QtGui.QFrame.StyledPanel)
+        frame = QtWidgets.QFrame()
+        frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
 
-        grid = QtGui.QGridLayout()
+        grid = QtWidgets.QGridLayout()
 
-        grid.addWidget(QtGui.QLabel("Entity 1"), 1, 0)
+        grid.addWidget(QtWidgets.QLabel("Entity 1"), 1, 0)
 
-        grid.addWidget(QtGui.QLabel("Molecule Name"), 2, 0)
-        self.molecule_name = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Molecule Name"), 2, 0)
+        self.molecule_name = QtWidgets.QLineEdit()
         self.molecule_name.setText("")
         self.molecule_name.setFixedWidth(300)
 
         grid.addWidget(self.molecule_name, 2, 1)
-        grid.addWidget(QtGui.QLabel("(e.g. RNA Hammerhead Ribozyme)"), 2, 2)
+        grid.addWidget(QtWidgets.QLabel("(e.g. RNA Hammerhead Ribozyme)"), 2, 2)
 
-        grid.addWidget(QtGui.QLabel("Fragment Name"), 3, 0)
-        self.fragment_name_one = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Fragment Name"), 3, 0)
+        self.fragment_name_one = QtWidgets.QLineEdit()
         self.fragment_name_one.setText("")
         self.fragment_name_one.setFixedWidth(300)
         self.fragment_name_one.setStyleSheet("background-color: rgb(192, 192, 192);")
         grid.addWidget(self.fragment_name_one, 3, 1)
-        grid.addWidget(QtGui.QLabel("(e.g. ligand binding domain, hairpin)"), 3, 2)
+        grid.addWidget(QtWidgets.QLabel("(e.g. ligand binding domain, hairpin)"), 3, 2)
 
-        grid.addWidget(QtGui.QLabel("Specific Mutation"), 4, 0)
-        self.fragment_name_one_specific_mutation = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Specific Mutation"), 4, 0)
+        self.fragment_name_one_specific_mutation = QtWidgets.QLineEdit()
         self.fragment_name_one_specific_mutation.setText("")
         self.fragment_name_one_specific_mutation.setFixedWidth(300)
         self.fragment_name_one_specific_mutation.setStyleSheet(
             "background-color: rgb(192, 192, 192);"
         )
         grid.addWidget(self.fragment_name_one_specific_mutation, 4, 1)
-        grid.addWidget(QtGui.QLabel("(e.g. C280S)"), 4, 2)
+        grid.addWidget(QtWidgets.QLabel("(e.g. C280S)"), 4, 2)
 
-        grid.addWidget(QtGui.QLabel("Enzyme Comission Number"), 5, 0)
-        self.fragment_name_one_enzyme_comission_number = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Enzyme Comission Number"), 5, 0)
+        self.fragment_name_one_enzyme_comission_number = QtWidgets.QLineEdit()
         self.fragment_name_one_enzyme_comission_number.setText("")
         self.fragment_name_one_enzyme_comission_number.setFixedWidth(300)
         self.fragment_name_one_enzyme_comission_number.setStyleSheet(
             "background-color: rgb(192, 192, 192);"
         )
         grid.addWidget(self.fragment_name_one_enzyme_comission_number, 5, 1)
-        grid.addWidget(QtGui.QLabel("(if known: e.g. 2.7.7.7)"), 5, 2)
+        grid.addWidget(QtWidgets.QLabel("(if known: e.g. 2.7.7.7)"), 5, 2)
 
-        grid.addWidget(QtGui.QLabel("Genetically Manipulated Source"), 6, 0)
+        grid.addWidget(QtWidgets.QLabel("Genetically Manipulated Source"), 6, 0)
 
-        grid.addWidget(QtGui.QLabel("Source organism scientific name"), 7, 0)
+        grid.addWidget(QtWidgets.QLabel("Source organism scientific name"), 7, 0)
 
-        self.Source_organism_scientific_name = QtGui.QComboBox()
+        self.Source_organism_scientific_name = QtWidgets.QComboBox()
         taxonomy_dict = XChemMain.NCBI_taxonomy_ID()
         for item in taxonomy_dict:
             self.Source_organism_scientific_name.addItem(taxonomy_dict[item])
         grid.addWidget(self.Source_organism_scientific_name, 7, 1)
 
-        grid.addWidget(QtGui.QLabel("Source organism gene"), 8, 0)
-        self.Source_organism_gene = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Source organism gene"), 8, 0)
+        self.Source_organism_gene = QtWidgets.QLineEdit()
         self.Source_organism_gene.setText("")
         self.Source_organism_gene.setFixedWidth(300)
         grid.addWidget(self.Source_organism_gene, 8, 1)
-        grid.addWidget(QtGui.QLabel("(e.g. RPOD, ALKA...)"), 8, 2)
+        grid.addWidget(QtWidgets.QLabel("(e.g. RPOD, ALKA...)"), 8, 2)
 
-        grid.addWidget(QtGui.QLabel("Source organism strain"), 9, 0)
-        self.Source_organism_strain = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Source organism strain"), 9, 0)
+        self.Source_organism_strain = QtWidgets.QLineEdit()
         self.Source_organism_strain.setText("")
         self.Source_organism_strain.setFixedWidth(300)
         self.Source_organism_strain.setStyleSheet(
             "background-color: rgb(192, 192, 192);"
         )
         grid.addWidget(self.Source_organism_strain, 9, 1)
-        grid.addWidget(QtGui.QLabel("(e.g. BH10 ISOLATE, K-12...)"), 9, 2)
+        grid.addWidget(QtWidgets.QLabel("(e.g. BH10 ISOLATE, K-12...)"), 9, 2)
 
-        grid.addWidget(QtGui.QLabel("Expression system scientific name"), 10, 0)
+        grid.addWidget(QtWidgets.QLabel("Expression system scientific name"), 10, 0)
 
-        self.Expression_system_scientific_name = QtGui.QComboBox()
+        self.Expression_system_scientific_name = QtWidgets.QComboBox()
         for item in taxonomy_dict:
             self.Expression_system_scientific_name.addItem(taxonomy_dict[item])
         grid.addWidget(self.Expression_system_scientific_name, 10, 1)
 
-        grid.addWidget(QtGui.QLabel("Expression system strain"), 11, 0)
-        self.Expression_system_strain = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Expression system strain"), 11, 0)
+        self.Expression_system_strain = QtWidgets.QLineEdit()
         self.Expression_system_strain.setText("")
         self.Expression_system_strain.setFixedWidth(300)
         self.Expression_system_strain.setStyleSheet(
             "background-color: rgb(192, 192, 192);"
         )
         grid.addWidget(self.Expression_system_strain, 11, 1)
-        grid.addWidget(QtGui.QLabel("(e.g. BL21(DE3))"), 11, 2)
+        grid.addWidget(QtWidgets.QLabel("(e.g. BL21(DE3))"), 11, 2)
 
-        grid.addWidget(QtGui.QLabel("Expression system vector type"), 12, 0)
-        self.Expression_system_vector_type = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Expression system vector type"), 12, 0)
+        self.Expression_system_vector_type = QtWidgets.QLineEdit()
         self.Expression_system_vector_type.setText("")
         self.Expression_system_vector_type.setFixedWidth(300)
         self.Expression_system_vector_type.setStyleSheet(
             "background-color: rgb(192, 192, 192);"
         )
         grid.addWidget(self.Expression_system_vector_type, 12, 1)
-        grid.addWidget(QtGui.QLabel("(e.g. plasmid)"), 12, 2)
+        grid.addWidget(QtWidgets.QLabel("(e.g. plasmid)"), 12, 2)
 
-        grid.addWidget(QtGui.QLabel("Expression_system_plasmid_name"), 13, 0)
-        self.Expression_system_plasmid_name = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Expression_system_plasmid_name"), 13, 0)
+        self.Expression_system_plasmid_name = QtWidgets.QLineEdit()
         self.Expression_system_plasmid_name.setText("")
         self.Expression_system_plasmid_name.setFixedWidth(300)
         self.Expression_system_plasmid_name.setStyleSheet(
             "background-color: rgb(192, 192, 192);"
         )
         grid.addWidget(self.Expression_system_plasmid_name, 13, 1)
-        grid.addWidget(QtGui.QLabel("(e.g. pET26)"), 13, 2)
+        grid.addWidget(QtWidgets.QLabel("(e.g. pET26)"), 13, 2)
 
-        grid.addWidget(QtGui.QLabel("Manipulated_source_details"), 14, 0)
-        self.Manipulated_source_details = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Manipulated_source_details"), 14, 0)
+        self.Manipulated_source_details = QtWidgets.QLineEdit()
         self.Manipulated_source_details.setText("")
         self.Manipulated_source_details.setFixedWidth(300)
         self.Manipulated_source_details.setStyleSheet(
             "background-color: rgb(192, 192, 192);"
         )
         grid.addWidget(self.Manipulated_source_details, 14, 1)
-        grid.addWidget(QtGui.QLabel("(any other relevant information)"), 14, 2)
+        grid.addWidget(QtWidgets.QLabel("(any other relevant information)"), 14, 2)
 
-        grid.addWidget(QtGui.QLabel("Chains"), 15, 0)
-        self.molecule_chain_one = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Chains"), 15, 0)
+        self.molecule_chain_one = QtWidgets.QLineEdit()
         self.molecule_chain_one.setText("")
         self.molecule_chain_one.setFixedWidth(300)
         grid.addWidget(self.molecule_chain_one, 15, 1)
-        grid.addWidget(QtGui.QLabel("(e.g. A or A,B)"), 15, 2)
+        grid.addWidget(QtWidgets.QLabel("(e.g. A or A,B)"), 15, 2)
 
         frame.setLayout(grid)
         vb.addWidget(frame)
 
         # entity 2
 
-        frame = QtGui.QFrame()
-        frame.setFrameShape(QtGui.QFrame.StyledPanel)
+        frame = QtWidgets.QFrame()
+        frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
 
-        grid = QtGui.QGridLayout()
+        grid = QtWidgets.QGridLayout()
 
         grid.addWidget(
-            QtGui.QLabel(
+            QtWidgets.QLabel(
                 "Entity 2 (IMPORTANT: only fill in if you are working with a"
                 " protein-protein complex!)"
             ),
@@ -1762,122 +1762,122 @@ class XChemExplorer(QtGui.QApplication):
             0,
         )
 
-        grid.addWidget(QtGui.QLabel("Molecule Name"), 2, 0)
-        self.molecule_name_two = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Molecule Name"), 2, 0)
+        self.molecule_name_two = QtWidgets.QLineEdit()
         self.molecule_name_two.setText("")
         self.molecule_name_two.setFixedWidth(300)
 
         grid.addWidget(self.molecule_name_two, 2, 1)
-        grid.addWidget(QtGui.QLabel("(e.g. RNA Hammerhead Ribozyme)"), 2, 2)
+        grid.addWidget(QtWidgets.QLabel("(e.g. RNA Hammerhead Ribozyme)"), 2, 2)
 
-        grid.addWidget(QtGui.QLabel("Fragment Name"), 3, 0)
-        self.fragment_name_two = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Fragment Name"), 3, 0)
+        self.fragment_name_two = QtWidgets.QLineEdit()
         self.fragment_name_two.setText("")
         self.fragment_name_two.setFixedWidth(300)
         self.fragment_name_two.setStyleSheet("background-color: rgb(192, 192, 192);")
         grid.addWidget(self.fragment_name_two, 3, 1)
-        grid.addWidget(QtGui.QLabel("(e.g. ligand binding domain, hairpin)"), 3, 2)
+        grid.addWidget(QtWidgets.QLabel("(e.g. ligand binding domain, hairpin)"), 3, 2)
 
-        grid.addWidget(QtGui.QLabel("Specific Mutation"), 4, 0)
-        self.fragment_name_two_specific_mutation = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Specific Mutation"), 4, 0)
+        self.fragment_name_two_specific_mutation = QtWidgets.QLineEdit()
         self.fragment_name_two_specific_mutation.setText("")
         self.fragment_name_two_specific_mutation.setFixedWidth(300)
         self.fragment_name_two_specific_mutation.setStyleSheet(
             "background-color: rgb(192, 192, 192);"
         )
         grid.addWidget(self.fragment_name_two_specific_mutation, 4, 1)
-        grid.addWidget(QtGui.QLabel("(e.g. C280S)"), 4, 2)
+        grid.addWidget(QtWidgets.QLabel("(e.g. C280S)"), 4, 2)
 
-        grid.addWidget(QtGui.QLabel("Enzyme Comission Number"), 5, 0)
-        self.fragment_name_two_enzyme_comission_number = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Enzyme Comission Number"), 5, 0)
+        self.fragment_name_two_enzyme_comission_number = QtWidgets.QLineEdit()
         self.fragment_name_two_enzyme_comission_number.setText("")
         self.fragment_name_two_enzyme_comission_number.setFixedWidth(300)
         self.fragment_name_two_enzyme_comission_number.setStyleSheet(
             "background-color: rgb(192, 192, 192);"
         )
         grid.addWidget(self.fragment_name_two_enzyme_comission_number, 5, 1)
-        grid.addWidget(QtGui.QLabel("(if known: e.g. 2.7.7.7)"), 5, 2)
+        grid.addWidget(QtWidgets.QLabel("(if known: e.g. 2.7.7.7)"), 5, 2)
 
-        grid.addWidget(QtGui.QLabel("Genetically Manipulated Source"), 6, 0)
+        grid.addWidget(QtWidgets.QLabel("Genetically Manipulated Source"), 6, 0)
 
-        grid.addWidget(QtGui.QLabel("Source organism scientific name"), 7, 0)
+        grid.addWidget(QtWidgets.QLabel("Source organism scientific name"), 7, 0)
 
-        self.Source_organism_scientific_name_two = QtGui.QComboBox()
+        self.Source_organism_scientific_name_two = QtWidgets.QComboBox()
         taxonomy_dict = XChemMain.NCBI_taxonomy_ID()
         for item in taxonomy_dict:
             self.Source_organism_scientific_name_two.addItem(taxonomy_dict[item])
         grid.addWidget(self.Source_organism_scientific_name_two, 7, 1)
 
-        grid.addWidget(QtGui.QLabel("Source organism gene"), 8, 0)
-        self.Source_organism_gene_two = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Source organism gene"), 8, 0)
+        self.Source_organism_gene_two = QtWidgets.QLineEdit()
         self.Source_organism_gene_two.setText("")
         self.Source_organism_gene_two.setFixedWidth(300)
         grid.addWidget(self.Source_organism_gene_two, 8, 1)
-        grid.addWidget(QtGui.QLabel("(e.g. RPOD, ALKA...)"), 8, 2)
+        grid.addWidget(QtWidgets.QLabel("(e.g. RPOD, ALKA...)"), 8, 2)
 
-        grid.addWidget(QtGui.QLabel("Source organism strain"), 9, 0)
-        self.Source_organism_strain_two = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Source organism strain"), 9, 0)
+        self.Source_organism_strain_two = QtWidgets.QLineEdit()
         self.Source_organism_strain_two.setText("")
         self.Source_organism_strain_two.setFixedWidth(300)
         self.Source_organism_strain_two.setStyleSheet(
             "background-color: rgb(192, 192, 192);"
         )
         grid.addWidget(self.Source_organism_strain_two, 9, 1)
-        grid.addWidget(QtGui.QLabel("(e.g. BH10 ISOLATE, K-12...)"), 9, 2)
+        grid.addWidget(QtWidgets.QLabel("(e.g. BH10 ISOLATE, K-12...)"), 9, 2)
 
-        grid.addWidget(QtGui.QLabel("Expression system scientific name"), 10, 0)
+        grid.addWidget(QtWidgets.QLabel("Expression system scientific name"), 10, 0)
 
-        self.Expression_system_scientific_name_two = QtGui.QComboBox()
+        self.Expression_system_scientific_name_two = QtWidgets.QComboBox()
         for item in taxonomy_dict:
             self.Expression_system_scientific_name_two.addItem(taxonomy_dict[item])
         grid.addWidget(self.Expression_system_scientific_name_two, 10, 1)
 
-        grid.addWidget(QtGui.QLabel("Expression system strain"), 11, 0)
-        self.Expression_system_strain_two = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Expression system strain"), 11, 0)
+        self.Expression_system_strain_two = QtWidgets.QLineEdit()
         self.Expression_system_strain_two.setText("")
         self.Expression_system_strain_two.setFixedWidth(300)
         self.Expression_system_strain_two.setStyleSheet(
             "background-color: rgb(192, 192, 192);"
         )
         grid.addWidget(self.Expression_system_strain_two, 11, 1)
-        grid.addWidget(QtGui.QLabel("(e.g. BL21(DE3))"), 11, 2)
+        grid.addWidget(QtWidgets.QLabel("(e.g. BL21(DE3))"), 11, 2)
 
-        grid.addWidget(QtGui.QLabel("Expression system vector type"), 12, 0)
-        self.Expression_system_vector_type_two = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Expression system vector type"), 12, 0)
+        self.Expression_system_vector_type_two = QtWidgets.QLineEdit()
         self.Expression_system_vector_type_two.setText("")
         self.Expression_system_vector_type_two.setFixedWidth(300)
         self.Expression_system_vector_type_two.setStyleSheet(
             "background-color: rgb(192, 192, 192);"
         )
         grid.addWidget(self.Expression_system_vector_type_two, 12, 1)
-        grid.addWidget(QtGui.QLabel("(e.g. plasmid)"), 12, 2)
+        grid.addWidget(QtWidgets.QLabel("(e.g. plasmid)"), 12, 2)
 
-        grid.addWidget(QtGui.QLabel("Expression_system_plasmid_name"), 13, 0)
-        self.Expression_system_plasmid_name_two = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Expression_system_plasmid_name"), 13, 0)
+        self.Expression_system_plasmid_name_two = QtWidgets.QLineEdit()
         self.Expression_system_plasmid_name_two.setText("")
         self.Expression_system_plasmid_name_two.setFixedWidth(300)
         self.Expression_system_plasmid_name_two.setStyleSheet(
             "background-color: rgb(192, 192, 192);"
         )
         grid.addWidget(self.Expression_system_plasmid_name_two, 13, 1)
-        grid.addWidget(QtGui.QLabel("(e.g. pET26)"), 13, 2)
+        grid.addWidget(QtWidgets.QLabel("(e.g. pET26)"), 13, 2)
 
-        grid.addWidget(QtGui.QLabel("Manipulated_source_details"), 14, 0)
-        self.Manipulated_source_details_two = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Manipulated_source_details"), 14, 0)
+        self.Manipulated_source_details_two = QtWidgets.QLineEdit()
         self.Manipulated_source_details_two.setText("")
         self.Manipulated_source_details_two.setFixedWidth(300)
         self.Manipulated_source_details_two.setStyleSheet(
             "background-color: rgb(192, 192, 192);"
         )
         grid.addWidget(self.Manipulated_source_details_two, 14, 1)
-        grid.addWidget(QtGui.QLabel("(any other relevant information)"), 14, 2)
+        grid.addWidget(QtWidgets.QLabel("(any other relevant information)"), 14, 2)
 
-        grid.addWidget(QtGui.QLabel("Chains"), 15, 0)
-        self.molecule_chain_two = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Chains"), 15, 0)
+        self.molecule_chain_two = QtWidgets.QLineEdit()
         self.molecule_chain_two.setText("")
         self.molecule_chain_two.setFixedWidth(300)
         grid.addWidget(self.molecule_chain_two, 15, 1)
-        grid.addWidget(QtGui.QLabel("(e.g. A or A,B)"), 15, 2)
+        grid.addWidget(QtWidgets.QLabel("(e.g. A or A,B)"), 15, 2)
 
         frame.setLayout(grid)
 
@@ -1890,24 +1890,24 @@ class XChemExplorer(QtGui.QApplication):
         deposit_tab_dict["Molecule"][1].addLayout(vb)
 
         # misc
-        vb = QtGui.QVBoxLayout()
+        vb = QtWidgets.QVBoxLayout()
 
-        frame = QtGui.QFrame()
-        frame.setFrameShape(QtGui.QFrame.StyledPanel)
+        frame = QtWidgets.QFrame()
+        frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
 
-        grid = QtGui.QGridLayout()
+        grid = QtWidgets.QGridLayout()
 
-        grid.addWidget(QtGui.QLabel("Keywords"), 1, 0)
-        self.structure_keywords = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Keywords"), 1, 0)
+        self.structure_keywords = QtWidgets.QLineEdit()
         self.structure_keywords.setText(
             "SGC - Diamond I04-1 fragment screening, PanDDA, XChemExplorer"
         )
         self.structure_keywords.setFixedWidth(300)
         grid.addWidget(self.structure_keywords, 1, 1)
-        grid.addWidget(QtGui.QLabel("(e.g. beta barrel, protein-DNA complex)"), 1, 2)
+        grid.addWidget(QtWidgets.QLabel("(e.g. beta barrel, protein-DNA complex)"), 1, 2)
 
-        grid.addWidget(QtGui.QLabel("Type"), 2, 0)
-        self.structure_keywords_type = QtGui.QComboBox()
+        grid.addWidget(QtWidgets.QLabel("Type"), 2, 0)
+        self.structure_keywords_type = QtWidgets.QComboBox()
         self.structure_keywords_type.setStyleSheet(
             "background-color: rgb(192, 192, 192);"
         )
@@ -1915,22 +1915,22 @@ class XChemExplorer(QtGui.QApplication):
             self.structure_keywords_type.addItem(item)
         grid.addWidget(self.structure_keywords_type, 2, 1)
 
-        grid.addWidget(QtGui.QLabel("Biological Assembly"), 3, 0)
-        self.biological_assembly_chain_number = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Biological Assembly"), 3, 0)
+        self.biological_assembly_chain_number = QtWidgets.QLineEdit()
         self.biological_assembly_chain_number.setText("")
         self.biological_assembly_chain_number.setFixedWidth(300)
         grid.addWidget(self.biological_assembly_chain_number, 3, 1)
-        grid.addWidget(QtGui.QLabel("(e.g.  1 for monomer, 2 for dimer ..)"), 3, 2)
+        grid.addWidget(QtWidgets.QLabel("(e.g.  1 for monomer, 2 for dimer ..)"), 3, 2)
 
-        grid.addWidget(QtGui.QLabel("Sequence UNIPROT ID"), 4, 0)
-        self.molecule_one_letter_sequence_uniprot_id = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Sequence UNIPROT ID"), 4, 0)
+        self.molecule_one_letter_sequence_uniprot_id = QtWidgets.QLineEdit()
         self.molecule_one_letter_sequence_uniprot_id.setText("")
         self.molecule_one_letter_sequence_uniprot_id.setFixedWidth(300)
         grid.addWidget(self.molecule_one_letter_sequence_uniprot_id, 4, 1)
-        grid.addWidget(QtGui.QLabel("(e.g.  Q6B0I6)"), 4, 2)
+        grid.addWidget(QtWidgets.QLabel("(e.g.  Q6B0I6)"), 4, 2)
 
-        grid.addWidget(QtGui.QLabel("Sequence"), 5, 0)
-        self.molecule_one_letter_sequence = QtGui.QTextEdit()
+        grid.addWidget(QtWidgets.QLabel("Sequence"), 5, 0)
+        self.molecule_one_letter_sequence = QtWidgets.QTextEdit()
         self.molecule_one_letter_sequence.setStyleSheet(
             "background-color: rgb(255, 255, 255);"
         )
@@ -1939,43 +1939,43 @@ class XChemExplorer(QtGui.QApplication):
         self.molecule_one_letter_sequence.setFixedWidth(300)
         grid.addWidget(self.molecule_one_letter_sequence, 5, 1, 8, 2)
 
-        grid.addWidget(QtGui.QLabel("Sequence UNIPROT ID (Entity 2) - optional"), 13, 0)
-        self.molecule_one_letter_sequence_uniprot_id_two = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Sequence UNIPROT ID (Entity 2) - optional"), 13, 0)
+        self.molecule_one_letter_sequence_uniprot_id_two = QtWidgets.QLineEdit()
         self.molecule_one_letter_sequence_uniprot_id_two.setText("")
         self.molecule_one_letter_sequence_uniprot_id_two.setStyleSheet(
             "background-color: rgb(192, 192, 192);"
         )
         self.molecule_one_letter_sequence_uniprot_id_two.setFixedWidth(300)
         grid.addWidget(self.molecule_one_letter_sequence_uniprot_id_two, 13, 1)
-        grid.addWidget(QtGui.QLabel("(e.g.  Q6B0I6)"), 13, 2)
+        grid.addWidget(QtWidgets.QLabel("(e.g.  Q6B0I6)"), 13, 2)
 
-        grid.addWidget(QtGui.QLabel("Sequence (Entity 2) - optional"), 14, 0)
-        self.molecule_one_letter_sequence_two = QtGui.QTextEdit()
+        grid.addWidget(QtWidgets.QLabel("Sequence (Entity 2) - optional"), 14, 0)
+        self.molecule_one_letter_sequence_two = QtWidgets.QTextEdit()
         self.molecule_one_letter_sequence_two.setText("")
         self.molecule_one_letter_sequence_two.setFixedWidth(300)
         grid.addWidget(self.molecule_one_letter_sequence_two, 14, 1, 19, 2)
 
-        grid.addWidget(QtGui.QLabel("Structural Genomic (optional)"), 21, 0)
+        grid.addWidget(QtWidgets.QLabel("Structural Genomic (optional)"), 21, 0)
 
-        grid.addWidget(QtGui.QLabel("Project Name"), 22, 0)
-        self.SG_project_name = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Project Name"), 22, 0)
+        self.SG_project_name = QtWidgets.QLineEdit()
         self.SG_project_name.setText("")
         self.SG_project_name.setStyleSheet("background-color: rgb(192, 192, 192);")
         self.SG_project_name.setFixedWidth(300)
         grid.addWidget(self.SG_project_name, 22, 1)
         grid.addWidget(
-            QtGui.QLabel("(e.g. SGC, Structural Genomics Consortium)"), 22, 2
+            QtWidgets.QLabel("(e.g. SGC, Structural Genomics Consortium)"), 22, 2
         )
 
-        grid.addWidget(QtGui.QLabel("Full Name"), 23, 0)
-        self.full_name_of_SG_center = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Full Name"), 23, 0)
+        self.full_name_of_SG_center = QtWidgets.QLineEdit()
         self.full_name_of_SG_center.setText("")
         self.full_name_of_SG_center.setStyleSheet(
             "background-color: rgb(192, 192, 192);"
         )
         self.full_name_of_SG_center.setFixedWidth(300)
         grid.addWidget(self.full_name_of_SG_center, 23, 1)
-        grid.addWidget(QtGui.QLabel("(e.g. Structural Genomics Consortium)"), 23, 2)
+        grid.addWidget(QtWidgets.QLabel("(e.g. Structural Genomics Consortium)"), 23, 2)
 
         frame.setLayout(grid)
         vb.addWidget(frame)
@@ -1985,106 +1985,106 @@ class XChemExplorer(QtGui.QApplication):
         deposit_tab_dict["Misc"][1].addLayout(vb)
 
         # methods
-        vb = QtGui.QVBoxLayout()
+        vb = QtWidgets.QVBoxLayout()
 
-        frame = QtGui.QFrame()
-        frame.setFrameShape(QtGui.QFrame.StyledPanel)
+        frame = QtWidgets.QFrame()
+        frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
 
-        grid = QtGui.QGridLayout()
+        grid = QtWidgets.QGridLayout()
 
-        grid.addWidget(QtGui.QLabel("Crystallization"), 1, 0)
+        grid.addWidget(QtWidgets.QLabel("Crystallization"), 1, 0)
 
-        grid.addWidget(QtGui.QLabel("Method"), 2, 0)
+        grid.addWidget(QtWidgets.QLabel("Method"), 2, 0)
 
-        self.crystallization_method = QtGui.QComboBox()
+        self.crystallization_method = QtWidgets.QComboBox()
         for item in XChemMain.crystal_growth_methods():
             self.crystallization_method.addItem(item)
         grid.addWidget(self.crystallization_method, 2, 1)
 
-        grid.addWidget(QtGui.QLabel("pH"), 3, 0)
-        self.crystallization_pH = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("pH"), 3, 0)
+        self.crystallization_pH = QtWidgets.QLineEdit()
         self.crystallization_pH.setText("")
         self.crystallization_pH.setFixedWidth(300)
         grid.addWidget(self.crystallization_pH, 3, 1)
-        grid.addWidget(QtGui.QLabel("(e.g. 7.5 ...)"), 3, 2)
+        grid.addWidget(QtWidgets.QLabel("(e.g. 7.5 ...)"), 3, 2)
 
-        grid.addWidget(QtGui.QLabel("Temperature"), 4, 0)
-        self.crystallization_temperature = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Temperature"), 4, 0)
+        self.crystallization_temperature = QtWidgets.QLineEdit()
         self.crystallization_temperature.setText("")
         self.crystallization_temperature.setFixedWidth(300)
         grid.addWidget(self.crystallization_temperature, 4, 1)
-        grid.addWidget(QtGui.QLabel("(e.g. 298) (in Kelvin)"), 4, 2)
+        grid.addWidget(QtWidgets.QLabel("(e.g. 298) (in Kelvin)"), 4, 2)
 
-        grid.addWidget(QtGui.QLabel("Condition"), 5, 0)
-        self.crystallization_details = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Condition"), 5, 0)
+        self.crystallization_details = QtWidgets.QLineEdit()
         self.crystallization_details.setText("")
         self.crystallization_details.setFixedWidth(300)
         grid.addWidget(self.crystallization_details, 5, 1)
-        grid.addWidget(QtGui.QLabel("(e.g. PEG 4000, NaCl etc.)"), 5, 2)
+        grid.addWidget(QtWidgets.QLabel("(e.g. PEG 4000, NaCl etc.)"), 5, 2)
 
-        grid.addWidget(QtGui.QLabel("Diffraction Experiment"), 6, 0)
+        grid.addWidget(QtWidgets.QLabel("Diffraction Experiment"), 6, 0)
         note = (
             "Note: this information will only be used if it is\n"
             "not already available in the mainTable!\n"
             "Ignore if data were collected at DLS"
         )
-        grid.addWidget(QtGui.QLabel(note), 7, 0)
+        grid.addWidget(QtWidgets.QLabel(note), 7, 0)
 
-        grid.addWidget(QtGui.QLabel("Source"), 8, 0)
+        grid.addWidget(QtWidgets.QLabel("Source"), 8, 0)
 
-        self.radiation_source = QtGui.QComboBox()
+        self.radiation_source = QtWidgets.QComboBox()
         for item in XChemMain.radiationSource():
             self.radiation_source.addItem(item)
         grid.addWidget(self.radiation_source, 8, 1)
 
-        grid.addWidget(QtGui.QLabel("Source Type"), 9, 0)
+        grid.addWidget(QtWidgets.QLabel("Source Type"), 9, 0)
 
-        self.radiation_source_type = QtGui.QComboBox()
+        self.radiation_source_type = QtWidgets.QComboBox()
         for item in XChemMain.wwBeamlines():
             self.radiation_source_type.addItem(item)
         grid.addWidget(self.radiation_source_type, 9, 1)
 
-        grid.addWidget(QtGui.QLabel("Wavelength"), 10, 0)
-        self.radiation_wavelengths = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Wavelength"), 10, 0)
+        self.radiation_wavelengths = QtWidgets.QLineEdit()
         self.radiation_wavelengths.setText("")
         self.radiation_wavelengths.setFixedWidth(300)
         grid.addWidget(self.radiation_wavelengths, 10, 1)
-        grid.addWidget(QtGui.QLabel("(e.g. 1.502)"), 10, 2)
+        grid.addWidget(QtWidgets.QLabel("(e.g. 1.502)"), 10, 2)
 
-        grid.addWidget(QtGui.QLabel("Detector"), 11, 0)
+        grid.addWidget(QtWidgets.QLabel("Detector"), 11, 0)
 
-        self.radiation_detector = QtGui.QComboBox()
+        self.radiation_detector = QtWidgets.QComboBox()
         for item in XChemMain.detector():
             self.radiation_detector.addItem(item)
         grid.addWidget(self.radiation_detector, 11, 1)
 
-        grid.addWidget(QtGui.QLabel("Detector Type"), 12, 0)
+        grid.addWidget(QtWidgets.QLabel("Detector Type"), 12, 0)
 
-        self.radiation_detector_type = QtGui.QComboBox()
+        self.radiation_detector_type = QtWidgets.QComboBox()
         for item in XChemMain.detectorType():
             self.radiation_detector_type.addItem(item)
         grid.addWidget(self.radiation_detector_type, 12, 1)
 
-        grid.addWidget(QtGui.QLabel("Date"), 13, 0)
-        self.data_collection_date = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Date"), 13, 0)
+        self.data_collection_date = QtWidgets.QLineEdit()
         self.data_collection_date.setText("")
         self.data_collection_date.setFixedWidth(300)
         grid.addWidget(self.data_collection_date, 13, 1)
-        grid.addWidget(QtGui.QLabel("(e.g. 2004-01-07)"), 13, 2)
+        grid.addWidget(QtWidgets.QLabel("(e.g. 2004-01-07)"), 13, 2)
 
-        grid.addWidget(QtGui.QLabel("Temperature"), 14, 0)
-        self.data_collection_temperature = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Temperature"), 14, 0)
+        self.data_collection_temperature = QtWidgets.QLineEdit()
         self.data_collection_temperature.setText("")
         self.data_collection_temperature.setFixedWidth(300)
         grid.addWidget(self.data_collection_temperature, 14, 1)
-        grid.addWidget(QtGui.QLabel("(e.g. 100) (in Kelvin)"), 14, 2)
+        grid.addWidget(QtWidgets.QLabel("(e.g. 100) (in Kelvin)"), 14, 2)
 
-        grid.addWidget(QtGui.QLabel("Protocol"), 15, 0)
-        self.data_collection_protocol = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Protocol"), 15, 0)
+        self.data_collection_protocol = QtWidgets.QLineEdit()
         self.data_collection_protocol.setText("SINGLE WAVELENGTH")
         self.data_collection_protocol.setFixedWidth(300)
         grid.addWidget(self.data_collection_protocol, 15, 1)
-        grid.addWidget(QtGui.QLabel("(e.g. SINGLE WAVELENGTH, MAD, ...)"), 15, 2)
+        grid.addWidget(QtWidgets.QLabel("(e.g. SINGLE WAVELENGTH, MAD, ...)"), 15, 2)
 
         frame.setLayout(grid)
         vb.addWidget(frame)
@@ -2094,28 +2094,28 @@ class XChemExplorer(QtGui.QApplication):
         deposit_tab_dict["Methods"][1].addLayout(vb)
 
         # software
-        vb = QtGui.QVBoxLayout()
+        vb = QtWidgets.QVBoxLayout()
 
-        frame = QtGui.QFrame()
-        frame.setFrameShape(QtGui.QFrame.StyledPanel)
+        frame = QtWidgets.QFrame()
+        frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
 
-        grid = QtGui.QGridLayout()
+        grid = QtWidgets.QGridLayout()
 
-        grid.addWidget(QtGui.QLabel("PDB starting model"), 1, 0)
-        self.pdbx_starting_model = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("PDB starting model"), 1, 0)
+        self.pdbx_starting_model = QtWidgets.QLineEdit()
         self.pdbx_starting_model.setText("")
         self.pdbx_starting_model.setFixedWidth(300)
         grid.addWidget(self.pdbx_starting_model, 1, 1)
-        grid.addWidget(QtGui.QLabel("(e.g. 7.5 ...)"), 1, 2)
+        grid.addWidget(QtWidgets.QLabel("(e.g. 7.5 ...)"), 1, 2)
 
-        grid.addWidget(QtGui.QLabel("Data reduction"), 2, 0)
-        self.data_integration_software = QtGui.QComboBox()
+        grid.addWidget(QtWidgets.QLabel("Data reduction"), 2, 0)
+        self.data_integration_software = QtWidgets.QComboBox()
         for item in XChemMain.data_integration_software():
             self.data_integration_software.addItem(item)
         grid.addWidget(self.data_integration_software, 2, 1)
 
-        grid.addWidget(QtGui.QLabel("Phasing"), 3, 0)
-        self.phasing_software = QtGui.QComboBox()
+        grid.addWidget(QtWidgets.QLabel("Phasing"), 3, 0)
+        self.phasing_software = QtWidgets.QComboBox()
         for item in XChemMain.phasing_software():
             self.phasing_software.addItem(item)
         grid.addWidget(self.phasing_software, 3, 1)
@@ -2128,27 +2128,27 @@ class XChemExplorer(QtGui.QApplication):
 
         # Funding
 
-        vb = QtGui.QVBoxLayout()
+        vb = QtWidgets.QVBoxLayout()
 
-        frame = QtGui.QFrame()
-        frame.setFrameShape(QtGui.QFrame.StyledPanel)
+        frame = QtWidgets.QFrame()
+        frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
 
-        grid = QtGui.QGridLayout()
+        grid = QtWidgets.QGridLayout()
 
-        grid.addWidget(QtGui.QLabel("Funding Organization"), 1, 0)
-        self.pdbx_funding_organization_one = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Funding Organization"), 1, 0)
+        self.pdbx_funding_organization_one = QtWidgets.QLineEdit()
         self.pdbx_funding_organization_one.setText("")
         self.pdbx_funding_organization_one.setFixedWidth(700)
         grid.addWidget(self.pdbx_funding_organization_one, 1, 1)
 
-        grid.addWidget(QtGui.QLabel("Grant Number"), 2, 0)
-        self.pdbx_grant_number_one = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Grant Number"), 2, 0)
+        self.pdbx_grant_number_one = QtWidgets.QLineEdit()
         self.pdbx_grant_number_one.setText("")
         self.pdbx_grant_number_one.setFixedWidth(700)
         grid.addWidget(self.pdbx_grant_number_one, 2, 1)
 
-        grid.addWidget(QtGui.QLabel("Country"), 3, 0)
-        self.pdbx_grant_country_one = QtGui.QComboBox()
+        grid.addWidget(QtWidgets.QLabel("Country"), 3, 0)
+        self.pdbx_grant_country_one = QtWidgets.QComboBox()
         for item in XChemMain.pdbx_country():
             self.pdbx_grant_country_one.addItem(item)
         grid.addWidget(self.pdbx_grant_country_one, 3, 1)
@@ -2156,25 +2156,25 @@ class XChemExplorer(QtGui.QApplication):
         frame.setLayout(grid)
         vb.addWidget(frame)
 
-        frame = QtGui.QFrame()
-        frame.setFrameShape(QtGui.QFrame.StyledPanel)
+        frame = QtWidgets.QFrame()
+        frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
 
-        grid = QtGui.QGridLayout()
+        grid = QtWidgets.QGridLayout()
 
-        grid.addWidget(QtGui.QLabel("Funding Organization"), 1, 0)
-        self.pdbx_funding_organization_two = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Funding Organization"), 1, 0)
+        self.pdbx_funding_organization_two = QtWidgets.QLineEdit()
         self.pdbx_funding_organization_two.setText("")
         self.pdbx_funding_organization_two.setFixedWidth(700)
         grid.addWidget(self.pdbx_funding_organization_two, 1, 1)
 
-        grid.addWidget(QtGui.QLabel("Grant Number"), 2, 0)
-        self.pdbx_grant_number_two = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Grant Number"), 2, 0)
+        self.pdbx_grant_number_two = QtWidgets.QLineEdit()
         self.pdbx_grant_number_two.setText("")
         self.pdbx_grant_number_two.setFixedWidth(700)
         grid.addWidget(self.pdbx_grant_number_two, 2, 1)
 
-        grid.addWidget(QtGui.QLabel("Country"), 3, 0)
-        self.pdbx_grant_country_two = QtGui.QComboBox()
+        grid.addWidget(QtWidgets.QLabel("Country"), 3, 0)
+        self.pdbx_grant_country_two = QtWidgets.QComboBox()
         for item in XChemMain.pdbx_country():
             self.pdbx_grant_country_two.addItem(item)
         grid.addWidget(self.pdbx_grant_country_two, 3, 1)
@@ -2182,25 +2182,25 @@ class XChemExplorer(QtGui.QApplication):
         frame.setLayout(grid)
         vb.addWidget(frame)
 
-        frame = QtGui.QFrame()
-        frame.setFrameShape(QtGui.QFrame.StyledPanel)
+        frame = QtWidgets.QFrame()
+        frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
 
-        grid = QtGui.QGridLayout()
+        grid = QtWidgets.QGridLayout()
 
-        grid.addWidget(QtGui.QLabel("Funding Organization"), 1, 0)
-        self.pdbx_funding_organization_three = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Funding Organization"), 1, 0)
+        self.pdbx_funding_organization_three = QtWidgets.QLineEdit()
         self.pdbx_funding_organization_three.setText("")
         self.pdbx_funding_organization_three.setFixedWidth(700)
         grid.addWidget(self.pdbx_funding_organization_three, 1, 1)
 
-        grid.addWidget(QtGui.QLabel("Grant Number"), 2, 0)
-        self.pdbx_grant_number_three = QtGui.QLineEdit()
+        grid.addWidget(QtWidgets.QLabel("Grant Number"), 2, 0)
+        self.pdbx_grant_number_three = QtWidgets.QLineEdit()
         self.pdbx_grant_number_three.setText("")
         self.pdbx_grant_number_three.setFixedWidth(700)
         grid.addWidget(self.pdbx_grant_number_three, 2, 1)
 
-        grid.addWidget(QtGui.QLabel("Country"), 3, 0)
-        self.pdbx_grant_country_three = QtGui.QComboBox()
+        grid.addWidget(QtWidgets.QLabel("Country"), 3, 0)
+        self.pdbx_grant_country_three = QtWidgets.QComboBox()
         for item in XChemMain.pdbx_country():
             self.pdbx_grant_country_three.addItem(item)
         grid.addWidget(self.pdbx_grant_country_three, 3, 1)
@@ -2214,18 +2214,18 @@ class XChemExplorer(QtGui.QApplication):
 
         vbox.addWidget(deposit_tab_widget)
 
-        hbox = QtGui.QHBoxLayout()
-        button = QtGui.QPushButton("Load\nFile")
+        hbox = QtWidgets.QHBoxLayout()
+        button = QtWidgets.QPushButton("Load\nFile")
         button.clicked.connect(self.load_deposit_config_file)
         hbox.addWidget(button)
-        button = QtGui.QPushButton("Save\nFile")
+        button = QtWidgets.QPushButton("Save\nFile")
         button.clicked.connect(self.save_deposit_config_file)
         hbox.addWidget(button)
-        button = QtGui.QPushButton("Load from\nDatabase")
+        button = QtWidgets.QPushButton("Load from\nDatabase")
         button.clicked.connect(self.load_deposit_from_database)
         button.setEnabled(False)
         hbox.addWidget(button)
-        button = QtGui.QPushButton("Save to\nDatabase")
+        button = QtWidgets.QPushButton("Save to\nDatabase")
         button.clicked.connect(self.save_deposit_to_database)
         hbox.addWidget(button)
 
@@ -2237,7 +2237,7 @@ class XChemExplorer(QtGui.QApplication):
     def save_deposit_config_file(self):
         self.update_deposit_dict()
         file_name = str(
-            QtGui.QFileDialog.getSaveFileName(
+            QtWidgets.QFileDialog.getSaveFileName(
                 self.window, "Save file", self.current_directory
             )
         )
@@ -2281,7 +2281,7 @@ class XChemExplorer(QtGui.QApplication):
             )
 
     def load_deposit_config_file(self):
-        file_name_temp = QtGui.QFileDialog.getOpenFileNameAndFilter(
+        file_name_temp = QtWidgets.QFileDialog.getOpenFileNameAndFilter(
             self.window, "Open file", self.current_directory, "*.deposit"
         )
         file_name = tuple(file_name_temp)[0]
@@ -2298,14 +2298,14 @@ class XChemExplorer(QtGui.QApplication):
 
     def save_deposit_to_database(self):
         self.update_deposit_dict()
-        msgBox = QtGui.QMessageBox()
+        msgBox = QtWidgets.QMessageBox()
         msgBox.setText(
             "*** WARNING ***\n"
             "Are you sure you want to update the database?\n"
             "This will overwrite previous entries!"
         )
-        msgBox.addButton(QtGui.QPushButton("Yes"), QtGui.QMessageBox.YesRole)
-        msgBox.addButton(QtGui.QPushButton("No"), QtGui.QMessageBox.RejectRole)
+        msgBox.addButton(QtWidgets.QPushButton("Yes"), QtWidgets.QMessageBox.YesRole)
+        msgBox.addButton(QtWidgets.QPushButton("No"), QtWidgets.QMessageBox.RejectRole)
         reply = msgBox.exec_()
         if reply == 0:
             self.work_thread = XChemDeposit.update_depositTable(
@@ -2996,7 +2996,7 @@ class XChemExplorer(QtGui.QApplication):
 
     def set_xce_logfile(self):
         file_name = str(
-            QtGui.QFileDialog.getSaveFileName(
+            QtWidgets.QFileDialog.getSaveFileName(
                 self.window, "Save file", self.current_directory
             )
         )
@@ -3012,7 +3012,7 @@ class XChemExplorer(QtGui.QApplication):
             self.update_log = XChemLog.updateLog(self.xce_logfile)
 
     def set_second_cif_file(self):
-        filepath_temp = QtGui.QFileDialog.getOpenFileNameAndFilter(
+        filepath_temp = QtWidgets.QFileDialog.getOpenFileNameAndFilter(
             self.window, "Select CIF File", self.initial_model_directory, "*.cif"
         )
         filepath = str(tuple(filepath_temp)[0])
@@ -3024,7 +3024,7 @@ class XChemExplorer(QtGui.QApplication):
         )
 
     def select_datasource_columns_to_display(self):
-        columns_to_show = QtGui.QMessageBox()
+        columns_to_show = QtWidgets.QMessageBox()
         columns_to_showLayout = columns_to_show.layout()
         columns_in_data_source = self.db.return_column_list()
         try:
@@ -3035,16 +3035,16 @@ class XChemExplorer(QtGui.QApplication):
             return
 
         column_dict = {}
-        vbox = QtGui.QVBoxLayout()
+        vbox = QtWidgets.QVBoxLayout()
         number_of_entries = len(columns_in_data_source)
         columns_shown_in_dialog_column = 15
-        grid = QtGui.QGridLayout()
+        grid = QtWidgets.QGridLayout()
         x = 0
         y = 0
         columns_to_ignore = self.db.columns_not_to_display()
         for entries_added in range(number_of_entries):
             if not columns_in_data_source[entries_added][1] in columns_to_ignore:
-                data_source_column = QtGui.QCheckBox(
+                data_source_column = QtWidgets.QCheckBox(
                     columns_in_data_source[entries_added][1]
                 )
                 column_dict[entries_added] = data_source_column
@@ -3061,9 +3061,9 @@ class XChemExplorer(QtGui.QApplication):
         vbox.addLayout(grid)
         columns_to_showLayout.addLayout(vbox, 0, 0)
 
-        columns_to_show.addButton(QtGui.QPushButton("OK"), QtGui.QMessageBox.YesRole)
+        columns_to_show.addButton(QtWidgets.QPushButton("OK"), QtWidgets.QMessageBox.YesRole)
         columns_to_show.addButton(
-            QtGui.QPushButton("Cancel"), QtGui.QMessageBox.RejectRole
+            QtWidgets.QPushButton("Cancel"), QtWidgets.QMessageBox.RejectRole
         )
         reply = columns_to_show.exec_()
         if reply == 0:
@@ -3108,7 +3108,7 @@ class XChemExplorer(QtGui.QApplication):
 
     def datasource_menu_export_csv_file(self):
         file_name = str(
-            QtGui.QFileDialog.getSaveFileName(
+            QtWidgets.QFileDialog.getSaveFileName(
                 self.window, "Save file", self.database_directory
             )
         )
@@ -3120,7 +3120,7 @@ class XChemExplorer(QtGui.QApplication):
 
     def datasource_menu_import_csv_file(self):
         if self.data_source_set:
-            file_name = QtGui.QFileDialog.getOpenFileName(
+            file_name = QtWidgets.QFileDialog.getOpenFileName(
                 self.window, "Open file", self.database_directory
             )
             self.db.import_csv_file(file_name)
@@ -3205,7 +3205,7 @@ class XChemExplorer(QtGui.QApplication):
         )
 
     def open_config_file(self):
-        file_name_temp = QtGui.QFileDialog.getOpenFileNameAndFilter(
+        file_name_temp = QtWidgets.QFileDialog.getOpenFileNameAndFilter(
             self.window, "Open file", self.current_directory, "*.conf"
         )
         file_name = tuple(file_name_temp)[0]
@@ -3331,7 +3331,7 @@ class XChemExplorer(QtGui.QApplication):
 
     def save_config_file(self):
         file_name = str(
-            QtGui.QFileDialog.getSaveFileName(
+            QtWidgets.QFileDialog.getSaveFileName(
                 self.window, "Save file", self.current_directory
             )
         )
@@ -3546,14 +3546,14 @@ class XChemExplorer(QtGui.QApplication):
                 job_list.append(xtal)
 
         if job_list:
-            msgBox = QtGui.QMessageBox()
+            msgBox = QtWidgets.QMessageBox()
             msgBox.setText(
                 "Do you really want to delete {0!s} {1!s} files?".format(
                     len(job_list), self.preferences["initial_refinement_pipeline"]
                 )
             )
-            msgBox.addButton(QtGui.QPushButton("Go"), QtGui.QMessageBox.YesRole)
-            msgBox.addButton(QtGui.QPushButton("Cancel"), QtGui.QMessageBox.RejectRole)
+            msgBox.addButton(QtWidgets.QPushButton("Go"), QtWidgets.QMessageBox.YesRole)
+            msgBox.addButton(QtWidgets.QPushButton("Cancel"), QtWidgets.QMessageBox.RejectRole)
             reply = msgBox.exec_()
 
             if reply == 0:
@@ -3643,7 +3643,7 @@ class XChemExplorer(QtGui.QApplication):
         self.work_thread.start()
 
     def check_before_running_dimple(self, job_list, instruction):
-        msgBox = QtGui.QMessageBox()
+        msgBox = QtWidgets.QMessageBox()
         msgBox.setText(
             "Do you really want to run {0!s} {1!s} jobs?\nNote: we will not run more"
             " than {2!s} at once on the cluster!".format(
@@ -3652,8 +3652,8 @@ class XChemExplorer(QtGui.QApplication):
                 self.preferences["max_queue_jobs"],
             )
         )
-        msgBox.addButton(QtGui.QPushButton("Go"), QtGui.QMessageBox.YesRole)
-        msgBox.addButton(QtGui.QPushButton("Cancel"), QtGui.QMessageBox.RejectRole)
+        msgBox.addButton(QtWidgets.QPushButton("Go"), QtWidgets.QMessageBox.YesRole)
+        msgBox.addButton(QtWidgets.QPushButton("Cancel"), QtWidgets.QMessageBox.RejectRole)
         reply = msgBox.exec_()
 
         if reply == 0:
@@ -3791,7 +3791,7 @@ class XChemExplorer(QtGui.QApplication):
             print("sender text bit")
             if self.sender().text() == "Create New Data\nSource (SQLite)":
                 file_name = str(
-                    QtGui.QFileDialog.getSaveFileName(
+                    QtWidgets.QFileDialog.getSaveFileName(
                         self.window, "Save file", self.database_directory
                     )
                 )
@@ -4088,23 +4088,23 @@ class XChemExplorer(QtGui.QApplication):
         }
 
         if run == "pre_run":
-            msgBox = QtGui.QMessageBox()
+            msgBox = QtWidgets.QMessageBox()
             msgBoxLayout = msgBox.layout()
-            vbox = QtGui.QVBoxLayout()
+            vbox = QtWidgets.QVBoxLayout()
             vbox.addWidget(
-                QtGui.QLabel(XChemToolTips.pandda_pre_run(self.reference_directory))
+                QtWidgets.QLabel(XChemToolTips.pandda_pre_run(self.reference_directory))
             )
-            hbox = QtGui.QHBoxLayout()
-            hbox.addWidget(QtGui.QLabel("appendix:"))
-            appendix = QtGui.QLineEdit()
+            hbox = QtWidgets.QHBoxLayout()
+            hbox.addWidget(QtWidgets.QLabel("appendix:"))
+            appendix = QtWidgets.QLineEdit()
             appendix.setText("pre")
             appendix.setFixedWidth(200)
             hbox.addWidget(appendix)
             vbox.addLayout(hbox)
 
             msgBoxLayout.addLayout(vbox, 0, 0)
-            msgBox.addButton(QtGui.QPushButton("Go"), QtGui.QMessageBox.YesRole)
-            msgBox.addButton(QtGui.QPushButton("Cancel"), QtGui.QMessageBox.RejectRole)
+            msgBox.addButton(QtWidgets.QPushButton("Go"), QtWidgets.QMessageBox.YesRole)
+            msgBox.addButton(QtWidgets.QPushButton("Cancel"), QtWidgets.QMessageBox.RejectRole)
             reply = msgBox.exec_()
             if reply == 0:
                 pandda_params["appendix"] = str(appendix.text())
@@ -4342,14 +4342,14 @@ class XChemExplorer(QtGui.QApplication):
                 "exporting ALL models!"
                 " *** WARNING *** This may overwrite previous refinements!!!"
             )
-            msgBox = QtGui.QMessageBox()
+            msgBox = QtWidgets.QMessageBox()
             msgBox.setText(
                 "*** WARNING ***\n"
                 "This will overwrite all your manual selections!\n"
                 "Do you want to continue?"
             )
-            msgBox.addButton(QtGui.QPushButton("Yes"), QtGui.QMessageBox.YesRole)
-            msgBox.addButton(QtGui.QPushButton("No"), QtGui.QMessageBox.RejectRole)
+            msgBox.addButton(QtWidgets.QPushButton("Yes"), QtWidgets.QMessageBox.YesRole)
+            msgBox.addButton(QtWidgets.QPushButton("No"), QtWidgets.QMessageBox.RejectRole)
             reply = msgBox.exec_()
             if reply == 0:
                 if update_datasource_only:
@@ -4564,11 +4564,11 @@ class XChemExplorer(QtGui.QApplication):
                 start_thread = False
 
             if start_thread:
-                msgBox = QtGui.QMessageBox()
+                msgBox = QtWidgets.QMessageBox()
                 msgBox.setText(XChemToolTips.second_cif_file_info(self.second_cif_file))
-                msgBox.addButton(QtGui.QPushButton("OK"), QtGui.QMessageBox.YesRole)
+                msgBox.addButton(QtWidgets.QPushButton("OK"), QtWidgets.QMessageBox.YesRole)
                 msgBox.addButton(
-                    QtGui.QPushButton("Cancel"), QtGui.QMessageBox.RejectRole
+                    QtWidgets.QPushButton("Cancel"), QtWidgets.QMessageBox.RejectRole
                 )
                 reply = msgBox.exec_()
                 if reply == 0:
@@ -4666,10 +4666,10 @@ class XChemExplorer(QtGui.QApplication):
             self.db.update_insert_depositTable(xtal, {})
 
     def need_to_switch_main_tab(self, task_index):
-        msgBox = QtGui.QMessageBox()
+        msgBox = QtWidgets.QMessageBox()
         msgBox.setText("Need to switch main tab before you can launch this job")
-        msgBox.addButton(QtGui.QPushButton("Yes"), QtGui.QMessageBox.YesRole)
-        msgBox.addButton(QtGui.QPushButton("No"), QtGui.QMessageBox.RejectRole)
+        msgBox.addButton(QtWidgets.QPushButton("Yes"), QtWidgets.QMessageBox.YesRole)
+        msgBox.addButton(QtWidgets.QPushButton("No"), QtWidgets.QMessageBox.RejectRole)
         reply = msgBox.exec_()
         if reply == 0:
             self.main_tab_widget.setCurrentIndex(task_index)
@@ -4679,19 +4679,19 @@ class XChemExplorer(QtGui.QApplication):
         if not os.access(
             os.path.join(self.database_directory, self.data_source_file), os.W_OK
         ):
-            QtGui.QMessageBox.warning(
+            QtWidgets.QMessageBox.warning(
                 self.window,
                 "Data Source Problem",
                 "\nData Source is Read-Only\n",
-                QtGui.QMessageBox.Cancel,
-                QtGui.QMessageBox.NoButton,
-                QtGui.QMessageBox.NoButton,
+                QtWidgets.QMessageBox.Cancel,
+                QtWidgets.QMessageBox.NoButton,
+                QtWidgets.QMessageBox.NoButton,
             )
             write_enabled = False
         return write_enabled
 
     def no_data_source_selected(self):
-        QtGui.QMessageBox.warning(
+        QtWidgets.QMessageBox.warning(
             self.window,
             "Data Source Problem",
             ("Please set or create a data source file\n")
@@ -4700,9 +4700,9 @@ class XChemExplorer(QtGui.QApplication):
             + ("- Settings -> Select Data Source File\n")
             + ("2. Create a new file\n")
             + ("- Data Source -> Create New Data\nSource (SQLite)"),
-            QtGui.QMessageBox.Cancel,
-            QtGui.QMessageBox.NoButton,
-            QtGui.QMessageBox.NoButton,
+            QtWidgets.QMessageBox.Cancel,
+            QtWidgets.QMessageBox.NoButton,
+            QtWidgets.QMessageBox.NoButton,
         )
 
     def update_progress_bar(self, progress):
@@ -4722,7 +4722,7 @@ class XChemExplorer(QtGui.QApplication):
             text += "{0!s}:\n".format(key)
             for entry in errorDict[key]:
                 text += "  - " + entry + "\n"
-        msgBox = QtGui.QMessageBox()
+        msgBox = QtWidgets.QMessageBox()
         msgBox.setText(text)
         msgBox.exec_()
 
@@ -4765,7 +4765,7 @@ class XChemExplorer(QtGui.QApplication):
             if xtal not in self.data_collection_column_three_dict:
                 # generate all the widgets which can later be appended and add them to
                 # the dictionary table with data processing results for each pipeline
-                data_collection_table = QtGui.QTableWidget()
+                data_collection_table = QtWidgets.QTableWidget()
                 selection_changed_by_user = False
                 self.data_collection_column_three_dict[xtal] = [
                     data_collection_table,
@@ -4787,7 +4787,7 @@ class XChemExplorer(QtGui.QApplication):
             data_collection_table.setHorizontalHeaderLabels(column_name)
             data_collection_table.horizontalHeader().setFont(font)
             data_collection_table.setSelectionBehavior(
-                QtGui.QAbstractItemView.SelectRows
+                QtWidgets.QAbstractItemView.SelectRows
             )
 
             ############################################################################
@@ -4840,7 +4840,7 @@ class XChemExplorer(QtGui.QApplication):
             # sort by aimless_index and so make sure
             for entry in sorted(logfile_list, key=lambda x: x[7]):
                 entry_already_in_table = False  # that aimless_index == row
-                cell_text = QtGui.QTableWidgetItem()
+                cell_text = QtWidgets.QTableWidgetItem()
                 cell_text.setTextAlignment(
                     QtCore.Qt.AlignCenter | QtCore.Qt.AlignCenter
                 )
@@ -4866,7 +4866,7 @@ class XChemExplorer(QtGui.QApplication):
                 if not entry_already_in_table:
                     data_collection_table.insertRow(row_position)
                     for column, header in enumerate(diffraction_data_column_name):
-                        cell_text = QtGui.QTableWidgetItem()
+                        cell_text = QtWidgets.QTableWidgetItem()
                         try:
                             cell_text.setText(str(db_dict[header[1]]))
                         except KeyError:
@@ -4947,7 +4947,7 @@ class XChemExplorer(QtGui.QApplication):
                             break
                 for column, header in enumerate(column_name):
                     if header[0] == "Sample ID":
-                        cell_text = QtGui.QTableWidgetItem()
+                        cell_text = QtWidgets.QTableWidgetItem()
                         cell_text.setText(str(xtal))
                         cell_text.setTextAlignment(
                             QtCore.Qt.AlignCenter | QtCore.Qt.AlignCenter
@@ -4955,21 +4955,21 @@ class XChemExplorer(QtGui.QApplication):
                         self.maps_table.setItem(current_row, column, cell_text)
                     elif header[0] == "Select":
                         if new_xtal:
-                            run_dimple = QtGui.QCheckBox()
+                            run_dimple = QtWidgets.QCheckBox()
                             run_dimple.toggle()
                             self.maps_table.setCellWidget(
                                 current_row, column, run_dimple
                             )
                             run_dimple.setChecked(False)
                     elif header[0] == "Reference\nSpaceGroup":
-                        cell_text = QtGui.QTableWidgetItem()
+                        cell_text = QtWidgets.QTableWidgetItem()
                         cell_text.setText(str(smallest_uc_difference[0][1]))
                         cell_text.setTextAlignment(
                             QtCore.Qt.AlignCenter | QtCore.Qt.AlignCenter
                         )
                         self.maps_table.setItem(current_row, column, cell_text)
                     elif header[0] == "Difference\nUC Volume (%)":
-                        cell_text = QtGui.QTableWidgetItem()
+                        cell_text = QtWidgets.QTableWidgetItem()
                         smallest_uc_difference = min(reference_file, key=lambda x: x[1])
                         cell_text.setText(
                             str(round(float(smallest_uc_difference[1]), 1))
@@ -4980,7 +4980,7 @@ class XChemExplorer(QtGui.QApplication):
                         self.maps_table.setItem(current_row, column, cell_text)
                     elif header[0] == "Reference File":
                         if new_xtal:
-                            reference_file_selection_combobox = QtGui.QComboBox()
+                            reference_file_selection_combobox = QtWidgets.QComboBox()
                             self.populate_reference_combobox(
                                 reference_file_selection_combobox
                             )
@@ -5017,7 +5017,7 @@ class XChemExplorer(QtGui.QApplication):
                             else:
                                 reference_file_selection_combobox.setCurrentIndex(0)
                     else:
-                        cell_text = QtGui.QTableWidgetItem()
+                        cell_text = QtWidgets.QTableWidgetItem()
                         cell_text.setText(str(db_dict[header[1]]))
                         cell_text.setTextAlignment(
                             QtCore.Qt.AlignCenter | QtCore.Qt.AlignCenter
@@ -5203,7 +5203,7 @@ class XChemExplorer(QtGui.QApplication):
 
         for column, header in enumerate(column_name):
             if header[0] == "Sample ID":
-                cell_text = QtGui.QTableWidgetItem()
+                cell_text = QtWidgets.QTableWidgetItem()
                 cell_text.setText(str(xtal))
                 cell_text.setTextAlignment(
                     QtCore.Qt.AlignCenter | QtCore.Qt.AlignCenter
@@ -5212,7 +5212,7 @@ class XChemExplorer(QtGui.QApplication):
 
             elif header[0] == "DataCollection\nOutcome":
                 if xtal not in self.dataset_outcome_combobox_dict:
-                    dataset_outcome_combobox = QtGui.QComboBox()
+                    dataset_outcome_combobox = QtWidgets.QComboBox()
                     for outcomeItem in self.dataset_outcome:
                         dataset_outcome_combobox.addItem(outcomeItem)
                     dataset_outcome_combobox.activated[str].connect(
@@ -5237,13 +5237,13 @@ class XChemExplorer(QtGui.QApplication):
                             "IMAGE_NOT_AVAILABLE.png",
                         )
                     )
-                image = QtGui.QLabel()
+                image = QtWidgets.QLabel()
                 image.resize(128, 80)
                 image.setPixmap(pixmap.scaled(image.size(), QtCore.Qt.KeepAspectRatio))
                 table.setCellWidget(row, column, image)
 
             elif header[0] == "Select":
-                checkbox = QtGui.QCheckBox()
+                checkbox = QtWidgets.QCheckBox()
                 checkbox.toggle()
                 if table == self.deposition_table_apo:
                     if xtal not in self.deposition_table_apo_dict:
@@ -5255,7 +5255,7 @@ class XChemExplorer(QtGui.QApplication):
                 checkbox.setChecked(False)
 
             else:
-                cell_text = QtGui.QTableWidgetItem()
+                cell_text = QtWidgets.QTableWidgetItem()
                 # in case data collection failed for whatever reason
                 try:
                     cell_text.setText(str(db_dict[header[1]]))
@@ -5337,7 +5337,7 @@ class XChemExplorer(QtGui.QApplication):
 
         self.make_data_collection_table()
         # needs to be created here, otherwise the cellClicked function
-        dialog = QtGui.QDialog()
+        dialog = QtWidgets.QDialog()
         # will reference it before it exists
         for db_dict in dbList:
             if (
@@ -5374,7 +5374,7 @@ class XChemExplorer(QtGui.QApplication):
     def make_data_collection_table(self):
         # this creates a new table widget every time
         # more elegant would be to delete or reset an existing widget...
-        self.data_collection_table = QtGui.QTableWidget()
+        self.data_collection_table = QtWidgets.QTableWidget()
         self.data_collection_table.setVerticalScrollBarPolicy(
             QtCore.Qt.ScrollBarAlwaysOff
         )
@@ -5389,13 +5389,13 @@ class XChemExplorer(QtGui.QApplication):
         )
         self.data_collection_table.horizontalHeader().setFont(font)
         self.data_collection_table.setSelectionBehavior(
-            QtGui.QAbstractItemView.SelectRows
+            QtWidgets.QAbstractItemView.SelectRows
         )
         self.data_collection_table.setMinimumWidth(1000)
         self.data_collection_table.setMinimumHeight(500)
 
     def data_collection_table_popup(self, dialog):
-        dialog_layout = QtGui.QGridLayout(dialog)
+        dialog_layout = QtWidgets.QGridLayout(dialog)
         dialog_layout.addWidget(self.data_collection_table)
         dialog.exec_()
 
@@ -5463,7 +5463,7 @@ class XChemExplorer(QtGui.QApplication):
                 stage = dbTmp["RefinementOutcome"].split()[0]
                 print(("===>", key, stage))
                 if int(stage) > 2:
-                    msgBox = QtGui.QMessageBox()
+                    msgBox = QtWidgets.QMessageBox()
                     msgBox.setText(
                         "*** WARNING ***\n"
                         "%s is currently %s\n"
@@ -5471,9 +5471,9 @@ class XChemExplorer(QtGui.QApplication):
                         "when you refresh it next time.\n"
                         "Do you want to continue?" % (key, dbTmp["RefinementOutcome"])
                     )
-                    msgBox.addButton(QtGui.QPushButton("No"), QtGui.QMessageBox.YesRole)
+                    msgBox.addButton(QtWidgets.QPushButton("No"), QtWidgets.QMessageBox.YesRole)
                     msgBox.addButton(
-                        QtGui.QPushButton("Yes"), QtGui.QMessageBox.RejectRole
+                        QtWidgets.QPushButton("Yes"), QtWidgets.QMessageBox.RejectRole
                     )
                     reply = msgBox.exec_()
                     if reply == 0:
@@ -5555,7 +5555,7 @@ class XChemExplorer(QtGui.QApplication):
                             elif header[0].startswith("Show"):
                                 continue
                             else:
-                                cell_text = QtGui.QTableWidgetItem()
+                                cell_text = QtWidgets.QTableWidgetItem()
                                 try:
                                     cell_text.setText(str(db_dict_current[header[1]]))
                                     cell_text.setTextAlignment(
@@ -5610,7 +5610,7 @@ class XChemExplorer(QtGui.QApplication):
                             x = present_rows
                             break
             for y, item in enumerate(columns_to_show):
-                cell_text = QtGui.QTableWidgetItem()
+                cell_text = QtWidgets.QTableWidgetItem()
                 if row[item] is None:
                     cell_text.setText("")
                 else:
@@ -5664,7 +5664,7 @@ class XChemExplorer(QtGui.QApplication):
                             break
                 for column, header in enumerate(column_name):
                     if header[0] == "Exclude":
-                        deselect_button = QtGui.QCheckBox()
+                        deselect_button = QtWidgets.QCheckBox()
                         deselect_button.stateChanged.connect(
                             self.kill_other_pandda_options
                         )
@@ -5673,7 +5673,7 @@ class XChemExplorer(QtGui.QApplication):
                         )
 
                     elif header[0] == "Ignore":
-                        deselect_button = QtGui.QCheckBox()
+                        deselect_button = QtWidgets.QCheckBox()
                         deselect_button.stateChanged.connect(
                             self.kill_other_pandda_options
                         )
@@ -5682,7 +5682,7 @@ class XChemExplorer(QtGui.QApplication):
                         )
 
                     elif header[0] == "Export":
-                        deselect_button = QtGui.QCheckBox()
+                        deselect_button = QtWidgets.QCheckBox()
                         deselect_button.stateChanged.connect(
                             self.kill_other_pandda_options
                         )
@@ -5691,7 +5691,7 @@ class XChemExplorer(QtGui.QApplication):
                         )
 
                     elif header[0] == "Sample ID":
-                        cell_text = QtGui.QTableWidgetItem()
+                        cell_text = QtWidgets.QTableWidgetItem()
                         cell_text.setText(str(xtal))
                         cell_text.setTextAlignment(
                             QtCore.Qt.AlignCenter | QtCore.Qt.AlignCenter
@@ -5700,7 +5700,7 @@ class XChemExplorer(QtGui.QApplication):
                             current_row, column, cell_text
                         )
                     else:
-                        cell_text = QtGui.QTableWidgetItem()
+                        cell_text = QtWidgets.QTableWidgetItem()
                         cell_text.setText(str(db_dict[header[1]]))
                         if header[0] == "PanDDA\nStatus":
                             if str(db_dict[header[1]]) == "running":
@@ -5784,7 +5784,7 @@ class XChemExplorer(QtGui.QApplication):
                             break
                 for column, header in enumerate(column_name):
                     if header[0] == "Sample ID":
-                        cell_text = QtGui.QTableWidgetItem()
+                        cell_text = QtWidgets.QTableWidgetItem()
                         cell_text.setText(str(xtal))
                         cell_text.setTextAlignment(
                             QtCore.Qt.AlignCenter | QtCore.Qt.AlignCenter
@@ -5793,7 +5793,7 @@ class XChemExplorer(QtGui.QApplication):
 
                     elif header[0] == "Refinement\nOutcome":
                         if new_xtal:
-                            refinement_outcome_combobox = QtGui.QComboBox()
+                            refinement_outcome_combobox = QtWidgets.QComboBox()
                             self.populate_refinement_outcome_combobox(
                                 refinement_outcome_combobox
                             )
@@ -5817,7 +5817,7 @@ class XChemExplorer(QtGui.QApplication):
                         ref_name = buster_report.split("/")[
                             len(buster_report.split("/")) - 2
                         ]
-                        buster_report_link = QtGui.QLabel(
+                        buster_report_link = QtWidgets.QLabel(
                             '<a href="{0!s}">{1!s}</a>'.format(buster_report, ref_name)
                         )
                         buster_report_link.setOpenExternalLinks(True)
@@ -5825,7 +5825,7 @@ class XChemExplorer(QtGui.QApplication):
                             current_row, column, buster_report_link
                         )
                     else:
-                        cell_text = QtGui.QTableWidgetItem()
+                        cell_text = QtWidgets.QTableWidgetItem()
                         cell_text.setText(str(db_dict[header[1]]))
                         if header[0] == "Refinement\nStatus":
                             if str(db_dict[header[1]]) == "running":

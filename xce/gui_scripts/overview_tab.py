@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
-from PyQt4 import QtGui
+from PyQt5 import QtGui, QtWidgets
 
 from xce.gui_scripts import layout_functions
 
@@ -14,7 +14,7 @@ class OverviewTab:
         ################################################################################
         # define subtab list, widget and dict
         overview_tab_list = ["Data Source", "Summary"]
-        xce_object.overview_tab_widget = QtGui.QTabWidget()
+        xce_object.overview_tab_widget = QtWidgets.QTabWidget()
         xce_object.overview_tab_dict = {}
 
         # make subtabs
@@ -25,7 +25,7 @@ class OverviewTab:
         )
 
         # initiate the table in overview/datasource
-        xce_object.overview_datasource_table = QtGui.QTableWidget()
+        xce_object.overview_datasource_table = QtWidgets.QTableWidget()
         xce_object.overview_datasource_table.setSortingEnabled(True)
         xce_object.overview_datasource_table.resizeColumnsToContents()
 

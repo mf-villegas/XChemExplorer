@@ -6,7 +6,7 @@ import paramiko
 import time
 import traceback
 import gtk
-from PyQt4 import QtGui
+from PyQt5 import QtGui, QtWidgets
 from datetime import datetime
 from xce.lib.XChemLog import updateLog
 from uuid import uuid4
@@ -24,8 +24,8 @@ POPUP_TITLE = "SLURM Authentication"
 
 
 def fetch_password_qt(password_prompt):
-    password, ok = QtGui.QInputDialog.getText(
-        None, POPUP_TITLE, password_prompt, mode=QtGui.QLineEdit.Password
+    password, ok = QtWidgets.QInputDialog.getText(
+        None, POPUP_TITLE, password_prompt, mode=QtWidgets.QLineEdit.Password
     )
     return password if ok else None
 
