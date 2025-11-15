@@ -2,7 +2,17 @@ import multiprocessing
 import os
 
 from PyQt5 import QtCore, QtGui
-from PyQt5.QtWebEngineWidgets import QWebEngineView
+
+# Try to import QtWebEngineWidgets, fall back to simpler widgets if not available
+try:
+    from PyQt5.QtWebEngineWidgets import QWebEngineView
+    WEBENGINE_AVAILABLE = True
+except ImportError:
+    # Fallback to QTextBrowser for displaying HTML if QtWebEngine not available
+    from PyQt5.QtWidgets import QTextBrowser
+    QWebEngineView = QTextBrowser  # Use as a drop-in replacement
+    WEBENGINE_AVAILABLE = False
+    print("==> XCE: QtWebEngine not available, using text browser for HTML display")
 
 from xce.gui_scripts import layout_functions
 
