@@ -6,7 +6,7 @@ import pickle
 import sys
 from datetime import datetime
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 
 from xce.gui_scripts import layout, layout_functions, stylesheet
 from xce.lib import (

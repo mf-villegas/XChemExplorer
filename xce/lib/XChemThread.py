@@ -5,7 +5,7 @@ import os
 import pickle
 from datetime import datetime
 
-from PyQt4 import QtCore
+from PyQt5 import QtCore
 
 from xce.lib import XChemDB
 from xce.lib import XChemLog

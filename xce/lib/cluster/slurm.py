@@ -6,7 +6,7 @@ import paramiko
 import time
 import traceback
 import gtk
-from PyQt4 import QtGui
+from PyQt5 import QtGui
 from datetime import datetime
 from xce.lib.XChemLog import updateLog
 from uuid import uuid4

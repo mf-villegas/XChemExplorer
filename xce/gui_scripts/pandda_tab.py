@@ -1,7 +1,8 @@
 import multiprocessing
 import os
 
-from PyQt4 import QtCore, QtGui, QtWebKit
+from PyQt5 import QtCore, QtGui
+from PyQt5.QtWebEngineWidgets import QWebEngineView
 
 from xce.gui_scripts import layout_functions
 
@@ -324,7 +325,7 @@ class PanddaTab:
 
         # these are still currently populated in XCE.py - change
         xce_object.pandda_map_list = QtGui.QComboBox()
-        xce_object.pandda_maps_html = QtWebKit.QWebView()
+        xce_object.pandda_maps_html = QWebEngineView()
 
         # statistical map summaries vbox, add to vbox and add to layout
         xce_object.pandda_map_layout = QtGui.QVBoxLayout()
@@ -378,19 +379,19 @@ class PanddaTab:
         # next three blocks display html documents created by pandda.analyse
         layout_functions.pandda_html(xce_object)
 
-        xce_object.pandda_initial_html = QtWebKit.QWebView()
+        xce_object.pandda_initial_html = QWebEngineView()
         xce_object.pandda_initial_html.load(
             QtCore.QUrl(xce_object.pandda_initial_html_file)
         )
         xce_object.pandda_initial_html.show()
 
-        xce_object.pandda_analyse_html = QtWebKit.QWebView()
+        xce_object.pandda_analyse_html = QWebEngineView()
         xce_object.pandda_analyse_html.load(
             QtCore.QUrl(xce_object.pandda_analyse_html_file)
         )
         xce_object.pandda_analyse_html.show()
 
-        xce_object.pandda_inspect_html = QtWebKit.QWebView()
+        xce_object.pandda_inspect_html = QWebEngineView()
         xce_object.pandda_analyse_html.load(
             QtCore.QUrl(xce_object.pandda_inspect_html_file)
         )

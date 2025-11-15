@@ -1,6 +1,6 @@
 import os
 
-from PyQt4 import QtGui
+from PyQt5 import QtGui
 
 from xce.gui_scripts.datasets_tab import DatasetsTab
 from xce.gui_scripts.deposition_tab import DepositionTab
