@@ -113,7 +113,7 @@ def bottom_box_setup(
     hboxAction.addLayout(vboxButton)
     vbox.addLayout(hboxAction)
     vbox.setSpacing(0)
-    vbox.setMargin(0)
+    vbox.setContentsMargins(0, 0, 0, 0)  # Qt5: setMargin() replaced with setContentsMargins()
     frame.setLayout(vbox)
     frame.setMaximumWidth((xce_object.screen.width() - 20) / 5)
 
