@@ -12,19 +12,19 @@ class SettingsTab:
         #                                 SETTINGS TAB                                 #
         #                                                                              #
         ################################################################################
-        xce_object.settings_container = QtGui.QWidget()
-        xce_object.buttons_etc = QtGui.QWidget()
-        xce_object.settings_vbox = QtGui.QVBoxLayout()
+        xce_object.settings_container = QtWidgets.QWidget()
+        xce_object.buttons_etc = QtWidgets.QWidget()
+        xce_object.settings_vbox = QtWidgets.QVBoxLayout()
 
-        xce_object.scroll = QtGui.QScrollArea(xce_object.settings_container)
+        xce_object.scroll = QtWidgets.QScrollArea(xce_object.settings_container)
         xce_object.settings_vbox.addWidget(xce_object.scroll)
-        scrollContent_settings = QtGui.QWidget(xce_object.scroll)
+        scrollContent_settings = QtWidgets.QWidget(xce_object.scroll)
 
-        scrollLayout_settings = QtGui.QVBoxLayout(scrollContent_settings)
+        scrollLayout_settings = QtWidgets.QVBoxLayout(scrollContent_settings)
         scrollContent_settings.setLayout(scrollLayout_settings)
 
         # Settings Tab
-        xce_object.data_collection_vbox_for_settings = QtGui.QVBoxLayout()
+        xce_object.data_collection_vbox_for_settings = QtWidgets.QVBoxLayout()
 
         xce_object.buttons_etc.setLayout(xce_object.data_collection_vbox_for_settings)
         xce_object.scroll.setWidget(xce_object.buttons_etc)
@@ -70,22 +70,22 @@ class SettingsTab:
             )
 
         xce_object.data_collection_vbox_for_settings.addWidget(
-            QtGui.QLabel(
+            QtWidgets.QLabel(
                 "\n\n<b>Data Collection Directory:"
                 " (e.g. /dls/i04-1/data/2017/lb18145-70) -</b>"
             )
         )
 
-        settings_beamline_frame = QtGui.QFrame()
-        settings_beamline_frame.setFrameShape(QtGui.QFrame.StyledPanel)
-        settings_beamline_vbox = QtGui.QVBoxLayout()
+        settings_beamline_frame = QtWidgets.QFrame()
+        settings_beamline_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        settings_beamline_vbox = QtWidgets.QVBoxLayout()
 
-        settings_hbox_beamline_directory = QtGui.QHBoxLayout()
-        xce_object.beamline_directory_label = QtGui.QLabel(
+        settings_hbox_beamline_directory = QtWidgets.QHBoxLayout()
+        xce_object.beamline_directory_label = QtWidgets.QLabel(
             xce_object.beamline_directory
         )
         settings_hbox_beamline_directory.addWidget(xce_object.beamline_directory_label)
-        settings_button_beamline_directory = QtGui.QPushButton(
+        settings_button_beamline_directory = QtWidgets.QPushButton(
             "Select Data Collection Directory"
         )
         settings_button_beamline_directory.setMaximumWidth(500)
@@ -96,7 +96,7 @@ class SettingsTab:
 
         settings_hbox_beamline_directory.addWidget(settings_button_beamline_directory)
         settings_beamline_vbox.addLayout(settings_hbox_beamline_directory)
-        xce_object.read_agamemnon = QtGui.QCheckBox("Read Agamemnon data structure")
+        xce_object.read_agamemnon = QtWidgets.QCheckBox("Read Agamemnon data structure")
         xce_object.read_agamemnon.setChecked(True)
         settings_beamline_vbox.addWidget(xce_object.read_agamemnon)
 

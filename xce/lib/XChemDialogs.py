@@ -3,7 +3,7 @@ from PyQt5 import QtCore, QtGui
 from xce.lib import XChemDB
 
 
-class select_columns_to_show(QtGui.QDialog):
+class select_columns_to_show(QtWidgets.QDialog):
     def __init__(self, data_source_file, parent=None):
         super(select_columns_to_show, self).__init__(parent)
         self.columns_in_data_source = XChemDB.data_source(
@@ -12,16 +12,16 @@ class select_columns_to_show(QtGui.QDialog):
 
         self.column_dict = {}
 
-        layout = QtGui.QVBoxLayout(self)
+        layout = QtWidgets.QVBoxLayout(self)
         number_of_entries = len(self.columns_in_data_source)
         columns_shown_in_dialog_column = 25
-        grid = QtGui.QGridLayout()
+        grid = QtWidgets.QGridLayout()
         x = 0
         y = 0
         columns_to_ignore = ["Sample ID", "ID"]
         for entries_added in range(number_of_entries):
             if not self.columns_in_data_source[entries_added][1] in columns_to_ignore:
-                data_source_column = QtGui.QCheckBox(
+                data_source_column = QtWidgets.QCheckBox(
                     self.columns_in_data_source[entries_added][1]
                 )
                 self.column_dict[entries_added] = data_source_column
@@ -34,8 +34,8 @@ class select_columns_to_show(QtGui.QDialog):
         layout.addLayout(grid)
 
         # OK and Cancel buttons
-        buttons = QtGui.QDialogButtonBox(
-            QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel,
+        buttons = QtWidgets.QDialogButtonBox(
+            QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel,
             QtCore.Qt.Horizontal,
             self,
         )
