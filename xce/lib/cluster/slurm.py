@@ -5,14 +5,29 @@ import http.client
 import paramiko
 import time
 import traceback
+import sys
 
-# GTK is only available in Python 2 and needed for Coot plugins
-# Make it optional for Python 3 compatibility
-try:
-    import gtk
-    HAS_GTK = True
-except (ImportError, ModuleNotFoundError):
-    HAS_GTK = False
+# GTK import - migrate from Python 2 PyGTK to Python 3 PyGObject
+if sys.version_info[0] >= 3:
+    # Python 3: Use PyGObject (GTK3)
+    try:
+        import gi
+        gi.require_version('Gtk', '3.0')
+        from gi.repository import Gtk
+        HAS_GTK = True
+        GTK_VERSION = 3
+    except (ImportError, ValueError):
+        HAS_GTK = False
+        GTK_VERSION = None
+else:
+    # Python 2: Use PyGTK (GTK2)
+    try:
+        import gtk
+        HAS_GTK = True
+        GTK_VERSION = 2
+    except ImportError:
+        HAS_GTK = False
+        GTK_VERSION = None
 
 from PyQt5 import QtGui, QtWidgets
 from datetime import datetime
@@ -41,32 +56,58 @@ def fetch_password_qt(password_prompt):
 def fetch_password_gtk(password_prompt):
     """
     GTK password dialog for Coot plugins.
-    Falls back to Qt dialog if GTK is not available (Python 3).
+    Supports both GTK2 (Python 2) and GTK3 (Python 3).
+    Falls back to Qt dialog if GTK is not available.
     """
     if not HAS_GTK:
         # Fallback to Qt dialog when GTK is not available
         print("Warning: GTK not available, using Qt dialog instead")
         return fetch_password_qt(password_prompt)
 
-    dialog = gtk.MessageDialog(
-        None,
-        gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-        gtk.MESSAGE_QUESTION,
-        gtk.BUTTONS_OK_CANCEL,
-        None,
-    )
-    dialog.set_title(POPUP_TITLE)
-    dialog.set_markup(password_prompt)
+    if GTK_VERSION == 3:
+        # Python 3: GTK3 via PyGObject
+        dialog = Gtk.MessageDialog(
+            transient_for=None,
+            flags=Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+            message_type=Gtk.MessageType.QUESTION,
+            buttons=Gtk.ButtonsType.OK_CANCEL,
+            text=None,
+        )
+        dialog.set_title(POPUP_TITLE)
+        dialog.set_markup(password_prompt)
 
-    entry = gtk.Entry()
-    entry.set_visibility(False)
-    dialog.vbox.pack_end(entry)
-    dialog.show_all()
+        entry = Gtk.Entry()
+        entry.set_visibility(False)
+        content_area = dialog.get_content_area()
+        content_area.pack_end(entry, True, True, 0)
+        dialog.show_all()
 
-    dialog.run()
-    password = entry.get_text()
-    dialog.destroy()
-    return password
+        response = dialog.run()
+        password = entry.get_text() if response == Gtk.ResponseType.OK else None
+        dialog.destroy()
+        return password
+
+    else:
+        # Python 2: GTK2 via PyGTK
+        dialog = gtk.MessageDialog(
+            None,
+            gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+            gtk.MESSAGE_QUESTION,
+            gtk.BUTTONS_OK_CANCEL,
+            None,
+        )
+        dialog.set_title(POPUP_TITLE)
+        dialog.set_markup(password_prompt)
+
+        entry = gtk.Entry()
+        entry.set_visibility(False)
+        dialog.vbox.pack_end(entry)
+        dialog.show_all()
+
+        dialog.run()
+        password = entry.get_text()
+        dialog.destroy()
+        return password
 
 
 def get_token(fetch_password, error=None):
