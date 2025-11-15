@@ -87,7 +87,7 @@ class LayoutObjects:
             xce_object.dataset_tasks,
             "XChemToolTips." "dataset_task_tip()",
             dataset_buttons,
-            "",  # Removed hardcoded background color for OS theme compatibility
+            "background: rgb(220, 220, 100);",  # Muted yellow - works in light/dark modes
         )
 
         # define the combobox and buttons in dictionary key to determine behaviour
@@ -137,7 +137,7 @@ class LayoutObjects:
             xce_object.map_cif_file_tasks,
             "XChemToolTips.map_cif_file_" "task_tip()",
             map_cif_file_buttons,
-            "",  # Removed hardcoded background color for OS theme compatibility
+            "background: rgb(100, 220, 120);",  # Muted green - works in light/dark modes
         )
 
         # define the combobox and buttons in dictionary key to determine behaviour
@@ -187,7 +187,7 @@ class LayoutObjects:
             xce_object.panddas_file_tasks,
             "XChemToolTips.panddas_file_" "task_tip()",
             panddas_file_buttons,
-            "",  # Removed hardcoded background color for OS theme compatibility
+            "background: rgb(100, 180, 230);",  # Muted blue - works in light/dark modes
         )
 
         # define the combobox and buttons in dictionary key to determine behaviour
@@ -237,7 +237,7 @@ class LayoutObjects:
             xce_object.refine_file_tasks,
             "XChemToolTips.refine_file_task" "_tip()",
             refine_file_buttons,
-            "",  # Removed hardcoded background color for OS theme compatibility
+            "background: rgb(220, 160, 230);",  # Muted purple - works in light/dark modes
         )
 
         # define the combobox and buttons in dictionary key to determine behaviour

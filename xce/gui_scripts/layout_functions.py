@@ -90,10 +90,11 @@ def bottom_box_setup(
     vbox = QtWidgets.QVBoxLayout()
     label = QtWidgets.QLabel(label)
     label.setAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
-    # Removed hardcoded colors to support OS theme (light/dark mode)
+    # Add accent color with black text for readability on colored backgrounds
     label.setStyleSheet(
         "QLabel { border: 1px solid palette(mid); border-radius: 1px; "
-        "padding: 3px; margin: 0px; font: bold 14pt }"
+        + str(colour) +
+        "color: rgb(0, 0, 0); padding: 3px; margin: 0px; font: bold 14pt }"
     )
     vbox.addWidget(label)
 

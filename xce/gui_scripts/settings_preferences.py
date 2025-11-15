@@ -649,9 +649,8 @@ class setup:
                     [
                         "XChemToolTips.update_from_datasource_button_tip()",
                         # tooltip
-                        "QPushButton { padding: 1px; margin: 1px; "
-                        "background: rgb(197,197,197) }",
-                        # stylesheet
+                        "QPushButton { padding: 1px; margin: 1px; }",
+                        # stylesheet - removed hardcoded background for theme compatibility
                         "xce_object.headlineLabelfont",  # font
                         "xce_object.datasource_menu_reload_samples",
                     ]
