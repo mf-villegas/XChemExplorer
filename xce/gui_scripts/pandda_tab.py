@@ -10,7 +10,31 @@ try:
 except ImportError:
     # Fallback to QTextBrowser for displaying HTML if QtWebEngine not available
     from PyQt5.QtWidgets import QTextBrowser
-    QWebEngineView = QTextBrowser  # Use as a drop-in replacement
+
+    # Create a wrapper class to make QTextBrowser compatible with QWebEngineView API
+    class QWebEngineView(QTextBrowser):
+        """Wrapper around QTextBrowser to provide QWebEngineView-like interface"""
+        def load(self, url):
+            """Load HTML from a file URL (compatible with QWebEngineView.load())"""
+            # Convert QUrl to string path
+            if hasattr(url, 'toLocalFile'):
+                file_path = url.toLocalFile()
+            elif hasattr(url, 'toString'):
+                file_path = url.toString().replace('file://', '')
+            else:
+                file_path = str(url).replace('file://', '')
+
+            # Try to read and display the HTML file
+            try:
+                if os.path.isfile(file_path):
+                    with open(file_path, 'r') as f:
+                        html_content = f.read()
+                    self.setHtml(html_content)
+                else:
+                    self.setHtml(f"<p>File not found: {file_path}</p>")
+            except Exception as e:
+                self.setHtml(f"<p>Error loading file: {str(e)}</p>")
+
     WEBENGINE_AVAILABLE = False
     print("==> XCE: QtWebEngine not available, using text browser for HTML display")
 
