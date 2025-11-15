@@ -1,12 +1,12 @@
 import os
 
-from PyQt5 import QtGui
+from PyQt5 import QtGui, QtWidgets
 
 
 def set_stylesheet(xce_object):
     palette = QtGui.QPalette()
 
-    palette.setColor(QtGui.QPalette.Background, QtGui.QColor("#ececec"))
+    palette.setColor(QtGui.QPalette.Window, QtGui.QColor("#ececec"))  # PyQt5: Background -> Window
     xce_object.setPalette(palette)
 
     icons_directory = os.path.join((os.getenv("XChemExplorer_DIR")), "xce/icons")
@@ -83,4 +83,10 @@ def set_stylesheet(xce_object):
     """
     )
 
-    QtGui.qApp.setStyle("Cleanlooks")
+    # PyQt5: qApp is in QtWidgets, not QtGui
+    # Also, "Cleanlooks" style was removed - use "Fusion" as modern alternative
+    try:
+        QtWidgets.QApplication.instance().setStyle("Fusion")
+    except:
+        # If style not available, just continue
+        pass
