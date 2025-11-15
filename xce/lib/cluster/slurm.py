@@ -57,12 +57,18 @@ def fetch_password_gtk(password_prompt):
     """
     GTK password dialog for Coot plugins.
     Supports both GTK2 (Python 2) and GTK3 (Python 3).
-    Falls back to Qt dialog if GTK is not available.
+
+    Raises ImportError if GTK is not available - this is intentional
+    as GTK is required for Coot plugin functionality.
     """
     if not HAS_GTK:
-        # Fallback to Qt dialog when GTK is not available
-        print("Warning: GTK not available, using Qt dialog instead")
-        return fetch_password_qt(password_prompt)
+        error_msg = (
+            "GTK is not available but is required for Coot plugins.\n"
+            "For Python 3, please install PyGObject:\n"
+            "  ccp4-python -m pip install --user PyGObject\n"
+            "For Python 2, PyGTK should be pre-installed in CCP4."
+        )
+        raise ImportError(error_msg)
 
     if GTK_VERSION == 3:
         # Python 3: GTK3 via PyGObject
