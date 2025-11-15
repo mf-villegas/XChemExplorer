@@ -415,7 +415,7 @@ def main(argv):
             for row in rows:
                 # Make compound structure
                 print(row["ModelName"], row["PANDDA_site_spider_plot"])
-                compound = Chem.MolFromSmiles(row["CompoundSMILES"].encode("ascii"))
+                compound = Chem.MolFromSmiles(row["CompoundSMILES"])
                 Draw.MolToFile(
                     compound,
                     panddadir + "/compoundImages/" + row["CompoundCode"] + ".png",

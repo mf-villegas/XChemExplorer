@@ -1,7 +1,7 @@
 import os
 import ssl
 import json
-import httplib
+import http.client
 import paramiko
 import time
 import traceback
@@ -73,7 +73,7 @@ def get_token(fetch_password, error=None):
         stdin, stdout, stderr = ssh.exec_command("scontrol token lifespan=3600")
         if stdout.channel.recv_exit_status() != 0:
             return get_token(fetch_password, error="Token Acquisition Failed")
-        final_line = stdout.next()
+        final_line = next(stdout)
         for final_line in stdout:
             continue
         TOKEN = final_line.split("=")[1].strip()
@@ -123,7 +123,7 @@ def submit_cluster_job(
     body = json.dumps(payload)
     logfile = updateLog(xce_logfile)
     logfile.insert("Submitting job, '{}', to Slurm with body: {}".format(name, body))
-    connection = httplib.HTTPSConnection(
+    connection = http.client.HTTPSConnection(
         CLUSTER_HOST, CLUSTER_PORT, context=ssl._create_unverified_context()
     )
     connection.request(
@@ -134,7 +134,7 @@ def submit_cluster_job(
 
 
 def query_running_jobs(xce_logfile, token):
-    connection = httplib.HTTPSConnection(
+    connection = http.client.HTTPSConnection(
         CLUSTER_HOST,
         CLUSTER_PORT,
         context=ssl._create_unverified_context(),

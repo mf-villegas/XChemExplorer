@@ -1219,7 +1219,7 @@ class data_source:
         samples_sites_in_table = []
         tmp = cursor.fetchall()
         for item in tmp:
-            line = [x.encode("UTF8") for x in list(item)]
+            line = list(item)
             samples_sites_in_table.append(line)
 
         found_sample_site = False
@@ -1297,7 +1297,7 @@ class data_source:
         samples_in_table = []
         tmp = cursor.fetchall()
         for item in tmp:
-            line = [x.encode("UTF8") for x in list(item)]
+            line = list(item)
             if str(item) not in samples_in_table:
                 samples_in_table.append(str(line[0]))
 
@@ -1411,7 +1411,7 @@ class data_source:
                     tmpx.append("None")
                 else:
                     tmpx.append(i)
-            line = [x.encode("UTF8") for x in tmpx]
+            line = tmpx
             sample_list_for_coot.append(line)
 
         crystalDict = {}
@@ -1705,7 +1705,7 @@ class data_source:
         try:
             if (
                 "false" in str(outcome[0]).lower()
-                or str(outcome[0]).encode("ascii", "ignore") == ""
+                or str(outcome[0]) == ""
             ):
                 userassigned = (
                     True  # a bit counterintuitive, but here we ask about userassigned
