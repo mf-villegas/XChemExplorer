@@ -49,7 +49,7 @@ class XChemExplorer(QtWidgets.QApplication):
         # GUI setup
         self.window = QtWidgets.QWidget()
         self.window.setWindowTitle("XChemExplorer")
-        self.screen = QtGui.QDesktopWidget().screenGeometry()
+        self.screen = QtWidgets.QDesktopWidget().screenGeometry()
 
         layout.LayoutObjects().workflow(self)
         layout.LayoutObjects().main_layout(self)
@@ -4818,7 +4818,7 @@ class XChemExplorer(QtWidgets.QApplication):
             data_collection_table.setHorizontalHeaderLabels(column_name)
             data_collection_table.horizontalHeader().setFont(font)
             data_collection_table.setSelectionBehavior(
-                QtGui.QAbstractItemView.SelectRows
+                QtWidgets.QAbstractItemView.SelectRows
             )
 
             ############################################################################
@@ -5420,7 +5420,7 @@ class XChemExplorer(QtWidgets.QApplication):
         )
         self.data_collection_table.horizontalHeader().setFont(font)
         self.data_collection_table.setSelectionBehavior(
-            QtGui.QAbstractItemView.SelectRows
+            QtWidgets.QAbstractItemView.SelectRows
         )
         self.data_collection_table.setMinimumWidth(1000)
         self.data_collection_table.setMinimumHeight(500)

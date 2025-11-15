@@ -61,7 +61,7 @@ class DatasetsTab:
         xce_object.datasets_summary_table.resizeRowsToContents()
         xce_object.datasets_summary_table.resizeColumnsToContents()
         xce_object.datasets_summary_table.setSelectionBehavior(
-            QtGui.QAbstractItemView.SelectRows
+            QtWidgets.QAbstractItemView.SelectRows
         )
         xce_object.datasets_summary_table.cellClicked.connect(
             xce_object.show_results_from_all_pipelines
