@@ -3,14 +3,23 @@ import glob
 import os
 from datetime import datetime
 
-import gtk
-import pygtk
+# gtk and pygtk are Python 2 only - make them optional
+try:
+    import gtk
+    import pygtk
+    pygtk.require("2.0")
+    GTK_AVAILABLE = True
+except ImportError:
+    GTK_AVAILABLE = False
+    # Create dummy gtk module to prevent errors in class definitions
+    class DummyGTK:
+        pass
+    gtk = DummyGTK()
+    print("==> XCE: GTK not available - legacy refinement GUI disabled (command-line refinement still works)")
 
 from xce.lib import XChemLog
 from xce.lib import XChemUtils
 from xce.lib.cluster import slurm
-
-pygtk.require("2.0")
 
 
 def GetSerial(ProjectPath, xtalID):
@@ -44,6 +53,10 @@ class RefineParams(object):
         self.datasource = datasource
 
     def RefmacRefinementParams(self, RefmacParams):
+        if not GTK_AVAILABLE:
+            print("==> XCE: Cannot open refinement parameters GUI - GTK not available")
+            print("==> XCE: Using default refinement parameters")
+            return
         self.RefmacParams = RefmacParams
         self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
         self.window.connect("delete_event", gtk.main_quit)
