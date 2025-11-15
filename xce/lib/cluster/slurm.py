@@ -5,7 +5,15 @@ import http.client
 import paramiko
 import time
 import traceback
-import gtk
+
+# GTK is only available in Python 2 and needed for Coot plugins
+# Make it optional for Python 3 compatibility
+try:
+    import gtk
+    HAS_GTK = True
+except (ImportError, ModuleNotFoundError):
+    HAS_GTK = False
+
 from PyQt5 import QtGui, QtWidgets
 from datetime import datetime
 from xce.lib.XChemLog import updateLog
@@ -31,6 +39,15 @@ def fetch_password_qt(password_prompt):
 
 
 def fetch_password_gtk(password_prompt):
+    """
+    GTK password dialog for Coot plugins.
+    Falls back to Qt dialog if GTK is not available (Python 3).
+    """
+    if not HAS_GTK:
+        # Fallback to Qt dialog when GTK is not available
+        print("Warning: GTK not available, using Qt dialog instead")
+        return fetch_password_qt(password_prompt)
+
     dialog = gtk.MessageDialog(
         None,
         gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
