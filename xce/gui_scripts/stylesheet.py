@@ -4,89 +4,31 @@ from PyQt5 import QtGui, QtWidgets
 
 
 def set_stylesheet(xce_object):
-    palette = QtGui.QPalette()
-
-    palette.setColor(QtGui.QPalette.Window, QtGui.QColor("#ececec"))  # PyQt5: Background -> Window
-    xce_object.setPalette(palette)
+    # Use native OS theme for better compatibility with light/dark mode
+    # Only apply minimal styling for layout and spacing
 
     icons_directory = os.path.join((os.getenv("XChemExplorer_DIR")), "xce/icons")
 
+    # Minimal stylesheet that respects OS theme colors
     xce_object.setStyleSheet(
         """
-    QApplication {
-    padding: 0px;
+    QPushButton {
+    padding: 3px;
     }
-    QMenuBar {
-    background-color: rgb(236, 236, 236);
-    }
-    QMenuBar::item {
-    background-color: rgb(236, 236, 236);
-    }
-    QMenu {
-    background-color: rgb(236, 236, 236);
-    border: 1px solid rgb(184, 192, 210);
-    }
-    QMenu::item::selected {
-    background-color: rgb(28, 105, 241);
-    color: rgb(255, 255, 255);
-    }
-    QComboBox {
-    background-color: rgb(255, 255, 255);
-    selection-background-color: rgb(28, 105, 241);
-    border: 1px solid rgb(184, 192, 210);
-    }
-    QComboBox QAbstractItemView {
-    background: rgb(255, 255, 255);
-    border: 1px solid rgb(184, 192, 210);
+    QTabBar::tab {
+    padding: 3px;
     }
     QComboBox::down-arrow {
     image: url("""
         + icons_directory
         + """/drop-down.png);
-    background-color: rgb(255, 255, 255);
-    }
-    QComboBox::drop-down {
-    background-color: rgb(255, 255, 255);
-    }
-    QPushButton {
-    background-color: rgb(214, 230, 244);
-    border: 1px solid rgb(184, 192, 210);
-    padding: 3px;
-    }
-    QFrame {
-    background-color: rgb(236, 236, 236);
-    }
-    QTableWidget {
-    background-color: rgb(255, 255, 255);
-    }
-    QHeaderView::section {
-    background-color: rgb(236, 236, 236);
-    border: 1px solid rgb(184, 192, 210);
-    }
-    QTabWidget::pane {
-    border-top: 1px solid rgb(184, 192, 210);
-    border-bottom: 1px solid rgb(184, 192, 210);
-    }
-    QTabBar::tab {
-    background-color: rgb(197,197,197);
-    border: 1px solid rgb(184, 192, 210);
-    padding: 3px;
-    }
-    QTabBar::tab::selected {
-    background-color: rgb(214, 230, 244);
-    border: 1px solid rgb(184, 192, 210);
-    padding: 3px;
-    }
-    QScrollBar {
-    background:  rgb(236, 236, 236);
     }
     """
     )
 
-    # PyQt5: qApp is in QtWidgets, not QtGui
-    # Also, "Cleanlooks" style was removed - use "Fusion" as modern alternative
+    # Use Fusion style which adapts well to both light and dark themes
     try:
         QtWidgets.QApplication.instance().setStyle("Fusion")
     except:
-        # If style not available, just continue
+        # If Fusion not available, use default OS style
         pass
