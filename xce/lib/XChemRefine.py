@@ -1,16 +1,55 @@
 import getpass
 import glob
 import os
+import sys
 from datetime import datetime
-
-import gtk
-import pygtk
 
 from xce.lib import XChemLog
 from xce.lib import XChemUtils
 from xce.lib.cluster import slurm
 
-pygtk.require("2.0")
+# GTK import - migrate from Python 2 PyGTK to Python 3 PyGObject
+# GTK is used for refinement parameter dialogs (mainly in Coot plugins)
+if sys.version_info[0] >= 3:
+    # Python 3: Use PyGObject (GTK3)
+    try:
+        import gi
+        gi.require_version('Gtk', '3.0')
+        from gi.repository import Gtk as gtk
+        HAS_GTK = True
+        GTK_VERSION = 3
+    except (ImportError, ValueError):
+        # GTK not available - will raise error if refinement dialogs are used
+        gtk = None
+        HAS_GTK = False
+        GTK_VERSION = None
+else:
+    # Python 2: Use PyGTK (GTK2)
+    try:
+        import gtk
+        import pygtk
+        pygtk.require("2.0")
+        HAS_GTK = True
+        GTK_VERSION = 2
+    except ImportError:
+        gtk = None
+        HAS_GTK = False
+        GTK_VERSION = None
+
+
+def _check_gtk_available():
+    """
+    Check if GTK is available, raise ImportError with instructions if not.
+    Called by GTK dialog classes.
+    """
+    if not HAS_GTK:
+        error_msg = (
+            "GTK is not available but is required for refinement parameter dialogs.\n"
+            "For Python 3, please install PyGObject:\n"
+            "  ccp4-python -m pip install --user PyGObject\n"
+            "For Python 2, PyGTK should be pre-installed in CCP4."
+        )
+        raise ImportError(error_msg)
 
 
 def GetSerial(ProjectPath, xtalID):
@@ -44,6 +83,7 @@ class RefineParams(object):
         self.datasource = datasource
 
     def RefmacRefinementParams(self, RefmacParams):
+        _check_gtk_available()  # Ensure GTK is available before creating dialogs
         self.RefmacParams = RefmacParams
         self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
         self.window.connect("delete_event", gtk.main_quit)
@@ -1200,6 +1240,7 @@ class Refine(object):
         )
 
     def RefinementParams(self, RefmacParams):
+        _check_gtk_available()  # Ensure GTK is available before creating dialogs
         self.RefmacParams = RefmacParams
         self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
         self.window.connect("delete_event", gtk.main_quit)
@@ -2167,6 +2208,7 @@ class panddaRefine(object):
         )
 
     def RefinementParams(self, RefmacParams):
+        _check_gtk_available()  # Ensure GTK is available before creating dialogs
         self.RefmacParams = RefmacParams
         self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
         self.window.connect("delete_event", gtk.main_quit)
