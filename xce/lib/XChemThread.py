@@ -21,7 +21,20 @@ from xce.lib.cluster import slurm
 from iotbx.reflection_file_reader import any_reflection_file
 
 
-class synchronise_db_and_filesystem(QtCore.QThread):
+# PyQt5 compatibility base class for threads
+class XChemQThread(QtCore.QThread):
+    """Base class for XChem threads with PyQt5 signal compatibility"""
+
+    # Define common signals used across all thread classes
+    update_status_bar = QtCore.pyqtSignal(str)
+    update_progress_bar = QtCore.pyqtSignal(int)
+    datasource_menu_reload_samples = QtCore.pyqtSignal()
+    read_pinIDs_from_gda_logs = QtCore.pyqtSignal()
+    populate_datasets_summary_table_NEW = QtCore.pyqtSignal()
+    finished = QtCore.pyqtSignal()
+
+
+class synchronise_db_and_filesystem(XChemQThread):
     """
     - remove broken links
     - insert new samples in DB
@@ -56,7 +69,8 @@ class synchronise_db_and_filesystem(QtCore.QThread):
         self.xtal_list = []
         progress_step = 1
         progress = 0
-        self.emit(QtCore.SIGNAL("update_progress_bar"), progress)
+        # PyQt5: Use new-style signal emission
+        self.update_progress_bar.emit(int(progress))
         if self.mode != "project_directory":
             # if only a single xtal is synched, then self.mode==xtalID
             self.Logfile.insert("synchronising " + self.mode + " only")
@@ -111,26 +125,25 @@ class synchronise_db_and_filesystem(QtCore.QThread):
             db_dict = self.sync_refinement_results(xtal, db_dict)
 
             if db_dict != {}:
-                self.emit(
-                    QtCore.SIGNAL("update_status_bar(QString)"),
-                    "updating datasource for " + xtal,
-                )
+                # PyQt5: Use new-style signal emission
+                self.update_status_bar.emit("updating datasource for " + xtal)
                 self.db.update_data_source(xtal, db_dict)
 
             progress += progress_step
-            self.emit(QtCore.SIGNAL("update_progress_bar"), progress)
+            # PyQt5: Use new-style signal emission
+            self.update_progress_bar.emit(int(progress))
 
         self.Logfile.insert("database mainTable update finished")
         self.Logfile.insert("updating panddaTable")
-        self.emit(QtCore.SIGNAL("update_status_bar(QString)"), "updating panddaTable")
+        # PyQt5: Use new-style signal emission
+        self.update_status_bar.emit("updating panddaTable")
         self.sync_pandda_table_NEW()
-        self.emit(
-            QtCore.SIGNAL("update_status_bar(QString)"),
-            "database panddaTable update finished",
-        )
+        # PyQt5: Use new-style signal emission
+        self.update_status_bar.emit("database panddaTable update finished")
         self.Logfile.insert("database panddaTable update finished")
 
-        self.emit(QtCore.SIGNAL("datasource_menu_reload_samples"))
+        # PyQt5: Use new-style signal emission
+        self.datasource_menu_reload_samples.emit()
 
     def sync_data_processing(self, xtal, db_dict):
         # AIMLESS logfile
@@ -494,7 +507,7 @@ class synchronise_db_and_filesystem(QtCore.QThread):
     def sync_pandda_table_NEW(self):
         progress_step = 1
         progress = 0
-        self.emit(QtCore.SIGNAL("update_progress_bar"), progress)
+        self.update_progress_bar.emit(int(progress))
 
         # also need to update PANDDA table...
         pandda_models = self.db.execute_statement(
@@ -521,7 +534,7 @@ class synchronise_db_and_filesystem(QtCore.QThread):
                         xtal, site_index, event_index
                     ),
                 )
-                self.emit(QtCore.SIGNAL("update_progress_bar"), progress)
+                self.update_progress_bar.emit(int(progress))
                 progress += progress_step
 
                 try:
@@ -769,7 +782,7 @@ class synchronise_db_and_filesystem(QtCore.QThread):
                     self.Logfile.insert("-> panddaDict: " + str(db_pandda_dict))
 
 
-class create_png_and_cif_of_compound(QtCore.QThread):
+class create_png_and_cif_of_compound(XChemQThread):
     def __init__(
         self,
         external_software,
@@ -949,7 +962,7 @@ class create_png_and_cif_of_compound(QtCore.QThread):
                 self.db.update_data_source(sampleID, db_dict)
 
             progress += progress_step
-            self.emit(QtCore.SIGNAL("update_progress_bar"), progress)
+            self.update_progress_bar.emit(int(progress))
 
         # submit array job at Diamond
         self.Logfile.insert(
@@ -977,10 +990,10 @@ class create_png_and_cif_of_compound(QtCore.QThread):
                 array="0-{}".format(counter),
             )
 
-        self.emit(QtCore.SIGNAL("datasource_menu_reload_samples"))
+        self.datasource_menu_reload_samples.emit()
 
 
-class fit_ligands(QtCore.QThread):
+class fit_ligands(XChemQThread):
     def __init__(
         self,
         external_software,
@@ -1104,9 +1117,9 @@ class fit_ligands(QtCore.QThread):
                 self.n += 1
 
             progress += progress_step
-            self.emit(QtCore.SIGNAL("update_progress_bar"), progress)
+            self.update_progress_bar.emit(int(progress))
 
-        self.emit(QtCore.SIGNAL("datasource_menu_reload_samples"))
+        self.datasource_menu_reload_samples.emit()
 
     def write_script(self, cmd):
         os.chdir(self.ccp4_scratch_directory)
@@ -1141,7 +1154,7 @@ class fit_ligands(QtCore.QThread):
         )
 
 
-class merge_cif_files(QtCore.QThread):
+class merge_cif_files(XChemQThread):
     def __init__(
         self, initial_model_directory, xce_logfile, second_cif_file, compound_list, todo
     ):
@@ -1212,9 +1225,9 @@ class merge_cif_files(QtCore.QThread):
                 os.system("ln -s compound/%s.cif ." % compoundID)
 
             progress += progress_step
-            self.emit(QtCore.SIGNAL("update_progress_bar"), progress)
+            self.update_progress_bar.emit(int(progress))
 
-        self.emit(QtCore.SIGNAL("finished()"))
+        self.finished.emit()
 
     def run_libcheck(self, sampleID, compoundID):
         cmd = (
@@ -1247,7 +1260,7 @@ class merge_cif_files(QtCore.QThread):
             os.system("ln -s compound/%s.cif ." % compoundID)
 
 
-class run_dimple_on_all_autoprocessing_files_new(QtCore.QThread):
+class run_dimple_on_all_autoprocessing_files_new(XChemQThread):
     def __init__(
         self,
         sample_list,
@@ -1290,7 +1303,7 @@ class run_dimple_on_all_autoprocessing_files_new(QtCore.QThread):
         if len(self.sample_list) != 0:
             progress_step = 100 / float(len(self.sample_list))
         progress = 0
-        self.emit(QtCore.SIGNAL("update_progress_bar"), progress)
+        self.update_progress_bar.emit(int(progress))
 
         os.chdir(self.ccp4_scratch_directory)
         os.system("/bin/rm -f xce_{0!s}*sh".format(self.pipeline))
@@ -1322,11 +1335,11 @@ class run_dimple_on_all_autoprocessing_files_new(QtCore.QThread):
                 )
 
             progress += progress_step
-            self.emit(QtCore.SIGNAL("update_progress_bar"), progress)
+            self.update_progress_bar.emit(int(progress))
 
         self.run_script(twin)
 
-        self.emit(QtCore.SIGNAL("datasource_menu_reload_samples"))
+        self.datasource_menu_reload_samples.emit()
 
     def prepare_phenix_ligand_pipeline_shell_script(
         self, xtal, visit_run_autoproc, mtzin, ref_pdb, ref_mtz, ref_cif
@@ -1780,7 +1793,7 @@ class run_dimple_on_all_autoprocessing_files_new(QtCore.QThread):
         )
 
 
-class remove_selected_dimple_files(QtCore.QThread):
+class remove_selected_dimple_files(XChemQThread):
     def __init__(
         self,
         sample_list,
@@ -1805,7 +1818,7 @@ class remove_selected_dimple_files(QtCore.QThread):
         if len(self.sample_list) != 0:
             progress_step = 100 / float(len(self.sample_list))
         progress = 0
-        self.emit(QtCore.SIGNAL("update_progress_bar"), progress)
+        self.update_progress_bar.emit(int(progress))
 
         for n, xtal in enumerate(self.sample_list):
             db_dict = {}
@@ -1890,9 +1903,9 @@ class remove_selected_dimple_files(QtCore.QThread):
                 self.db.update_data_source(xtal, db_dict)
 
             progress += progress_step
-            self.emit(QtCore.SIGNAL("update_progress_bar"), progress)
+            self.update_progress_bar.emit(int(progress))
 
-        self.emit(QtCore.SIGNAL("datasource_menu_reload_samples"))
+        self.datasource_menu_reload_samples.emit()
 
     def remove_init(self, db_dict):
         os.system("/bin/rm init.pdb")
@@ -1913,7 +1926,7 @@ class remove_selected_dimple_files(QtCore.QThread):
         return db_dict
 
 
-class set_results_from_selected_pipeline(QtCore.QThread):
+class set_results_from_selected_pipeline(XChemQThread):
     def __init__(
         self,
         sample_list,
@@ -1938,7 +1951,7 @@ class set_results_from_selected_pipeline(QtCore.QThread):
         if len(self.sample_list) != 0:
             progress_step = 100 / float(len(self.sample_list))
         progress = 0
-        self.emit(QtCore.SIGNAL("update_progress_bar"), progress)
+        self.update_progress_bar.emit(int(progress))
 
         for n, xtal in enumerate(self.sample_list):
             db_dict = {}
@@ -2032,12 +2045,12 @@ class set_results_from_selected_pipeline(QtCore.QThread):
             self.db.update_data_source(xtal, db_dict)
 
             progress += progress_step
-            self.emit(QtCore.SIGNAL("update_progress_bar"), progress)
+            self.update_progress_bar.emit(int(progress))
 
-        self.emit(QtCore.SIGNAL("datasource_menu_reload_samples"))
+        self.datasource_menu_reload_samples.emit()
 
 
-class start_COOT(QtCore.QThread):
+class start_COOT(XChemQThread):
     def __init__(self, settings, interface):
         QtCore.QThread.__init__(self)
         self.settings = settings
@@ -2069,7 +2082,7 @@ class start_COOT(QtCore.QThread):
         )
 
 
-class start_pandda_inspect(QtCore.QThread):
+class start_pandda_inspect(XChemQThread):
     def __init__(self, settings, xce_logfile):
         QtCore.QThread.__init__(self)
         self.panddas_directory = settings["panddas_directory"]
@@ -2092,7 +2105,7 @@ class start_pandda_inspect(QtCore.QThread):
         )
         os.system(Cmds)
 
-class start_pandda_2_inspect(QtCore.QThread):
+class start_pandda_2_inspect(XChemQThread):
     def __init__(self, settings, xce_logfile):
         QtCore.QThread.__init__(self)
         self.panddas_directory = settings["panddas_directory"]
@@ -2128,7 +2141,7 @@ class start_pandda_2_inspect(QtCore.QThread):
 # --- new module from hell -------------------------------------------------------------
 
 
-class read_pinIDs_from_gda_logs(QtCore.QThread):
+class read_pinIDs_from_gda_logs(XChemQThread):
     def __init__(self, beamline, visit, database, gdaLogInstructions, xce_logfile):
         QtCore.QThread.__init__(self)
         self.beamline = beamline
@@ -2172,7 +2185,7 @@ class read_pinIDs_from_gda_logs(QtCore.QThread):
             QtCore.SIGNAL("update_gdaLog_parsing_instructions_and_score"),
             self.gdaLogInstructions,
         )
-        self.emit(QtCore.SIGNAL("finished()"))
+        self.finished.emit()
 
     def update_database(self, pinDict):
         self.Logfile.insert("updating database with pinDIs from GDA logfiles")
@@ -2189,10 +2202,10 @@ class read_pinIDs_from_gda_logs(QtCore.QThread):
             dbDict["DataCollectionPinBarcode"] = pinDict[sample]
             self.db.update_specified_table(sample, dbDict, "collectionTable")
             progress += progress_step
-            self.emit(QtCore.SIGNAL("update_progress_bar"), progress)
+            self.update_progress_bar.emit(int(progress))
 
 
-class choose_autoprocessing_outcome(QtCore.QThread):
+class choose_autoprocessing_outcome(XChemQThread):
     def __init__(
         self,
         database,
@@ -2309,11 +2322,11 @@ class choose_autoprocessing_outcome(QtCore.QThread):
                 QtCore.SIGNAL("update_status_bar(QString)"),
                 "scoring auto-processing results for " + sample,
             )
-            self.emit(QtCore.SIGNAL("update_progress_bar"), progress)
+            self.update_progress_bar.emit(int(progress))
 
         self.Logfile.insert("====== finished scoring data processing results ======")
-        self.emit(QtCore.SIGNAL("populate_datasets_summary_table_NEW"))
-        self.emit(QtCore.SIGNAL("finished()"))
+        self.populate_datasets_summary_table_NEW.emit()
+        self.finished.emit()
 
     def report_forward_carried_pipelines(self, dbListOut, dbList):
         if not dbListOut:
@@ -2567,7 +2580,7 @@ class choose_autoprocessing_outcome(QtCore.QThread):
         self.db.update_insert_data_source(sample, dbDict)
 
 
-class read_write_autoprocessing_results_from_to_disc(QtCore.QThread):
+class read_write_autoprocessing_results_from_to_disc(XChemQThread):
     """
     major changes:
     - pkl file is obsolete
@@ -3159,12 +3172,11 @@ class read_write_autoprocessing_results_from_to_disc(QtCore.QThread):
                             )
                     runList.append(current_run + proc_code)
             progress += progress_step
-            self.emit(
-                QtCore.SIGNAL("update_status_bar(QString)"),
-                "parsing auto-processing results for " + xtal,
-            )
-            self.emit(QtCore.SIGNAL("update_progress_bar"), progress)
+            # PyQt5: Use new-style signal emission
+            self.update_status_bar.emit("parsing auto-processing results for " + xtal)
+            self.update_progress_bar.emit(int(progress))
 
         self.Logfile.insert("====== finished parsing beamline directory ======")
-        self.emit(QtCore.SIGNAL("read_pinIDs_from_gda_logs"))
-        self.emit(QtCore.SIGNAL("finished()"))
+        # PyQt5: Use new-style signal emission
+        self.read_pinIDs_from_gda_logs.emit()
+        self.finished.emit()
