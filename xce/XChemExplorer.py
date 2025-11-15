@@ -196,24 +196,10 @@ class XChemExplorer(QtWidgets.QApplication):
                 self.xce_logfile,
             )
             self.explorer_active = 1
-            self.connect(
-                self.work_thread,
-                QtCore.SIGNAL("update_progress_bar"),
-                self.update_progress_bar,
-            )
-            self.connect(
-                self.work_thread,
-                QtCore.SIGNAL("update_status_bar(QString)"),
-                self.update_status_bar,
-            )
-            self.connect(
-                self.work_thread, QtCore.SIGNAL("finished()"), self.thread_finished
-            )
-            self.connect(
-                self.work_thread,
-                QtCore.SIGNAL("create_widgets_for_autoprocessing_results_only"),
-                self.create_widgets_for_autoprocessing_results_only,
-            )
+            self.work_thread.update_progress_bar.connect(self.update_progress_bar)
+            self.work_thread.update_status_bar.connect(self.update_status_bar)
+            self.work_thread.finished.connect(self.thread_finished)
+            self.work_thread.create_widgets_for_autoprocessing_results_only.connect(self.create_widgets_for_autoprocessing_results_only)
             self.work_thread.start()
 
     ####################################################################################
@@ -239,24 +225,10 @@ class XChemExplorer(QtWidgets.QApplication):
         )
 
         self.explorer_active = 1
-        self.connect(
-            self.work_thread,
-            QtCore.SIGNAL("update_progress_bar"),
-            self.update_progress_bar,
-        )
-        self.connect(
-            self.work_thread,
-            QtCore.SIGNAL("update_status_bar(QString)"),
-            self.update_status_bar,
-        )
-        self.connect(
-            self.work_thread, QtCore.SIGNAL("finished()"), self.thread_finished
-        )
-        self.connect(
-            self.work_thread,
-            QtCore.SIGNAL("update_gdaLog_parsing_instructions_and_score"),
-            self.update_gdaLog_parsing_instructions_and_score,
-        )
+        self.work_thread.update_progress_bar.connect(self.update_progress_bar)
+        self.work_thread.update_status_bar.connect(self.update_status_bar)
+        self.work_thread.finished.connect(self.thread_finished)
+        self.work_thread.update_gdaLog_parsing_instructions_and_score.connect(self.update_gdaLog_parsing_instructions_and_score)
         self.work_thread.start()
 
     def check_for_new_autoprocessing_results(self):
@@ -288,24 +260,10 @@ class XChemExplorer(QtWidgets.QApplication):
             )
 
             self.explorer_active = 1
-            self.connect(
-                self.work_thread,
-                QtCore.SIGNAL("update_progress_bar"),
-                self.update_progress_bar,
-            )
-            self.connect(
-                self.work_thread,
-                QtCore.SIGNAL("update_status_bar(QString)"),
-                self.update_status_bar,
-            )
-            self.connect(
-                self.work_thread, QtCore.SIGNAL("finished()"), self.thread_finished
-            )
-            self.connect(
-                self.work_thread,
-                QtCore.SIGNAL("read_pinIDs_from_gda_logs"),
-                self.read_pinIDs_from_gda_logs,
-            )
+            self.work_thread.update_progress_bar.connect(self.update_progress_bar)
+            self.work_thread.update_status_bar.connect(self.update_status_bar)
+            self.work_thread.finished.connect(self.thread_finished)
+            self.work_thread.read_pinIDs_from_gda_logs.connect(self.read_pinIDs_from_gda_logs)
             self.work_thread.start()
 
     def select_best_autoprocessing_result(self):
@@ -366,24 +324,10 @@ class XChemExplorer(QtWidgets.QApplication):
             )
 
             self.explorer_active = 1
-            self.connect(
-                self.work_thread,
-                QtCore.SIGNAL("update_progress_bar"),
-                self.update_progress_bar,
-            )
-            self.connect(
-                self.work_thread,
-                QtCore.SIGNAL("update_status_bar(QString)"),
-                self.update_status_bar,
-            )
-            self.connect(
-                self.work_thread, QtCore.SIGNAL("finished()"), self.thread_finished
-            )
-            self.connect(
-                self.work_thread,
-                QtCore.SIGNAL("populate_datasets_summary_table_NEW"),
-                self.populate_datasets_summary_table_NEW,
-            )
+            self.work_thread.update_progress_bar.connect(self.update_progress_bar)
+            self.work_thread.update_status_bar.connect(self.update_status_bar)
+            self.work_thread.finished.connect(self.thread_finished)
+            self.work_thread.populate_datasets_summary_table_NEW.connect(self.populate_datasets_summary_table_NEW)
             self.work_thread.start()
 
     # < end
@@ -1062,19 +1006,9 @@ class XChemExplorer(QtWidgets.QApplication):
                 ignore_event_map,
             )
             self.explorer_active = 1
-            self.connect(
-                self.work_thread,
-                QtCore.SIGNAL("update_progress_bar"),
-                self.update_progress_bar,
-            )
-            self.connect(
-                self.work_thread,
-                QtCore.SIGNAL("update_status_bar(QString)"),
-                self.update_status_bar,
-            )
-            self.connect(
-                self.work_thread, QtCore.SIGNAL("finished()"), self.thread_finished
-            )
+            self.work_thread.update_progress_bar.connect(self.update_progress_bar)
+            self.work_thread.update_status_bar.connect(self.update_status_bar)
+            self.work_thread.finished.connect(self.thread_finished)
             self.work_thread.start()
 
     def prepare_for_group_deposition_upload_ligand_bound(self):
@@ -1086,19 +1020,9 @@ class XChemExplorer(QtWidgets.QApplication):
             "ligand_bound",
         )
         self.explorer_active = 1
-        self.connect(
-            self.work_thread,
-            QtCore.SIGNAL("update_progress_bar"),
-            self.update_progress_bar,
-        )
-        self.connect(
-            self.work_thread,
-            QtCore.SIGNAL("update_status_bar(QString)"),
-            self.update_status_bar,
-        )
-        self.connect(
-            self.work_thread, QtCore.SIGNAL("finished()"), self.thread_finished
-        )
+        self.work_thread.update_progress_bar.connect(self.update_progress_bar)
+        self.work_thread.update_status_bar.connect(self.update_status_bar)
+        self.work_thread.finished.connect(self.thread_finished)
         self.work_thread.start()
 
     def prepare_for_group_deposition_upload_ground_state(self):
@@ -1110,19 +1034,9 @@ class XChemExplorer(QtWidgets.QApplication):
             "ground_state",
         )
         self.explorer_active = 1
-        self.connect(
-            self.work_thread,
-            QtCore.SIGNAL("update_progress_bar"),
-            self.update_progress_bar,
-        )
-        self.connect(
-            self.work_thread,
-            QtCore.SIGNAL("update_status_bar(QString)"),
-            self.update_status_bar,
-        )
-        self.connect(
-            self.work_thread, QtCore.SIGNAL("finished()"), self.thread_finished
-        )
+        self.work_thread.update_progress_bar.connect(self.update_progress_bar)
+        self.work_thread.update_status_bar.connect(self.update_status_bar)
+        self.work_thread.finished.connect(self.thread_finished)
         self.work_thread.start()
 
     def check_smiles_in_db_and_pdb(self):
@@ -1132,22 +1046,10 @@ class XChemExplorer(QtWidgets.QApplication):
             self.xce_logfile,
         )
         self.explorer_active = 1
-        self.connect(
-            self.work_thread,
-            QtCore.SIGNAL("update_progress_bar"),
-            self.update_progress_bar,
-        )
-        self.connect(
-            self.work_thread,
-            QtCore.SIGNAL("update_status_bar(QString)"),
-            self.update_status_bar,
-        )
-        self.connect(
-            self.work_thread, QtCore.SIGNAL("finished()"), self.thread_finished
-        )
-        self.connect(
-            self.work_thread, QtCore.SIGNAL("show_error_dict"), self.show_error_dict
-        )
+        self.work_thread.update_progress_bar.connect(self.update_progress_bar)
+        self.work_thread.update_status_bar.connect(self.update_status_bar)
+        self.work_thread.finished.connect(self.thread_finished)
+        self.work_thread.show_error_dict.connect(self.show_error_dict)
         self.work_thread.start()
 
     def deposition_data(self):
@@ -2255,19 +2157,9 @@ class XChemExplorer(QtWidgets.QApplication):
             self.xce_logfile,
         )
         self.explorer_active = 1
-        self.connect(
-            self.work_thread,
-            QtCore.SIGNAL("update_progress_bar"),
-            self.update_progress_bar,
-        )
-        self.connect(
-            self.work_thread,
-            QtCore.SIGNAL("update_status_bar(QString)"),
-            self.update_status_bar,
-        )
-        self.connect(
-            self.work_thread, QtCore.SIGNAL("finished()"), self.thread_finished
-        )
+        self.work_thread.update_progress_bar.connect(self.update_progress_bar)
+        self.work_thread.update_status_bar.connect(self.update_status_bar)
+        self.work_thread.finished.connect(self.thread_finished)
         self.work_thread.start()
 
     def update_database_with_labelInfo(self):
@@ -2314,19 +2206,9 @@ class XChemExplorer(QtWidgets.QApplication):
                 self.xce_logfile,
             )
             self.explorer_active = 1
-            self.connect(
-                self.work_thread,
-                QtCore.SIGNAL("update_progress_bar"),
-                self.update_progress_bar,
-            )
-            self.connect(
-                self.work_thread,
-                QtCore.SIGNAL("update_status_bar(QString)"),
-                self.update_status_bar,
-            )
-            self.connect(
-                self.work_thread, QtCore.SIGNAL("finished()"), self.thread_finished
-            )
+            self.work_thread.update_progress_bar.connect(self.update_progress_bar)
+            self.work_thread.update_status_bar.connect(self.update_status_bar)
+            self.work_thread.finished.connect(self.thread_finished)
             self.work_thread.start()
 
     def update_deposit_input(self):
@@ -3135,24 +3017,10 @@ class XChemExplorer(QtWidgets.QApplication):
             self.xce_logfile,
             "project_directory",
         )
-        self.connect(
-            self.work_thread,
-            QtCore.SIGNAL("update_progress_bar"),
-            self.update_progress_bar,
-        )
-        self.connect(
-            self.work_thread,
-            QtCore.SIGNAL("update_status_bar(QString)"),
-            self.update_status_bar,
-        )
-        self.connect(
-            self.work_thread, QtCore.SIGNAL("finished()"), self.thread_finished
-        )
-        self.connect(
-            self.work_thread,
-            QtCore.SIGNAL("datasource_menu_reload_samples"),
-            self.datasource_menu_reload_samples,
-        )
+        self.work_thread.update_progress_bar.connect(self.update_progress_bar)
+        self.work_thread.update_status_bar.connect(self.update_status_bar)
+        self.work_thread.finished.connect(self.thread_finished)
+        self.work_thread.datasource_menu_reload_samples.connect(self.datasource_menu_reload_samples)
         self.work_thread.start()
 
     def export_data_for_WONKA(self):
@@ -3198,11 +3066,7 @@ class XChemExplorer(QtWidgets.QApplication):
         self.pandda_map_list.clear()
         for i in range(0, len(self.list_options)):
             self.pandda_map_list.addItem(self.list_options[i])
-        self.connect(
-            self.pandda_map_list,
-            QtCore.SIGNAL("activated(QString)"),
-            self.combo_selected,
-        )
+        self.pandda_map_list.activated[str].connect(self.combo_selected)
 
     def open_config_file(self):
         file_name_temp = QtWidgets.QFileDialog.getOpenFileNameAndFilter(
@@ -3572,27 +3436,11 @@ class XChemExplorer(QtWidgets.QApplication):
                     pipeline,
                 )
                 self.explorer_active = 1
-                self.connect(
-                    self.work_thread, QtCore.SIGNAL("finished()"), self.thread_finished
-                )
-                self.connect(
-                    self.work_thread,
-                    QtCore.SIGNAL("update_progress_bar"),
-                    self.update_progress_bar,
-                )
-                self.connect(
-                    self.work_thread,
-                    QtCore.SIGNAL("update_status_bar(QString)"),
-                    self.update_status_bar,
-                )
-                self.connect(
-                    self.work_thread, QtCore.SIGNAL("finished()"), self.thread_finished
-                )
-                self.connect(
-                    self.work_thread,
-                    QtCore.SIGNAL("datasource_menu_reload_samples"),
-                    self.datasource_menu_reload_samples,
-                )
+                self.work_thread.finished.connect(self.thread_finished)
+                self.work_thread.update_progress_bar.connect(self.update_progress_bar)
+                self.work_thread.update_status_bar.connect(self.update_status_bar)
+                self.work_thread.finished.connect(self.thread_finished)
+                self.work_thread.datasource_menu_reload_samples.connect(self.datasource_menu_reload_samples)
                 self.work_thread.start()
 
     def set_results_from_selected_pipeline(self, instruction):
@@ -3619,27 +3467,11 @@ class XChemExplorer(QtWidgets.QApplication):
             pipeline,
         )
         self.explorer_active = 1
-        self.connect(
-            self.work_thread, QtCore.SIGNAL("finished()"), self.thread_finished
-        )
-        self.connect(
-            self.work_thread,
-            QtCore.SIGNAL("update_progress_bar"),
-            self.update_progress_bar,
-        )
-        self.connect(
-            self.work_thread,
-            QtCore.SIGNAL("update_status_bar(QString)"),
-            self.update_status_bar,
-        )
-        self.connect(
-            self.work_thread, QtCore.SIGNAL("finished()"), self.thread_finished
-        )
-        self.connect(
-            self.work_thread,
-            QtCore.SIGNAL("datasource_menu_reload_samples"),
-            self.datasource_menu_reload_samples,
-        )
+        self.work_thread.finished.connect(self.thread_finished)
+        self.work_thread.update_progress_bar.connect(self.update_progress_bar)
+        self.work_thread.update_status_bar.connect(self.update_status_bar)
+        self.work_thread.finished.connect(self.thread_finished)
+        self.work_thread.datasource_menu_reload_samples.connect(self.datasource_menu_reload_samples)
         self.work_thread.start()
 
     def check_before_running_dimple(self, job_list, instruction):
@@ -3685,27 +3517,11 @@ class XChemExplorer(QtWidgets.QApplication):
                 get_token(fetch_password_qt),
             )
             self.explorer_active = 1
-            self.connect(
-                self.work_thread, QtCore.SIGNAL("finished()"), self.thread_finished
-            )
-            self.connect(
-                self.work_thread,
-                QtCore.SIGNAL("update_progress_bar"),
-                self.update_progress_bar,
-            )
-            self.connect(
-                self.work_thread,
-                QtCore.SIGNAL("update_status_bar(QString)"),
-                self.update_status_bar,
-            )
-            self.connect(
-                self.work_thread, QtCore.SIGNAL("finished()"), self.thread_finished
-            )
-            self.connect(
-                self.work_thread,
-                QtCore.SIGNAL("datasource_menu_reload_samples"),
-                self.datasource_menu_reload_samples,
-            )
+            self.work_thread.finished.connect(self.thread_finished)
+            self.work_thread.update_progress_bar.connect(self.update_progress_bar)
+            self.work_thread.update_status_bar.connect(self.update_status_bar)
+            self.work_thread.finished.connect(self.thread_finished)
+            self.work_thread.datasource_menu_reload_samples.connect(self.datasource_menu_reload_samples)
             self.work_thread.start()
 
     def update_all_tables(self):
@@ -4049,9 +3865,7 @@ class XChemExplorer(QtWidgets.QApplication):
                 else:
                     interface = "old"
                 self.work_thread = XChemThread.start_COOT(self.settings, interface)
-                self.connect(
-                    self.work_thread, QtCore.SIGNAL("finished()"), self.thread_finished
-                )
+                self.work_thread.finished.connect(self.thread_finished)
                 self.work_thread.start()
 
         elif instruction == "Update Deposition Table":
@@ -4131,9 +3945,7 @@ class XChemExplorer(QtWidgets.QApplication):
                 self.external_software,
                 get_token(fetch_password_qt),
             )
-        self.connect(
-            self.work_thread, QtCore.SIGNAL("finished()"), self.thread_finished
-        )
+        self.work_thread.finished.connect(self.thread_finished)
         self.work_thread.start()
 
     def cluster_datasets_for_pandda(self):
@@ -4151,24 +3963,10 @@ class XChemExplorer(QtWidgets.QApplication):
             self.run_pandda_analyse,
         )
         self.explorer_active = 1
-        self.connect(
-            self.work_thread,
-            QtCore.SIGNAL("update_progress_bar"),
-            self.update_progress_bar,
-        )
-        self.connect(
-            self.work_thread,
-            QtCore.SIGNAL("update_status_bar(QString)"),
-            self.update_status_bar,
-        )
-        self.connect(
-            self.work_thread,
-            QtCore.SIGNAL("datasource_menu_reload_samples"),
-            self.datasource_menu_reload_samples,
-        )
-        self.connect(
-            self.work_thread, QtCore.SIGNAL("finished()"), self.thread_finished
-        )
+        self.work_thread.update_progress_bar.connect(self.update_progress_bar)
+        self.work_thread.update_status_bar.connect(self.update_status_bar)
+        self.work_thread.datasource_menu_reload_samples.connect(self.datasource_menu_reload_samples)
+        self.work_thread.finished.connect(self.thread_finished)
         self.work_thread.start()
 
     def run_pandda_inspect(self):
@@ -4179,9 +3977,7 @@ class XChemExplorer(QtWidgets.QApplication):
         self.work_thread = XChemThread.start_pandda_inspect(
             self.settings, self.xce_logfile
         )
-        self.connect(
-            self.work_thread, QtCore.SIGNAL("finished()"), self.thread_finished
-        )
+        self.work_thread.finished.connect(self.thread_finished)
         self.work_thread.start()
 
     def run_pandda_2_inspect(self):
@@ -4192,32 +3988,18 @@ class XChemExplorer(QtWidgets.QApplication):
         self.work_thread = XChemThread.start_pandda_2_inspect(
             self.settings, self.xce_logfile
         )
-        self.connect(
-            self.work_thread, QtCore.SIGNAL("finished()"), self.thread_finished
-        )
+        self.work_thread.finished.connect(self.thread_finished)
         self.work_thread.start()
 
     def run_pandda_inspect_at_home(self):
         self.work_thread = XChemPANDDA.run_pandda_inspect_at_home(
             self.panddas_directory, self.xce_logfile
         )
-        self.connect(
-            self.work_thread, QtCore.SIGNAL("finished()"), self.thread_finished
-        )
+        self.work_thread.finished.connect(self.thread_finished)
         self.work_thread.start()
-        self.connect(
-            self.work_thread,
-            QtCore.SIGNAL("update_progress_bar"),
-            self.update_progress_bar,
-        )
-        self.connect(
-            self.work_thread,
-            QtCore.SIGNAL("update_status_bar(QString)"),
-            self.update_status_bar,
-        )
-        self.connect(
-            self.work_thread, QtCore.SIGNAL("finished()"), self.thread_finished
-        )
+        self.work_thread.update_progress_bar.connect(self.update_progress_bar)
+        self.work_thread.update_status_bar.connect(self.update_status_bar)
+        self.work_thread.finished.connect(self.thread_finished)
 
     def convert_event_maps_to_SF(self):
         self.update_log.insert(
@@ -4230,19 +4012,9 @@ class XChemExplorer(QtWidgets.QApplication):
         )
 
         self.explorer_active = 1
-        self.connect(
-            self.work_thread,
-            QtCore.SIGNAL("update_progress_bar"),
-            self.update_progress_bar,
-        )
-        self.connect(
-            self.work_thread,
-            QtCore.SIGNAL("update_status_bar(QString)"),
-            self.update_status_bar,
-        )
-        self.connect(
-            self.work_thread, QtCore.SIGNAL("finished()"), self.thread_finished
-        )
+        self.work_thread.update_progress_bar.connect(self.update_progress_bar)
+        self.work_thread.update_status_bar.connect(self.update_status_bar)
+        self.work_thread.finished.connect(self.thread_finished)
         self.work_thread.start()
 
     def convert_apo_to_mmcif(self):
@@ -4251,19 +4023,9 @@ class XChemExplorer(QtWidgets.QApplication):
         )
 
         self.explorer_active = 1
-        self.connect(
-            self.work_thread,
-            QtCore.SIGNAL("update_progress_bar"),
-            self.update_progress_bar,
-        )
-        self.connect(
-            self.work_thread,
-            QtCore.SIGNAL("update_status_bar(QString)"),
-            self.update_status_bar,
-        )
-        self.connect(
-            self.work_thread, QtCore.SIGNAL("finished()"), self.thread_finished
-        )
+        self.work_thread.update_progress_bar.connect(self.update_progress_bar)
+        self.work_thread.update_status_bar.connect(self.update_status_bar)
+        self.work_thread.finished.connect(self.thread_finished)
         self.work_thread.start()
 
     def compare_modelled_ligands_and_panddaTable(self):
@@ -4276,22 +4038,10 @@ class XChemExplorer(QtWidgets.QApplication):
             os.path.join(self.database_directory, self.data_source_file),
         )
         self.explorer_active = 1
-        self.connect(
-            self.work_thread,
-            QtCore.SIGNAL("update_progress_bar"),
-            self.update_progress_bar,
-        )
-        self.connect(
-            self.work_thread,
-            QtCore.SIGNAL("update_status_bar(QString)"),
-            self.update_status_bar,
-        )
-        self.connect(
-            self.work_thread, QtCore.SIGNAL("finished()"), self.thread_finished
-        )
-        self.connect(
-            self.work_thread, QtCore.SIGNAL("show_error_dict"), self.show_error_dict
-        )
+        self.work_thread.update_progress_bar.connect(self.update_progress_bar)
+        self.work_thread.update_status_bar.connect(self.update_status_bar)
+        self.work_thread.finished.connect(self.thread_finished)
+        self.work_thread.show_error_dict.connect(self.show_error_dict)
         self.work_thread.start()
 
     def run_pandda_export(self, update_datasource_only, which_models):
@@ -4373,9 +4123,7 @@ class XChemExplorer(QtWidgets.QApplication):
                 pandda_params,
                 get_token(fetch_password_qt),
             )
-            self.connect(
-                self.work_thread, QtCore.SIGNAL("finished()"), self.thread_finished
-            )
+            self.work_thread.finished.connect(self.thread_finished)
             self.work_thread.start()
 
     def run_refine_bound_state_with_buster(self, which_models):
@@ -4389,9 +4137,7 @@ class XChemExplorer(QtWidgets.QApplication):
                 which_models,
                 get_token(fetch_password_qt),
             )
-            self.connect(
-                self.work_thread, QtCore.SIGNAL("finished()"), self.thread_finished
-            )
+            self.work_thread.finished.connect(self.thread_finished)
             self.work_thread.start()
 
     def show_pandda_html_summary(self):
@@ -4450,24 +4196,10 @@ class XChemExplorer(QtWidgets.QApplication):
                 self.restraints_program,
                 get_token(fetch_password_qt),
             )
-            self.connect(
-                self.work_thread,
-                QtCore.SIGNAL("update_progress_bar"),
-                self.update_progress_bar,
-            )
-            self.connect(
-                self.work_thread,
-                QtCore.SIGNAL("update_status_bar(QString)"),
-                self.update_status_bar,
-            )
-            self.connect(
-                self.work_thread, QtCore.SIGNAL("finished()"), self.thread_finished
-            )
-            self.connect(
-                self.work_thread,
-                QtCore.SIGNAL("datasource_menu_reload_samples"),
-                self.datasource_menu_reload_samples,
-            )
+            self.work_thread.update_progress_bar.connect(self.update_progress_bar)
+            self.work_thread.update_status_bar.connect(self.update_status_bar)
+            self.work_thread.finished.connect(self.thread_finished)
+            self.work_thread.datasource_menu_reload_samples.connect(self.datasource_menu_reload_samples)
             self.work_thread.start()
 
     def fit_ligands_into_dimple_maps(self):
@@ -4505,24 +4237,10 @@ class XChemExplorer(QtWidgets.QApplication):
                 self.max_queue_jobs,
                 get_token(fetch_password_qt),
             )
-            self.connect(
-                self.work_thread,
-                QtCore.SIGNAL("update_progress_bar"),
-                self.update_progress_bar,
-            )
-            self.connect(
-                self.work_thread,
-                QtCore.SIGNAL("update_status_bar(QString)"),
-                self.update_status_bar,
-            )
-            self.connect(
-                self.work_thread, QtCore.SIGNAL("finished()"), self.thread_finished
-            )
-            self.connect(
-                self.work_thread,
-                QtCore.SIGNAL("datasource_menu_reload_samples"),
-                self.datasource_menu_reload_samples,
-            )
+            self.work_thread.update_progress_bar.connect(self.update_progress_bar)
+            self.work_thread.update_status_bar.connect(self.update_status_bar)
+            self.work_thread.finished.connect(self.thread_finished)
+            self.work_thread.datasource_menu_reload_samples.connect(self.datasource_menu_reload_samples)
             self.work_thread.start()
 
     def merge_cif_files(self, todo):
@@ -4615,24 +4333,10 @@ class XChemExplorer(QtWidgets.QApplication):
                 compound_list,
                 todo,
             )
-            self.connect(
-                self.work_thread,
-                QtCore.SIGNAL("update_progress_bar"),
-                self.update_progress_bar,
-            )
-            self.connect(
-                self.work_thread,
-                QtCore.SIGNAL("update_status_bar(QString)"),
-                self.update_status_bar,
-            )
-            self.connect(
-                self.work_thread, QtCore.SIGNAL("finished()"), self.thread_finished
-            )
-            self.connect(
-                self.work_thread,
-                QtCore.SIGNAL("datasource_menu_reload_samples"),
-                self.datasource_menu_reload_samples,
-            )
+            self.work_thread.update_progress_bar.connect(self.update_progress_bar)
+            self.work_thread.update_status_bar.connect(self.update_status_bar)
+            self.work_thread.finished.connect(self.thread_finished)
+            self.work_thread.datasource_menu_reload_samples.connect(self.datasource_menu_reload_samples)
             self.work_thread.start()
 
     def update_deposition_table(self):
